@@ -92,7 +92,7 @@
 \begin{abstract}
     Il tema su cui verte questa tesi sono le attività svolte durante il tirocinio curricolare presso \emph{CNR-ISMN (Istitituto per lo Studio dei Materiali Nanostrutturati)}. \\
     L'obbiettivo del progetto svolto è stato quello di mettere in correllazione le propietà chimico/ficiche di campioni di grafene, provenienti da simulazioni al calcolatore, con
-    i loro \emph{difetti} e \emph{imperfezioni} presenti nella loro struttura atomica.\\
+    i \emph{difetti} e \emph{imperfezioni} presenti nella loro struttura atomica.\\
     I sudetti \emph{difetti} infatti si presentano come dei \emph{vuoti} all'interno della struttura atomica, queste \emph{cavità} quindi sono state individuate e analizzate automaticamente utilizzando vari strumenti, fra cui la rete neurale di Object Detection \emph{YOLOv8} e la libreria di Computer Vision \emph{OpenCV}.
     Grazie a questi metodi è stato possibile andare ad analizzare automaticamente i difetti di ogni campione e cercare quindi eventuali correlazioni con le propietà fisiche del campione stesso. 
     Si è andati quindi a sviluppare una rete predittiva in grando di predire propietà chimico-fisiche a partire dalla conformazione strutturale e topologica dei campioni.
@@ -108,22 +108,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Introduzione
                                         %   nell'indice
 % \addcontentsline{toc}{chapter}{Introduzione}
-L'Intelligenza Artificile e in particolare i modelli di Machine Learning basati sulle reti neurali nei tempi recenti si sono dimostrate tecnologie pervasive in quasi tutti gli ambiti di ricerca dimostrandosi estremamente flessibili e applicabili a domini più eternogenei e disparati. \\
+L'Intelligenza Artificile e in particolare i modelli di Machine Learning basati sulle reti neurali nei tempi recenti si sono dimostrate tecnologie pervasive in quasi tutti gli ambiti di ricerca dimostrandosi estremamente flessibili e applicabili ai domini più eternogenei e disparati. \\
 
-Non ne fa eccezione la ricerca sui materiali innovativi come quella sul grafene, un materiale composto da un singolo strato di atomi di carbonio posizionati in conformazione esagonale dando forma ai caratteristici reticoli.
-Le propietà e caratteristiche eccezionali di questo materiale derivano da molte delle sue unicità, quali per esempio il suo sottilissimo spessore lungo solo un atomo e quindi il suo peso estremamente contenuto. \\
+Non fa eccezione la ricerca sui materiali innovativi come quella sul grafene, un materiale composto da un singolo strato di atomi di carbonio posizionati in conformazione esagonale dando forma ai caratteristici reticoli.
+Le propietà e caratteristiche eccezionali di questo materiale derivano da molte delle sue unicità, quali per esempio il suo sottilissimo spessore lungo solo un atomo e di conseguenza il suo peso estremamente contenuto. \\
 Queste propietà \emph{bidimensionali} conferiscono al materiale resistenza, flessibilità e leggerezza senza concorrenza tra gli altri materiali tradizionali. \\
 Le possibili applicazioni di un simile materiale sono anchesse estramamente multi-dominio e spaziano dai supercondensatori, semiconduttori, nonchè per usi strutturali e tanto altro. 
 Per la natura stessa del materiale, la produzione su scala industriale risulta tutt'altro che banale e i costi elevati. \\
-Spesso durante la produzione non si riesce ad ottenere un campione di grafene perfetto totalmente privo di impurità. E' inoltre possibile trovare danni strutturali sul reticolo di carbonio con conseguente presenza di cavità sullo stesso. \\
+Spesso durante la produzione non si riesce ad ottenere un campione di grafene totalmente privo di impurità. E' inoltre comune trovare danni strutturali sul reticolo atomico con conseguente presenza di cavità sullo stesso. \\
 
-L'idea del progetto quindi si è basata sull'analisi di campioni di grafene difettato derivante da simulazioni. Grazie alla conoscenza a priori delle propietà fisiche di ogni campione, originariamente calcolate dalle simulazioni è stato possibile mettere in correlazione la topologia e i tratti geomtrici dei suddetti difetti con le propietà del materiale stesso.\\
+L'idea del progetto quindi si è basata sull'analisi di campioni di grafene difettato derivanti da simulazioni. Grazie alla conoscenza a priori delle propietà fisiche di ogni campione, originariamente calcolate dalle simulazioni stesse è stato possibile mettere in correlazione la topologia e i tratti geomtrici dei suddetti difetti con le propietà del materiale stesso.\\
 In primo luogo, prima di andare ad analizzare le geometrie dei vari difetti è risultato utile individuarli automaticamente. 
 Questo è stato fatto addestrando la rete neurale YOLOv8, potente modello di Object Detection noto per la sua velocità di inferenza e per le elevate performace otenibili dopo un training relativaemnte breve e con campioni limitati.\\
 Una volta individuate ed estratte dallo sfondo le regioni di interesse si è proceduto con l'analisi geomtrica e topologica dei difetti con la libreria di Computer Vision OpenCV.
-Questa libreria multipiattaforma inizialmente sviluppata da Intel e divenuta successivamente open-source offre numerose funzioni e metodi per applicazioni di computer vision, nel caso di questo progetto ci si è intereafacciati ad essa tramite Python. \\
-E' stato quindi possibile grazie ad essa estrapolare tratti geometrici e topologici dai difetti in questione calcolando tratti più semplici come area, perimetro fino a quelli più sofisticati quali eccenticità, circolarità e molto altro.\\
-I dati sono stati integrati in un dataframe Pandas, grazie ad esso sono state fatte analisi sulle correlazioni fra i parametri stessi. Trovare parametri molto correlati fra loro è importante per evitare di selezionare valori ridondanti nell'addestramento della rete predittiva.\\
+Questa libreria multipiattaforma inizialmente sviluppata da Intel e divenuta successivamente open-source offre numerose funzioni e metodi per la manipolazione e analisi di immagini, nel caso di questo progetto ci si è interfacciati ad essa tramite Python. \\
+E' stato quindi possibile estrapolare tratti geometrici e topologici dai difetti in questione calcolandone dai tratti più semplici come area e perimetro fino a quelli più sofisticati quali eccenticità, circolarità e molto altro.\\
+I dati sono stati integrati in un dataframe \emph{Pandas}, grazie ad esso sono state fatte analisi sulle correlazioni fra i parametri stessi. Trovare parametri molto correlati fra loro è importante per evitare di selezionare valori ridondanti nell'addestramento della rete predittiva.\\
 
 (Addestramento rete predittiva -- work in progress)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
@@ -145,12 +145,11 @@ INDICE}}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 \pagenumbering{arabic}                  %mette i numeri arabi
 La disciplina di ricerca sull'Intelligenza artificale pone le sue radici già a metà del XX secolo. L'obbiettivo generale di allora era quello di sviluppare macchine capaci di eseguire mansioni tipicamente attribute e svolte da umani. 
-Con il passare dei decenni l'obbiettivo è rimasto lo stesso ma si sono esplorate numerose vie e teniche differenti anche molto diverse tra loro, fra cui la sottocatgoria denominata come \emph{Machine Learning}. Quest'ultima è l'insieme delle tecniche e dei metodi statistici con i quali si va migliorare un algoritmo che ha come obbiettivo quello di identificare pattern nei dati. 
+Con il passare dei decenni l'obbiettivo è rimasto lo stesso ma si sono esplorate numerose vie e tecniche differenti anche molto diverse tra loro, fra cui la sottocatgoria denominata come \emph{Machine Learning}. Quest'ultima è l'insieme delle tecniche e dei metodi statistici con i quali si va migliorare un algoritmo che ha come obbiettivo quello di identificare pattern nei dati. 
 Questi metodi si sono riveati particolarmente utili in quei campi dove è notoriamente difficile se non impossibile sviluppare soluzioni tramite algoritmi tradizionali, per esempio il riconoscimento vocale e di immagini.\\
 Negli ultimi decenni con il rapido avanzamento della velocità di calcolo a disposizione queste tecnologie hanno ricevuto una notevole accellerazione nello sviluppo e nei risultati raggiunti. 
-In particolare ha preso sempre più popolarità l'approcio denomicanto come Deep Learning ovvero quei metodi basati su reti neurali artificiali su più livelli. Ognuno di questi livelli estrapola gerarchie di inforamzioni di più alto livello definite a loro volta su quelle di livello inferiore calcolate dagli strati precedenti.
+In particolare ha preso sempre più popolarità l'approcio denomicanto come Deep Learning, ovvero quei metodi basati su reti neurali artificiali su più \emph{strati}. Ognuno di questi strati estrapola gerarchie di inforamzioni di un certo livello definite a loro volta su quelle di livello inferiore calcolate dagli strati precedenti.
 \section{Reti neurali}
-\subsection{Architettura }%crea la sezione
 Una rete neurale consiste in un insieme di \emph{neuroni} (detti anche \emph{nodi}) collegati fra loro, che concorrono per risolvere un problema.
 Ogni nodo può essere pensato come una semplice funzione di tante variabili di ingresso quanti sono i nodi collegati ad esso. \\
 Il suo valore di attivazione quindi sarà la somma pesata dei valori di attivazione dei nodi che prende come input, più la somma di un valore chiamato \emph{bias}, il tutto all’interno di una \emph{funzione di attivazione} non lineare. \\
@@ -252,12 +251,12 @@ Quest'ultima si è dimostrata come la più efficace nelle reti di apprendimento 
 \end{figure}
 
 Esistono poi funzioni di attivazione più sofisticate, come la Softmax.
-Quest'ultima è spesso utile nelle reti classificatrici multiclasse. In questi casi i nodi del layer di output rappesentano la probabilità di classificazione per ciascuna classe la sommatoria dei valori di attivazione dei nodi dell'ultimo layer deve fare necessariamente 1.
+Quest'ultima è spesso utile nelle reti classificatrici multiclasse. In questi casi i nodi del layer di output rappesentano le probabilità di classificazione per ciascuna classe. In questi casi è cruciale che la sommatoria dei valori di attivazione dei nodi di output sia uguale a 1.
 \newpage
-Nel caso generale abbiamo almeno un layer di nodi di input uno di output e acluni layer intermedi detti \emph{hidden-layer},
-in una rete \emph{fully-connected} tutti i nodi nell n-esimo layer sono connessi a tutti i nodi dell'n-esimo layer. \\
-Le feature dei vari pattern estrapolati dalla rete vengono propio calcolati dai layer interni i quali estrapolano propietà sempre più astratte e di alto livello quanto è avanzata la posizione del layer in cui risiedono. \\
-Il vettore dei valori di attivazione del primo \emph{hidden-layer} può essere espresso come il prodotto tra la matrice dei pesi del layer corrente e il vettore di attivazione del layer precedente più il vettore dei bias, tutto dentro la funzione di attivazione scelta per quel layer.
+Nel caso generale abbiamo almeno un layer di nodi di input, uno di output e acluni layer intermedi detti \emph{hidden-layer}.
+In una rete \emph{fully-connected} tutti i nodi nell n-esimo layer sono connessi a tutti i nodi dell'n-esimo layer. \\
+Le feature dei vari pattern estrapolati dalla rete vengono calcolati dai nodi dei layer interni i quali estrapolano propietà sempre più astratte e di alto livello quanto più è avanzata la posizione del layer in cui risiedono. \\
+Il vettore dei valori di attivazione di un \emph{hidden-layer} può essere espresso come il prodotto tra la matrice dei pesi del layer in questione e il vettore di attivazione del layer precedente più il vettore dei bias, tutto dentro la funzione di attivazione scelta per questo layer.
 
 \begin{figure}[h]
 \centering
@@ -296,7 +295,6 @@ In formule il vettore dei valori di attivazione del primo \emph{hidden-layer} pu
         \vdots \\
         b_{m}^{(0)}
       \end{pmatrix}\right] 
-
       \\
     \end{equation}
 In notazione compatta abbiamo: 
@@ -306,35 +304,26 @@ In notazione compatta abbiamo:
 
 In generale non tutti le reti sono \emph{fully-connected}, spesso si opta per una soluzione ibrida dove si utilizzano strati con architetture diverse per risolvere un problema. 
 Un esempio di un'altra archiettura di rete sono le reti ricorsive (RNN), queste hanno dei collegamenti in retroazione capaci di mantenere uno \emph{stato} e quindi avere \emph{memoria}. Mantenere una memoria è cruciale quando gli imput passati in precedenza nella rete in relazione con quelli attuali hanno un significato semantico importante, come per esempio nell'analisi di un video o per un riconoscimento vocale partendo da un file audio.
-Un'altro tipo di rete molto importante e centrale in questo lavoro di tesi sono le reti convoluzionali CNN. Esse si basano su filtri convoluzionali che collegano gli \emph{hidden-layer}.\\
-Questo tipo di reti sono state usate nell'ambito di questo progetto per identificare aumaticamente le aree di interesse dove sono presenti i difetti del grafene. Di queste reti e in particolare YOLOv8 ne parleremo nel dettaglio nel prossimo capitolo.
+Un'altro tipo di rete molto importante e centrale in questo lavoro di tesi sono le reti convoluzionali CNN. Esse si basano su filtri convoluzionali che collegano gli \emph{hidden-layer}.\\ Queste reti riescono a estrapolare pattern grafici a partire da un'immagine fornita come imput, per esempio utilizzando il valore numerico associato ad ogni pixel in un'immagine in scala di grigi.\\
+Questo tipo di reti sono state usate nell'ambito di questo progetto per identificare automaticamente le aree di interesse dove sono presenti i difetti del grafene. Di queste reti e in particolare di YOLOv8 ne parleremo nel dettaglio nel prossimo capitolo.
 
 \newpage
-\section{Funzione di costo e algoritmi di apprendimento}
+\section{Algoritmi di apprendimento}
+\subsection{Funzione di costo}
 Uno dei parametri più importanti nonchè alla base degli algoritmi di apprendimento è la cosidetta \emph{funzione di costo}.
-Ne esistono di vari tipi ma intuitivamente essa è una funzione reale che prende come variabili i parametri del sistema $C(\mathbf{W,b})$, quindi da un'indicazione su quanto bene la nostra rete stia performando sui campioni che gli vengono forniti.\\
-Questa valutazione è possibile confrontando i valori $y(x)$ che la rete produce per gli imput $x$ conoscendo il vettore $a(x)$ dei risultati attesi per gli imput in questione.
+Ne esistono di vari tipi ma intuitivamente essa è una funzione reale che prende come variabili i parametri del sistema $C(\omega,b)$ e fornisce un'indicazione su quanto bene la nostra rete stia performando sui campioni che gli vengono dati.\\
+Questa valutazione è possibile confrontando i valori $y(x)$ che la rete produce per gli imput $x$, conoscendo il vettore $a(x)$ dei risultati attesi per gli imput in questione.
 Una delle più utilizzate è lo \emph{scarto quadratico medio}, essa fa la media aritmetica del quadrato dell'errore di output rispetto a ogni imput.
 \begin{equation}
-    C(\mathbf{W,b}) = \frac{1}{n} \sum_{n=1}^{n} (y(x_{i}) - a_{i}))^2
+    C(\omega,b) = \frac{1}{n} \sum_{n=1}^{n} (y(x_{i}) - a_{i}))^2
 \end{equation}
-
 Al variare dei numerosi parametri $(W,b)$ la performance della rete varia e così anche la funzione di costo. In particolare più il valore si avvicina a zero e più la rete sta performando bene. \\
-Risulata quindi chiaro che minimizzare la funzione di costo $C(\mathbf{W,b})$ è il fulcro del problema dell'addestramento delle reti neurali.
+Risulata quindi chiaro che minimizzare la funzione di costo $C(\omega,b)$ è il fulcro del problema dell'addestramento delle reti neurali.
 \subsection{Discesa del gradiente}
 Siamo quindi di fronte a un problema di ottimizzazione di una funzione reale in tante variabili quanti sono i parametri della rete, dove si cerca quindi un minimo della funzione stessa.
-Intuitivamente l'inverso del gradiente ci da un'indicazione \emph{spaziale} su dove dobbiamo muoverci per avvicinarci il più velocemente possibile a più vicino minimo locale, quindi per quale vettore di valori dobbiamo sommare i nsotri parametri per migliorarli. \\
-% Com'è logico aspettarsi non è possibile visualizzare graficamente questa discesa a causa delle dimensioni del nostro spazio (pari al numero dei parametri).
-% Semplificando al massimo e considerando solo due parametri è possibile comunque osservare il procedimento di discesa del gradiente nella seguente immagine: 
-
-% \begin{figure}[h]
-% \centering
-% \includegraphics[width=\linewidth]{800px-Gradient_descent.svg.png}
-% \caption{Esempio di discesa del gradiente verso un minimo nel caso di soli due parametri.}
-% \end{figure}
-% \newpage
-
-Le iterazioni del metodo si presentano nella forma seguente, dove vado a calcolare l'inverso del gradiente per poi sommarlo ai vecchi parametri, in questo modo vado ad ottenere i nuovi parametri. \\
+Intuitivamente l'inverso del gradiente ci da un'indicazione \emph{spaziale} su dove dobbiamo \emph{muoverci} per avvicinarci il più velocemente possibile al più vicino minimo locale, quindi per quale vettore di valori dobbiamo sommare i nostri parametri $(\omega,b)$ per migliorarli. \\
+\newpage
+Le iterazioni del metodo si presentano nella forma seguente: prima si va a calcolare l'inverso del gradiente, lo si moltiplica per una certa costante $\eta$, quindi lo si somma ai parametri $(\omega,b)$. In questo modo si vanno ad ottenere i nuovi parametri $(\omega', b')$. \\
 L'equzione seguente mostra un'iterazione del processo di discesa del gradiente, dove vengono calcolati i nuovi parametri $(\omega', b')$:
 \begin{equation}
     (\omega', b') := (w,b)-\eta \nabla C(w,b)
@@ -342,10 +331,9 @@ L'equzione seguente mostra un'iterazione del processo di discesa del gradiente, 
 Importante notare come l'entità dello \emph{spostamento} per ogni step è arbitrariamente piccola rispetto al valore di $\eta$. Quest'ultimo prende il nome di \emph{learning-rate} ed è un \emph{iperparametro} in quanto è una variabile scelta a priori da colui che sta addestrando la rete. \\
 Un'altro accorgimento per evitare fluttuazioni imprevedibili dei parametri è quello di non applicare i cambiamenti ad ogni predizione ma fare la media su un batch di più predizioni. \\
 Il metodo illustrato sopra prende il nome di \emph{Gradient Descent GD}, questo è un metodo applicabile quando la funzione di costo è sufficientemente semplice e il suo gradiente è di facile computazione.\\
-Nel GD si calcola il gradiente per l'intero set di parametri ed essi vengono aggiornati ad ogni iterazione. \\
+Nel \emph{GD} si calcola il gradiente per l'intero set di parametri ed essi vengono aggiornati ad ogni iterazione oppure facendo la media su batch di un certo numero di predizioni. \\
 Quando invece ho dataset molto grandi oppure non ho un'espressione della funzione di costo abbastanza semplice si può optare per il metodo noto come \emph{Stochastic Gradient Descent SGD}.
-Questo metodo approssima il calcolo del gradiente considerando ogni volta un batch casuale di paramertri ad ogni iterazione.
-
+Questo metodo approssima il calcolo del gradiente considerando ogni volta un batch casuale di paramertri ad ogni iterazione, solo una parte dei parametri quindi vengono aggiornati durante un'iterazione.
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{Stogra.png}
@@ -353,14 +341,13 @@ Questo metodo approssima il calcolo del gradiente considerando ogni volta un bat
 \end{figure}
 \newpage
 Come si può vedere dall'andamento della funzione di costo durante le iterazioni del SGD, non è assicurato il miglioramento della rete ad ogni iterazione, in alcuni casi infatti la funzione di costo può momentaneamente salire, questo è dovuto alla natura stocastica, quindi probabilistica del metodo.\\
-In generale comunque per computare la derivata parizale di un parametro occorre un passaggio e il tutto deve essere ripetuto per ogni epoca. \\
+In generale comunque, per computare la derivata parziale di un parametro occorre un passaggio e il tutto deve essere ripetuto per ogni epoca. \\
 Avendo spesso miliardi di parametri e centinaia di epoche i metodi di GD possono risultare facilemente costosi computazionalemente. \\
 Per mitigare questo è stato creato un nuovo algoritmo utilizzabile insieme al SGD, esso prende il nome di \emph{Backpropagation}.
-Questo algoritmo ricorsivo sfruttando la regola della \emph{chain rule} (durante il calcolo delle derivate parziali del gradiente) permette di calcolare tutte le derivate e quindi l'intero gradiente in un singolo passaggio.\\
+Questo algoritmo ricorsivo sfruttando la regola della \emph{chain rule} (durante il calcolo del gradiente) permette di calcolare tutte le derivate e quindi l'intero gradiente in un singolo passaggio.\\
 
 Qui sotto mostro la differenza intuitiva fra la progressione di un algoritmo di GD a batch con uno di SGD.\\
 Notare bene come la visualizzazione è possibile solo se si considera il caso estremamente semplificato di soli due parametri. \\Nel caso generico con più di due parametri (anche miliardi) sarebbe impossibile proporre una visualizzazione di uno spazio con così tante dimensioni.
-
 \begin{figure}[h]
 \begin{minipage}[t]{0.49\linewidth}
 \centering

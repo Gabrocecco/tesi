@@ -330,7 +330,7 @@ L'equzione seguente mostra un'iterazione del processo di discesa del gradiente, 
 \end{equation}
 Importante notare come l'entità dello \emph{spostamento} per ogni step è arbitrariamente piccola rispetto al valore di $\eta$. Quest'ultimo prende il nome di \emph{learning-rate} ed è un \emph{iperparametro} in quanto è una variabile scelta a priori da colui che sta addestrando la rete. \\
 Un'altro accorgimento per evitare fluttuazioni imprevedibili dei parametri è quello di non applicare i cambiamenti ad ogni predizione ma fare la media su un batch di più predizioni. \\
-Il metodo illustrato sopra prende il nome di \emph{Gradient Descent GD}, questo è un metodo applicabile quando la funzione di costo è sufficientemente semplice e il suo gradiente è di facile computazione.\\
+Il metodo illustrato sopra prende il nome di \emph{Gradient Descent GD}\cite{K1}, questo è un metodo applicabile quando la funzione di costo è sufficientemente semplice e il suo gradiente è di facile computazione.\\
 Nel \emph{GD} si calcola il gradiente per l'intero set di parametri ed essi vengono aggiornati ad ogni iterazione oppure facendo la media su batch di un certo numero di predizioni. \\
 Quando invece ho dataset molto grandi oppure non ho un'espressione della funzione di costo abbastanza semplice si può optare per il metodo noto come \emph{Stochastic Gradient Descent SGD}.
 Questo metodo approssima il calcolo del gradiente considerando ogni volta un batch casuale di paramertri ad ogni iterazione, solo una parte dei parametri quindi vengono aggiornati durante un'iterazione.
@@ -343,7 +343,7 @@ Questo metodo approssima il calcolo del gradiente considerando ogni volta un bat
 Come si può vedere dall'andamento della funzione di costo durante le iterazioni del SGD, non è assicurato il miglioramento della rete ad ogni iterazione, in alcuni casi infatti la funzione di costo può momentaneamente salire, questo è dovuto alla natura stocastica, quindi probabilistica del metodo.\\
 In generale comunque, per computare la derivata parziale di un parametro occorre un passaggio e il tutto deve essere ripetuto per ogni epoca. \\
 Avendo spesso miliardi di parametri e centinaia di epoche i metodi di GD possono risultare facilemente costosi computazionalemente. \\
-Per mitigare questo è stato creato un nuovo algoritmo utilizzabile insieme al SGD, esso prende il nome di \emph{Backpropagation}.
+Per mitigare questo è stato creato un nuovo algoritmo utilizzabile insieme al SGD, esso prende il nome di \emph{Backpropagation}\cite{backprop}.
 Questo algoritmo ricorsivo sfruttando la regola della \emph{chain rule} (durante il calcolo del gradiente) permette di calcolare tutte le derivate e quindi l'intero gradiente in un singolo passaggio.\\
 
 Qui sotto mostro la differenza intuitiva fra la progressione di un algoritmo di GD a batch con uno di SGD.\\
@@ -364,12 +364,64 @@ Notare bene come la visualizzazione è possibile solo se si considera il caso es
 \end{minipage}
 \caption{Comparazione fra iterazioni di GD a batch e SGD }
 \end{figure}
-
 Notare la natura intrisecamente probabilistica degli step del SGD, essi non assicurano un miglioramento della loss ad ogni step ma il risulato finale può risultare comunque più efficente della controparte GD se analizzato nel complesso.
+\newpage
+
+\section{Esempi applicativi di Reti Neurali}
+Le reti neurali hanno numerose ricadute per la risoluzione di problemi applicativi di goni genere.
+Forse il più famoso caso applicativo in letteratura e sicuramente il più usato per introdurre le Reti Neurali Convoluzionali (\emph{CNN}) è il problema del riconoscimento aumatico di numeri (cifre) scritte a mano. 
+Le CNN verranno aprofondite nel prossimo capitolo. Verranno inquadrate nella classe di problemi di Object Detection, ma vale comuqnue la pena introdurre fin da subito la risoluzione di questo ben noto caso di studio. 
+\subsection{Classificazione di cifre scritte a mano}
+
+Il dataset di riferimento è il ben noto \emph{MNIST}.\\
+Le immagini contenute rappresentano semplici numeri a una cifra scritti a mano, ognuna di queste viene fornita con la relativa annotazone (\emph{label}) fatta da operatori umani.\\
+Questo database contiene 60.000 immagini 28x28 pixel in scala di grigi per la fase di training e ulteriori 10.000 per la fase di valutazione del modello. \\
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{minst.png}
+\caption{Database MINST}
+\end{figure}
+La valutazione di ogni modello di reti neurali non deve essere effettuata sugli stessi dati di addestramento ma su altri che il modello non ha mai visto prima . Ciò che si vuole valutare infatti è la capacità acquisita dal sistema nel riconoscimento di pattern generali estrapolabili da campioni generici. Se utilizzassimo gli stessi dati usati nell'adestramento per valutare la rete, rischieremmo di incorrere nella possibilità che la rete sia performate nell'analisi dei dati di training ma incapace di generalizzare su dati generici mai visti prima.   \\
+\newpage
+L'imput layer è composto da tanti nodi quanti sono i pixel dell'immagine, ognuno di questi prende il valore numerico in scala di grigi del pixel in questione.
+L'imput layer quindi, si deve pensare come la matrice di pixel dell'immagine iniziale. Nel caso avessimo un'immagine a colori, per esempio in formato RGB, al posto di un imput layer sotto forme di matrice, ne avremo 3, una per ogni colore, lavoreremo quindi con tensori.\\
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{pixel-values.png}
+\caption{Imput layer di una CNN per analisi immagine}
+\end{figure}
+Questo problema, come in tutti i casi in cui si cercano oggetti e/o pattern all'interno di immagini, si risolve impiegando strati convoluzionali. \\
+Questi strati di neuroni sono composti da \emph{filtri} che \emph{scorrendo} sui valori di attivazione dei layer prededenti computano operazioni di convoluzione estrapolando tratti \emph{grafici} dalle immagini.\\
+La natura di questi \emph{filtri} e delle operazioni di convoluzione effettate da essi verranno approfonditi e esplorati nel prossimo capitolo. 
+In generale ci aspettiamo che layer convoluzionali di strati più avanzati estrapolino tratti grafici più astratti e complessi sulla base dei tratti più di basso livello estratti dagli strati inferiori. Nel nostro caso è plausibile che i primi livelli riconoscano feature di basso livello come i bordi delle cifre, mentre quelli successivi riconoscano pattern più strutturati come per esempio i \emph{cerchi} dello zero e dell'otto. 
+\newpage
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{digit_arch.png}
+\caption{Modello di CNN per riconoscimento di cifre scritte a mano}
+\end{figure}
+Come mostrato in figura, spesso fra un layer convoluzionale e il successivo sono presenti dei layer di altra natura, come quelli di \emph{pooling}. Ne esistono di vari tipi ma anchessi si comportano come dei filtri che scorrono sulle immagini prodotte dadi filtri convoluzionali precedenti. Il loro scopo è quello di diminuire le dimensione delle immagini prodotte mantenedo parte dell'informazone grafica, magari enfatizzando delle strutture geometriche piuttosto che altre.
+
+Gli ultimi layer invece tornano ad essere \emph{fully-connected} e vengono chiamati \emph{DL, Dense Layers.}
+In particolare l'ultimo layer si occupa della classificazione della cifra data come input. Come spiegato in precedenza in questi casi si utilizzano funzioni di classificazione con un comportamento similare alla Softmax. La sommatoria dell'attivaizone dei 10 nodi dell'output layer deve essere infatti pari a 1, dato che ciascunio dei valori di attivazione rappresentano la probabilità che l'immagine di imput corrisponda alla cifra simboleggaita dal singolo nodo.
 
 
 
-% \subsection{Algoritmi di apprendimento}
+
+
+
+
+
+
+
+
+
+
+
+
+
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%per fare le conclusioni
 % \chapter*{Conclusioni}
@@ -404,20 +456,26 @@ Notare la natura intrisecamente probabilistica degli step del SGD, essi non assi
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 % \rhead[\fancyplain{}{\bfseries \thechapter \:Seconda Appendice}]
 % {\fancyplain{}{\bfseries\thepage}}
-% \begin{thebibliography}{90}             %crea l'ambiente bibliografia
-% \rhead[\fancyplain{}{\bfseries \leftmark}]{\fancyplain{}{\bfseries
-% \thepage}}
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Bibliografia
-%                                         %   nell'indice
-% \addcontentsline{toc}{chapter}{Bibliografia}
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%provare anche questo comando:
-% %%%%%%%%%%%\addcontentsline{toc}{chapter}{\numberline{}{Bibliografia}}
-% \bibitem{K1} Primo oggetto bibliografia.
-% \bibitem{K2} Secondo oggetto bibliografia.
-% \bibitem{K3} Terzo oggetto bibliografia.
-% \bibitem{K4} Quarto oggetto bibliografia.
-% \end{thebibliography}
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\begin{thebibliography}{90}             %crea l'ambiente bibliografia
+\rhead[\fancyplain{}{\bfseries \leftmark}]{\fancyplain{}{\bfseries
+\thepage}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Bibliografia
+                                        %   nell'indice
+\addcontentsline{toc}{chapter}{Bibliografia}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%provare anche questo comando:
+%%%%%%%%%%%\addcontentsline{toc}{chapter}{\numberline{}{Bibliografia}}
+%GD e SGD
+% textbook generale, molto completo sulle NN 
+\bibitem{NN_book} R. Rojas: Neural Networks, Springer-Verlag, Berlin, 1996
+\bibitem{GD} Bottou, Léon; Bousquet, Olivier (2007). "The Tradeoffs of Large Scale Learning".
+%articolo sulla Professor Chi-Kwong Li
+\bibitem{backprop} Annette Lopez Davila, Professor Chi-Kwong Li, \emph{Neural Networks: The Professor Chi-Kwong Li Algorithm} Math 400, College of William and Mary
+
+\bibitem{handwritten} Ritik Dixit, Rishika Kushwah, Samay Pashine, \emph{Handwritten Digit Recognition using Machine and Deep Learning Algorithms}, Computer Science and Engineering
+Acropolis Institute of Technology \& Research
+Indore, India
+\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % \chapter*{Ringraziamenti}
 % \thispagestyle{empty}

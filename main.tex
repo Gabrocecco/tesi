@@ -368,23 +368,23 @@ Notare la natura intrisecamente probabilistica degli step del SGD, essi non assi
 \newpage
 
 \section{Esempi applicativi di Reti Neurali}
-Le reti neurali hanno numerose ricadute per la risoluzione di problemi applicativi di goni genere.
-Forse il più famoso caso applicativo in letteratura e sicuramente il più usato per introdurre le Reti Neurali Convoluzionali (\emph{CNN}) è il problema del riconoscimento aumatico di numeri (cifre) scritte a mano. 
-Le CNN verranno aprofondite nel prossimo capitolo. Verranno inquadrate nella classe di problemi di Object Detection, ma vale comuqnue la pena introdurre fin da subito la risoluzione di questo ben noto caso di studio. 
+Le reti neurali hanno numerose ricadute per la risoluzione di problemi applicativi di ogni genere.
+Forse il più famoso caso applicativo in letteratura e sicuramente il più usato per introdurre le Reti Neurali Convoluzionali (\emph{CNN}) è il problema del riconoscimento automatico di numeri (cifre) scritte a mano. 
+Le CNN verranno approfondite nel prossimo capitolo, in particolare verranno inquadrate nella classe di problemi di Object Detection, ma vale comunque la pena introdurre fin da subito la risoluzione di questo ben noto caso di studio. 
 \subsection{Classificazione di cifre scritte a mano}
 
 Il dataset di riferimento è il ben noto \emph{MNIST}.\\
-Le immagini contenute rappresentano semplici numeri a una cifra scritti a mano, ognuna di queste viene fornita con la relativa annotazone (\emph{label}) fatta da operatori umani.\\
+Le immagini contenute rappresentano semplici numeri a una cifra scritti a mano, ognuno di questi viene fornito con la relativa annotazone (\emph{label}) scritta da operatori umani.\\
 Questo database contiene 60.000 immagini 28x28 pixel in scala di grigi per la fase di training e ulteriori 10.000 per la fase di valutazione del modello. \\
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{minst.png}
 \caption{Database MINST}
 \end{figure}
-La valutazione di ogni modello di reti neurali non deve essere effettuata sugli stessi dati di addestramento ma su altri che il modello non ha mai visto prima . Ciò che si vuole valutare infatti è la capacità acquisita dal sistema nel riconoscimento di pattern generali estrapolabili da campioni generici. Se utilizzassimo gli stessi dati usati nell'adestramento per valutare la rete, rischieremmo di incorrere nella possibilità che la rete sia performate nell'analisi dei dati di training ma incapace di generalizzare su dati generici mai visti prima.   \\
+La valutazione di ogni modello di reti neurali non deve essere effettuata sugli stessi dati di addestramento, ma su altri che il modello non ha mai visto prima. Ciò che si vuole valutare infatti è la capacità acquisita dal sistema nel riconoscimento di pattern generali estrapolabili da campioni generici. Se utilizzassimo gli stessi dati usati nell'adestramento per valutare la rete, rischieremmo di incorrere nella possibilità che la rete sia performate nell'analisi dei dati di training ma incapace di generalizzare su dati generici mai visti prima.   \\
 \newpage
 L'imput layer è composto da tanti nodi quanti sono i pixel dell'immagine, ognuno di questi prende il valore numerico in scala di grigi del pixel in questione.
-L'imput layer quindi, si deve pensare come la matrice di pixel dell'immagine iniziale. Nel caso avessimo un'immagine a colori, per esempio in formato RGB, al posto di un imput layer sotto forme di matrice, ne avremo 3, una per ogni colore, lavoreremo quindi con tensori.\\
+L'imput layer quindi, si deve pensare come la matrice di pixel dell'immagine iniziale. Nel caso avessimo un'immagine a colori, per esempio in formato RGB, al posto di un imput layer sotto forme di matrice, ne avremo 3, una per ogni colore (rosso, verde, blu), lavoreremo quindi con tensori.\\
 \newpage
 \begin{figure}[h]
 \centering
@@ -393,8 +393,8 @@ L'imput layer quindi, si deve pensare come la matrice di pixel dell'immagine ini
 \end{figure}
 Questo problema, come in tutti i casi in cui si cercano oggetti e/o pattern all'interno di immagini, si risolve impiegando strati convoluzionali. \\
 Questi strati di neuroni sono composti da \emph{filtri} che \emph{scorrendo} sui valori di attivazione dei layer prededenti computano operazioni di convoluzione estrapolando tratti \emph{grafici} dalle immagini.\\
-La natura di questi \emph{filtri} e delle operazioni di convoluzione effettate da essi verranno approfonditi e esplorati nel prossimo capitolo. 
-In generale ci aspettiamo che layer convoluzionali di strati più avanzati estrapolino tratti grafici più astratti e complessi sulla base dei tratti più di basso livello estratti dagli strati inferiori. Nel nostro caso è plausibile che i primi livelli riconoscano feature di basso livello come i bordi delle cifre, mentre quelli successivi riconoscano pattern più strutturati come per esempio i \emph{cerchi} dello zero e dell'otto. 
+La natura di questi \emph{filtri} e delle operazioni di convoluzione effettuate da essi verranno approfonditi e esplorati nel prossimo capitolo. 
+In generale ci aspettiamo che layer convoluzionali di strati più avanzati estrapolino tratti grafici più astratti e complessi sulla base dei tratti di più basso livello estratti dai livelli inferiori. Nel nostro caso è plausibile che i primi livelli riconoscano feature di basso livello come i bordi delle cifre, mentre quelli successivi riconoscano pattern più strutturati come per esempio i \emph{cerchi} dello zero e dell'otto. 
 \newpage
 
 \begin{figure}[h]
@@ -402,10 +402,22 @@ In generale ci aspettiamo che layer convoluzionali di strati più avanzati estra
 \includegraphics[width=\linewidth]{digit_arch.png}
 \caption{Modello di CNN per riconoscimento di cifre scritte a mano}
 \end{figure}
-Come mostrato in figura, spesso fra un layer convoluzionale e il successivo sono presenti dei layer di altra natura, come quelli di \emph{pooling}. Ne esistono di vari tipi ma anchessi si comportano come dei filtri che scorrono sulle immagini prodotte dadi filtri convoluzionali precedenti. Il loro scopo è quello di diminuire le dimensione delle immagini prodotte mantenedo parte dell'informazone grafica, magari enfatizzando delle strutture geometriche piuttosto che altre.
+Come mostrato in figura, spesso fra un layer convoluzionale e il successivo sono presenti dei layer di altra natura, come quelli di \emph{pooling}. Ne esistono di vari tipi ma anchessi si comportano come dei filtri che scorrono sulle immagini prodotte dai filtri convoluzionali precedenti. Il loro scopo è quello di diminuire le dimensione delle immagini prodotte mantenedo parte dell'informazone grafica, magari enfatizzando delle strutture geometriche piuttosto che altre.
 
 Gli ultimi layer invece tornano ad essere \emph{fully-connected} e vengono chiamati \emph{DL, Dense Layers.}
-In particolare l'ultimo layer si occupa della classificazione della cifra data come input. Come spiegato in precedenza in questi casi si utilizzano funzioni di classificazione con un comportamento similare alla Softmax. La sommatoria dell'attivaizone dei 10 nodi dell'output layer deve essere infatti pari a 1, dato che ciascunio dei valori di attivazione rappresentano la probabilità che l'immagine di imput corrisponda alla cifra simboleggaita dal singolo nodo.
+In particolare l'ultimo layer si occupa della classificazione della cifra data come input. Come spiegato in precedenza in questi casi si utilizzano funzioni di attivazione con un comportamento similare alla Softmax. La sommatoria dell'attivaizone dei 10 nodi dell'output layer deve essere infatti pari a 1, dato che ciascunio dei valori di attivazione rappresenta la probabilità che l'immagine di imput corrisponda alla cifra simboleggaita dal suddetto nodo.\\
+\newpage
+In conclusione possiamo dire che l'applicazione di una CNN a questo tipo di problema si rivela la scelta migliore, in generale risulta la scelta più performante in tutti i tipi di probelmi dove l'imput è composto da un'immagine.\\
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{cnn_perf.png}
+\caption{Modello di CNN per riconoscimento di cifre scritte a mano}
+\end{figure}
+In questo caso di studio già dopo una poche decine di epoche la precisione della classificazione si avvicina al 100\%.
+Proseguire oltre non è necessario e anzi può risultare controproducente in quanto si potrebbe andare incontro a problemi di overfitting.
+Con overfitting si intende ls situazione in cui il modello si adatta troppo ai dati di training perdendo generalità e capacità di astrarre su dataset mai visti prima. 
+
+\chapter{Object Detection, YOLO e applicazioni su campioni di nano grafene}
 
 
 

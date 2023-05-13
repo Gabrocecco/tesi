@@ -88,6 +88,7 @@
 \clearpage{\pagestyle{empty}\cleardoublepage}%non numera l'ultima pagina sinistra
 \end{titlepage}
 % \pagenumbering{roman}    %serve per mettere i numeri romani
+
 \tableofcontents
 \begin{abstract}
     Il tema su cui verte questa tesi sono le attività svolte durante il tirocinio curricolare presso \emph{CNR-ISMN (Istitituto per lo Studio dei Materiali Nanostrutturati)}. \\
@@ -140,6 +141,9 @@ INDICE}}
 % \listoftables                           %crea l'elenco delle tabelle
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 % \clearpage{\pagestyle{empty}\cleardoublepage}
+
+
+%------------------------------------------------------------------------------------------------------------- CAPITOLO 1 -------------------------------------------------------------------------------------------------
 \chapter{Introduzione al Machine Learning}                %crea il capitolo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
@@ -415,24 +419,132 @@ In conclusione possiamo dire che l'applicazione di una CNN a questo tipo di prob
 \end{figure}
 In questo caso di studio già dopo una poche decine di epoche la precisione della classificazione si avvicina al 100\%.
 Proseguire oltre non è necessario e anzi può risultare controproducente in quanto si potrebbe andare incontro a problemi di overfitting.
-Con overfitting si intende ls situazione in cui il modello si adatta troppo ai dati di training perdendo generalità e capacità di astrarre su dataset mai visti prima. 
+Con overfitting si intende ls situazione in cui il modello si adatta troppo ai dati di training perdendo generalità e capacità di astrarre su dataset mai visti prima. \\
 
-\chapter{Object Detection, YOLO e applicazioni su campioni di nano grafene}
+%------------------------------------------------------------------------------------------------------------- CAPITOLO 2 -------------------------------------------------------------------------------------------------
+{\let\clearpage\relax \chapter{Object Detection, YOLO e applicazioni su campioni di nano grafene}}
 
+In questo capitolo andremo a introdurre la classe di problemi di visione artificiale denominata come Object Detection. Ovvero le soluzioni e i metodi che puntano a individuare, classificare o comunque riconoscere oggetti e/o pattern all'interno di un'immagine o un video. \\
+Questa clase di problemi, come accennato nel capitolo precedete si è rivelata molto adatta all'impiego delle CNN (Convolutional Neural Networks), che grazie alla loro capacità di riconiscemnto ed estrapolazione di fetaures grafiche dalle immagini riescono a ottenere ottime performance su questa classe di problemi.\\
+Dopo un'introduzione all'architttura delle CNN, ci focalizzeremo sullo studio di \emph{YOLO (You Only Look Once)}, una CNN allo stato dell'arte per quanto riguarda l'Object Detection, particolarmente nota per il basso tempo di inferenza e per questo particolarmente utile nelle applicazioni in tempo reale.\\
+Analizzeremo inoltre l'applicazione di questo modello al caso di studio del progetto su cui si basa questa tesi, ovvero sul riconoscimento automatico di difetti su campioni di nano grafene, riportando metodologia e risultati.
+\section{Reti neurali convoluzionali}
+La struttura delle CNN è composta da vari tipi di layer di natura diversa, come i layer convoluzionali, i pooling layer e i fully-connected layers. 
+Ogni tipologia di layer svolge ruoli e opera in modo diverso rispetto agli altri al fine di raggiungere l'obbiettivo preposto.
+\\L'architettura generale può essere espressa come come nella figura sottostante.\\
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{CNN_main.jpeg}
+\caption{Archiettura di una CNN a singolo canale}
+\end{figure}
+In questa trattazione delle CNN ci limiteramo ad analizzare il caso in cui l'immagine di input sia in scala di grigi e quindi il layer di input sarà composto da matrice di interi con valori compresi tra 0 e 255.
+Nonostante questa semplificazione è importante sapere che il tutto può essere esteso ad immagini a più canali introducendo ulteriori matrici, una per ogni canale aggiuntivo. Generalmente quindi si avranno tensori con 3 dimensioni di profondità. 
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{greyscaletorgb.png}
+\caption{Passaggio da matrice di imput in scala di grigi a tensore per immagine RGB}
+\end{figure}
 
+In questa sezione andremo ad analizzare un tipo di layer alla volta, iniziando dai layer convoluzionali.
+\subsection{Layer convoluzionali}
+I componenti fondamentali dei layer convolzuonali non sono più vettori di neuroni ma fetaure map (matrici o tensori) computate da dei \emph{filtri} tramite operazioni di convoluzione discreta.
+Questi filtri si presentano come delle matrici di dimensione minore della matrice di input, il loro comportamento è quello di \emph{scorrere} su tutta l'immagine di partenza andando a creare un'altra matrice, di dimensione minore chiamata \emph{feature map.}
+L'operazione di convololuzione si può esprimere com la sommatoria del prodotto puntuale di ogni valore del filtro con i rispettivi valori nella matrice di partenza, secondo la posizione del filtro.
+\newpage
+In formule posiamo indicare l'attivazione di ogni nodo (pixel) della feature map come: 
+\begin{equation}
+    o_{i,j} = \sigma(b + \sum _{l=0}^{n}\sum _{m=0}^{n}\omega_{l,m}a_{i+l, j+m})
+\end{equation}
+dove $o_{i,j}$ è l'attivazione dell'elemento della matrice di output, $\sigma$ è una qualsiasi funzione di attivazione, $b$ l'eventuale bias, $\omega_{l,m}$ il valore dell'elemento del filtro nella posizione $l,m$ e $a_{i+l, j+m}$ il valore del pixel dell'immagine di input che verrà moltiplicato per $\omega_{l,m}$ durante lo step.
 
+\begin{figure}[h]
+\begin{minipage}[t]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{filtera.png}
 
+(a) Prima convoluzione  
+\end{minipage}%
+\hfill\vrule\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{filterb.png}
 
+(b) Seconda convoluzione
+\end{minipage}
+\caption{Prime due iterazioni di convoluzione per la creazione di una feature map, con un filtro 3x3, no padding e stride 1}
+\end{figure}
+La feature map prodotta risulta più piccola dell'immagine di partenza, questo può essere un problema se si applicano numerose convoluzioni in sequenza andano quindi a ridurre sempre di più la dimensione delle immagini prodotte. Per evitare questo si può applicare la tecnica chiamata \emph{padding}, ovvero l'aggiunta a  posteriori di uno strato esterno alla matrice dell'immagine con valori nulli (\emph{zero padding}. Allo scorrere del filtro quindi si otterrà un'immagine della stessa dimensione di partenza.\\
+Lo \emph{stride} invece è la dimensione dello \emph{step} del filtro durante lo scorrimento, solitamente è pari a 1, se lo si aumentasse si otterebbero anche in questo caso feature map più piccole dell'originale.
 
+Questi filtri nei primi layer sono in grado di estrarre tratti di basso livello come i bordi e contorni degli oggetti. In generale sono molto adatti per enfatizzazione contorni di oggetti sull'immagine di partenza in modo da rendere più facile le operazioni dei layer successivi.
+Nell'immagine successiva si mostrano varie feature map derivate da diversi filtri diversi. E' chiaro come l'operazione di convoluzione applicata da specifici filtri sia in grado di mettere in risalto contorni diversi rispetto ad altri.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{fetaureMaps.png}
+\caption{Fetaure map generate da diversi filtri a sulla stessa immagine}
+\end{figure}
+Il risulatato dell'operazione lineare di convoluzione viene quindi passato per una funzione di attivazione non lineare come la ReLU, discussa nel capitolo precedente.\\
 
+I parametri fondamentali di apprendimento delle CNN sono propio i pesi (quindi gli elementi di matrice) dei filtri convoluzionali, la rete quindi apprenderà i valori ottimali per ciascun filtro allo scopo di estrapolare i pattern richeisti dal problema.
+\\
+Invece, la dimensione e il numero dei filtri, il padding e lo stride sono \emph{iperparametri}, ovvero sono valori decisi a priori da colui che sta addestrando la rete, prima del processo di training stesso. 
+\newpage
+\subsection{Layer di pooling}
+Dopo una serie di convoluzioni, tipicamente, si va ad applicare un layer di \emph{pooling}, ovvero un'altra operazione lineare simile alla convoluzione dalla quale si ottengono immagini più piccole ma che comunque mantengono un certo contenuto informativo posizionale della feature map iniziale.
+Esistono varie tipologie di pooling con comportamenti diversi tra loro, nell'immagine sottostante si mostra il funzioanamento della tipologia di gran lunga più utilizzata, il \emph{Max-pooling}.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{maxpooling.png}
+\caption{Maxpooling 2x2, stride 2}
+\end{figure}
+Il funzionamento del max-pooling è similare a quello di un filtro convoluzionale che scorre su una feature map, ma al posto di fare la convoluzione dei valori, prende il valore più grande fra quelli coperti dalle dimensioni del filtro e lo riporta nella nuova immagine.\\
 
+Il \emph{pooling}, più in generale, è quindi un processo di scalamento della feature map di partenza introducendo una invarianza a piccole distorsioni e variazioni dell'immagine stessa mantenendo però gran parte delle informazioni spaziali della dell'immagine iniziale.\\
+Grazie a questo processo è possibile ridurre notevolemente i parametri di apprendimento della rete. Notare inoltre che i parametri di pooling come dimensione dei filtri, stride e padding sono tutti iperparametri che non vengono appresi dalla rete in fase di training.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{maxPoolingResult.png}
+\caption{Risultato di un'operazione di max-pooling 2x2 con stride 2}
+\end{figure}
+\\Notare come se si va ad applicare un layer di max-pooling 2x2 con stride 2, la feature map di partenza viene dimezzata come dimensioni ma il contenuto semantico dell'immagine rimane intatto.
 
+\subsection{Fully-connected layer }
+Gli ultimi layer della rete sono fully-connected, del tutto simili a quelli introdotti nel capitolo 1. \\
+Le feature map prodotte dall'ultimo layer convoluzionale/pooling vengono \emph{appiattite}, ovvero inserite in un semplice array unidimensionale (un vettore) e connessi a uno o più layer fully-connected. In questo layer per ogni connessione fra un neurone e l'altro c'è un peso, che la rete andrà ad apprendere durante l'addestramento, inoltre l'attivazione del singolo neurone viene passata tipicamente attraverso la ReLU. Le feature grafiche estratte dai layer precedenti sono finalmente mappate tramite i layer fully-connected al layer di output che rappresenta le probabilità di classificazione dell'immagine.
+\\Il layer di output viene anchesso passato per una funzione di attivazione, tipicamente diversa da quelle utilizzate dei dense-layer precedenti. Nel caso della classificazione multipla si usa la Softmax, nel caso della classificazione binaria la sigmoide.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{CNN_fully_connected.png}
+\caption{CNN con fully connected layer nella parte finale per classificazione multiclasse di oggetti }
+\end{figure}
 
+Nei problemi di classifcazione multiclasse il layer di output può essere trattato come una distribuzione di probabilità. Ovvero la rete non si limita a fornire un giudizio sulla classe presente nell'immagine, ma fornisce una probabilità per ogni classe presente nel problema.
+Per valutare la performace della rete è utile quindi confrontare la distribuzione di probabilità prodotta dalla rete con quella attesa.
+\newpage
+Viene usata quindi una funzione di costo diversa da quella trattata nel primo capitolo, chimata funzione di cross-entropia.
+\begin{equation}
+    C\left(p\|q\right)=-\sum _{i}^{M}p_{i}\log _{2}q_{i}
+\end{equation}
+All'interno del contesto di una predizione per un'immagine in input, $M$ rappresenta il numero di classi globali, $p_{i}$ rappresenta il valore della classe $i$ nella distribuzione dei valori attesi, e $q_{i}$ rappresenta il valore della classe $i$ nella distribuzione prodotta dalla rete (predizione).\\
+La formuala nel caso pratico dei problemi di clasificazione si semplifica in quanto i valori di $p_{i}$ sono sempre nulli per tutte le classi meno che per la classe effettivamente indicata nella fase di labeling per quell'immagine dove invece è pari a 1. \\ Quindi possiamo riscrivere la formula come: 
+\begin{equation}
+    C\left(p\|q\right)=-\sum _{i}^{M}\log _{2}q_{i}
+\end{equation}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{cross_entropy.png}
+\caption{Comportamento della funzione di costo in base alle predizioni del modello}
+\end{figure}
+La cross-entropy si è rivelata molto adatta nei problemi di classificazione multiclasse per la sua rapida pendenza nei casi in cui la rete assegna una scarsa probabilità alla classe presente nel'immagine. In questi scenari infatti le magnitudine delle sue derivate inducono a rapide variazioni dei parametri di apprendimento. In questo modo gli algoritmi di ottimizzazione riescono a migliorare le performace della rete con rapidità.
+\newpage
+Concludo la sezione osservando che nelle CNN è fondamentale scegliere a priori un buon set di iperparametri e di architettura dei layer adatto per risolvere il problema in questione, compresa la funzione di costo e l'ottimizzatore. \\
 
-
-
+Nella prossima sezione andremo ad analizzare il problema dell'Object Detection e l'architettura di una nota rete di Object Detection, YOLO.
+\newpage
+\section{Object Detection e YOLO}
 
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%per fare le conclusioni
@@ -478,14 +590,20 @@ Con overfitting si intende ls situazione in cui il modello si adatta troppo ai d
 %%%%%%%%%%%\addcontentsline{toc}{chapter}{\numberline{}{Bibliografia}}
 %GD e SGD
 % textbook generale, molto completo sulle NN 
-\bibitem{NN_book} R. Rojas: Neural Networks, Springer-Verlag, Berlin, 1996
-\bibitem{GD} Bottou, Léon; Bousquet, Olivier (2007). "The Tradeoffs of Large Scale Learning".
-%articolo sulla Professor Chi-Kwong Li
+\bibitem{NN_book} R. Rojas, \emph{Neural Networks}, Springer-Verlag, Berlin, 1996
+\bibitem{GD} Bottou, Léon; Bousquet, Olivier (2007). \emph{The Tradeoffs of Large Scale Learning}
+%articolo sulla backpropagation
 \bibitem{backprop} Annette Lopez Davila, Professor Chi-Kwong Li, \emph{Neural Networks: The Professor Chi-Kwong Li Algorithm} Math 400, College of William and Mary
-
+%articolo sull'esempio del capitolo 1
 \bibitem{handwritten} Ritik Dixit, Rishika Kushwah, Samay Pashine, \emph{Handwritten Digit Recognition using Machine and Deep Learning Algorithms}, Computer Science and Engineering
 Acropolis Institute of Technology \& Research
 Indore, India
+
+%-----------------------secondo capitolo ------------------------
+
+\bibitem{cnn_overview}Rikiya Yamashita, Mizuho Nishio, Richard Kinh Gian Do Kaori Togashi \emph{Convolutional neural networks: an overview
+and application in radiology}, Insights into Imaging volume 9, pages 611–629 (2018)
+
 \end{thebibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 % \clearpage{\pagestyle{empty}\cleardoublepage}

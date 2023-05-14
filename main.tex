@@ -10,6 +10,18 @@
 \usepackage{tikz}
 \usepackage{amsmath, xparse}
 \usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows}
+\usepackage{zref-savepos,graphicx}
+\usepackage{lipsum}
+
+% \filltopageendgraphics[<options>]{<file>}
+\newcommand{\filltopageendgraphics}[2][]{%
+  \par
+  \zsaveposy{top-\thepage}% Mark (baseline of) top of image
+  \vfill
+  \zsaveposy{bottom-\thepage}% Mark (baseline of) bottom of image
+  \smash{\includegraphics[height=\dimexpr\zposy{top-\thepage}sp-\zposy{bottom-\thepage}sp\relax,#1]{#2}}%
+  \par
+}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per scrivere in italiano
 % \usepackage[italian]{babel}
@@ -544,7 +556,62 @@ Concludo la sezione osservando che nelle CNN è fondamentale scegliere a priori 
 
 Nella prossima sezione andremo ad analizzare il problema dell'Object Detection e l'architettura di una nota rete di Object Detection, YOLO.
 \newpage
-\section{Object Detection e YOLO}
+\section{Object Detection}
+I problemi di Object Detection consistono nel volere individuare da un'immagine data come input uno o più oggetti, disegnando rettangoli che li ricoprono completamente, chiamati \emph{bounding boxes}. Inoltre, nel caso di un problema multiclasse, il modello dovrà classificare correttamente l'oggetto trovato tra le varie classi possibili. Dunque, viene fornito anche un valore numerico compreso tra 0 e 1 che rappresenta la confidenza del modello per la suddetta predizione.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{object_detection.png}
+\caption{Predizione di un modello di Object Detection multiclasse}
+\end{figure}
+
+Da un'immagine fornita come input a un modello di Object Detection, verrà prodotto un file di testo, dove in ogni riga, sarà riportata una predizione di un'oggetto presente nell'immagine.
+Per ciascuno degli oggetti individuati verrà riportato il numero identificativo della classe dell'oggetto (nel caso esista una sola classe il numero sarà sempre 0), la posizione dell'oggetto in formato xywh (posizione spaziale del centro e larghezza e altezza della box) oppure xyxy (coordinate rispettivamente dell'angolo superiore sinistro e inferiore destro della bounding box) e infine il valore di confidenza del modello per l'oggetto in questione. Questo ultimo parametro è particolarmente importante perchè permette a colui che utilizza o addestra la rete di ingorare predizioni al di sotto di un certo coeefficente di confidenza.\\ E' evidente come la scelta del coefficente di confidenza minimo sia molto delicata in quanto un valore alto riduce il numero di falsi positivi ma aumenta i falsi negativi e viceversa.\\
+Formalizzando i concetti appena citati, nella prossima sezione definiremo i parametri fondamentali per la valutazione di un modello di Object Detection.
+\subsection{Parametri di valutazione di un modello di Object Detection}
+Le due metriche fondamentali per analizzare la perfomance di un modello sono la \emph{Precision} e la \emph{Recall}.
+Rispettivamente, la \emph{Precision} fornisce un'indicazione sulla effettiva veredicità sulle predizioni fatte dal modello, la \emph{Recall} invece, ci da un'indicazione sul rapporto tra gli oggetti effetivamente individuati dalla rete e tutti quelli presenti nelle immagini.\\
+Queste due importanti metriche, mostrano la loro correlazione nella curva \emph{Precision Recall curve}.
+Formalizzando in formule abbiamo: 
+\begin{align*}
+Precision& = \frac{TP}{TP + FP}          &  Recall = \frac{TP}{TP + FN} \\
+TP& = True \; positive    &  FN = True \; negative\\
+FP& = False \; positive    &  FN = False \; negative
+\end{align*}
+Da questa curva, integrando è possibile ricavare un parametro molto informativo sulla qualità del modello, l'\emph{Average Precision, AP}.
+\begin{equation}
+    AP = \int_{0}^{1} p(r)dr
+\end{equation}
+Ovvero l'integrale sotto la curva Precision-Recall $p(r)$. Questo è il parametro principale per valutare la qualità di un modello nel riconoscimento di una specifica classe, poichè valuta conteporanemante sia la Precision che la Recall. \\
+Se il modello ammette più classi, si calcola l'AP per ogni classe separatemnte e si fa la media del risultato, ottenendo la $mAP$.
+\begin{equation}
+    mAP = \frac{1}{n}\sum_{i=1}^{n}AP_{i}
+\end{equation}
+Dove $n$ è il numero di classi e $AP_{i}$ è l'integrale dalla curva Precision-Recall dell'$i$-esima classe.
+Per avere un modello coerente bisuogna definire una metodologia per discriminare i True Positive dai False Positive in base alla posizione della bounding box disegnata dal modello rispetto a quella di label. \\
+\begin{figure}[h]
+\centering
+\includegraphics[width=300px,keepaspectratio]{precisionRecall2.png}
+\caption{Curve Precision-Recall di vari modelli}
+\end{figure}
+\newpage
+Per fare ciò si introduce il concetto di Interesection over Union (IoU). Ovvero, per ogni predizione del modello si calcola il rapporto tra l'intersezione delle due bounding boxes e la loro unione. \\
+Quindi si scelgie un valore soglia arbitrario, a seconda delle esigenze del problema, al di sotto del quale la predizione del modello viene giudicata come non abbastanza precisa e quindi sbagliata. 
+\\ Solo le predizioni del modello che soddifano il valore di soglia minimo della IoU vengono categorizzate come corrette e quindi concorrono positivamente al numero dei True Positive e quindi alla curva Precision.
+\begin{figure}[h]
+\centering
+% \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{IoU.png}
+\includegraphics[width=\linewidth]{IoU.png}
+\caption{Interesection over Union}
+\end{figure}
+Nella prossima sezione verrà analizzato il funzionamento e l'archiettura di YOLO, un noto modello allo stato dell'arte nella Object Detection, utilizzato nella sua ultima iterazione nel progetto su cui si basa questa tesi.
+\newpage
+\section{YOLO: You Look Only Once}
+Il modello YOLO (You Look Only Once) è di fatto una delle soluzioni più popolari e utilizzate nelle applicazioni di Object Detection. In tutte le sue ierazioni ha avuto numerosissimi usi nei domini applicativi più diversi, come per esempio la guida autonoma grazie alla sua velocità di inferenza fondamentale nelle applicazioni real time. E' stato inotlre utilizzato nell'argricoltura, videosorveglianza, medicina, monitoraggio del traffico e molto altro.\\
+In generale è stato sempre riconosciuto dalla comunità come uno strumento particolarmente equilibrato tra velocità di inferenza e precisione.\\
+Con l'avanzare delle iterazioni sono state fatte modifiche di design della rete, modifiche alla funzione di costo, modifiche alle anchor box e molto altro. 
+\\Nel caso applicativo del progetto svolto in questa tesi si è usato l'ultima iterazione YOLOv8, la più performante ma essendo essa ancora priva di paper, in questo elaborato ci si è dedicati all'analisi di YOLOv7.
+
+
 
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%per fare le conclusioni
@@ -588,7 +655,7 @@ Nella prossima sezione andremo ad analizzare il problema dell'Object Detection e
 \addcontentsline{toc}{chapter}{Bibliografia}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%provare anche questo comando:
 %%%%%%%%%%%\addcontentsline{toc}{chapter}{\numberline{}{Bibliografia}}
-%GD e SGD
+%-----------------------primo capitolo ------------------------
 % textbook generale, molto completo sulle NN 
 \bibitem{NN_book} R. Rojas, \emph{Neural Networks}, Springer-Verlag, Berlin, 1996
 \bibitem{GD} Bottou, Léon; Bousquet, Olivier (2007). \emph{The Tradeoffs of Large Scale Learning}
@@ -600,10 +667,15 @@ Acropolis Institute of Technology \& Research
 Indore, India
 
 %-----------------------secondo capitolo ------------------------
-
+%CNN
 \bibitem{cnn_overview}Rikiya Yamashita, Mizuho Nishio, Richard Kinh Gian Do Kaori Togashi \emph{Convolutional neural networks: an overview
 and application in radiology}, Insights into Imaging volume 9, pages 611–629 (2018)
+\bibitem{AP} Jesús María Romero Riveros, Prof. Piero Fraternali \emph{A metric evaluation framework for object detection}
+%articolo completo con storia, funzionamento e architettura di YOLO.
+\bibitem{YOLO-story} Juan R. Terven, Diana M. Cordova-Esparaza, \emph{A comprehensive review of YOLO: From YOLOv1 to YOLOv8 and beyond}
 
+\bibitem{YOLOv7_paper}Chien-Yao Wang, Alexey Bochkovskiy, Hong-Yuan Mark Liao \emph{YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object
+detectors}, Institute of Information Science, Academia Sinica, Taiwan
 \end{thebibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 % \clearpage{\pagestyle{empty}\cleardoublepage}

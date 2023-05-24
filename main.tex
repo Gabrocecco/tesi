@@ -1,5 +1,4 @@
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%12pt: grandezza carattere
                                         %a4paper: formato a4
                                         %openright: apre i capitoli a destra
@@ -79,7 +78,41 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%definisce nuovi comandi
 %
 \begin{document}
-\begin{titlepage}                       %crea un ambiente libero da vincoli
+\begin{titlepage}  
+\begin{center}
+{{\Large{\textsc{Alma Mater Studiorum $\cdot$ Universit\`a di
+Bologna}}}} \rule[0.1cm]{15.8cm}{0.1mm}
+\rule[0.5cm]{15.8cm}{0.6mm}
+{\small{\bf SCUOLA DI INGEGNERIA\\
+Corso di Laurea in Ingegneria Informatica }}
+\end{center}
+\vspace{15mm}
+\begin{center}
+{\LARGE{\bf Modelli Predittivi basati   }}\\
+\vspace{3mm}
+{\LARGE{\bf  su Computer Vision per Proprietà  }}\\
+\vspace{3mm}
+{\LARGE{\bf Fisiche di Nanografene }}\\
+\end{center}
+\vspace{30mm}
+\par
+\noindent
+\begin{minipage}[t]{0.47\textwidth}
+{\large{\bf Relatore:\\
+Chiar.mo Prof.\\
+Paolo Bellavista}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.47\textwidth}\raggedleft
+{\large{\bf Presentata da:\\
+Gabriele Ceccolini}}
+\end{minipage}
+\vspace{20mm}
+\begin{center}
+{\large{\bf Sessione\\%inserire il numero della sessione in cui ci si laurea
+Anno Accademico 2022/2023 }}%inserire l'anno accademico a cui si è iscritti
+\end{center}
+%crea un ambiente libero da vincoli
                                         %   di margini e grandezza caratteri:
                                         %   si pu\`o modificare quello che si
                                         %   vuole, tanto fuori da questo
@@ -265,6 +298,7 @@ Quest'ultima si è dimostrata come la più efficace nelle reti di apprendimento 
 \end{minipage}
 \caption{Comparazione fra funzione gradino unitario e sigmoide }
 \end{figure}
+
 
 Esistono poi funzioni di attivazione più sofisticate, come la Softmax.
 Quest'ultima è spesso utile nelle reti classificatrici multiclasse. In questi casi i nodi del layer di output rappesentano le probabilità di classificazione per ciascuna classe. In questi casi è cruciale che la sommatoria dei valori di attivazione dei nodi di output sia uguale a 1.
@@ -610,8 +644,36 @@ Il modello YOLO (You Look Only Once) è di fatto una delle soluzioni più popola
 In generale è stato sempre riconosciuto dalla comunità come uno strumento particolarmente equilibrato tra velocità di inferenza e precisione.\\
 Con l'avanzare delle iterazioni sono state fatte modifiche di design della rete, modifiche alla funzione di costo, modifiche alle anchor box e molto altro. 
 \\Nel caso applicativo del progetto svolto in questa tesi si è usato l'ultima iterazione YOLOv8, la più performante ma essendo essa ancora priva di paper, in questo elaborato ci si è dedicati all'analisi di YOLOv7.
+\subsection{Funzionamento}
+Come indicato dal nome, la rete propone un approccio a singolo stadio per il riconosicmento delle immagini. Molti dei modelli tradizionali di Object detection precedenti a YOLO utilizzano l'approccio a \emph{sliding window}, ovvero scannerizzano l'immagine facendo scorrere una finestra e a ogni nuova posizione utilizzavano un classificatore per controllare se all'interno della finestra fosse presente effettivamente un'oggetto. 
+Questa tecnica, per quanto intuitiva è profondamente inefficente in qaunto per una sola immagina si utilizza un classificatore molte volte.
+In generale comunque esistono una moltitudine di tecniche anche più avanzate che utilizzano comuque più stadi, dove per esempio il primo identifica le zone di interesse dell'immagine e successivamente un secondo stadio calssifica il contenuto all'interno. 
+YOLO al contrario invece produce l'output con una sola regressione producendo in un solo passaggio sia le cordinate dell'oggetto che la propabilità della classe dell'oggetto trovato tutto nello stesso output.
+Diferrente dall'approccio sliding window è per quello di \emph{Fast R-CNN}[R-CNN] che produce due output separati generati rispettivamente da un classificatore per la probabilità della classe e un regressore per la posizione della bounding box. In particolare R-CNN generara una serie di potenziali bounding boxes nell'immagine (region proposals), quindi inferisce un classificatore su ognuna di esse e infine utilizza una serie di tecniche a posteriori per eliminare bounding boxes doppie e ricalcolare le metriche delle singole predizioni in base alla posizione delle altre. Ognuno di questi metodi deve essere addestrato separatamente e una singola inferenza attarversa varie interezioni. 
+\begin{figure}[h]
+\centering
 
+\includegraphics[width=\linewidth]{RCNN.png}
+\caption{Funzionamento di R-CNN}
+\end{figure}
+Un'altro vantaggio di YOLO rispetto a R-CNN è quello di risucire a vedere tutta l'immagine durante il singolo step di inferenza, quindi considerando tutto il contesto e non solo i contesti delle singole region proposals. Questo porta a un notevole calo dei detect nelle zone di sfondo.
 
+YOLO invece collassa tutto questo in un singolo problema di regressione. 
+Per fare questo YOLO divide l'immagine di input in una griglia $S\times S$ e per ogni cella della griglia produce un numero $B$ di bounding boxes e i rispettivi punteggi di confidenza rispetto alle $C$ classi presenti nel problema per ognuna delle predizioni effettuate.
+Nella fase finale effettiva solo le bounding boxes con confidenza al di sopra della soglia minima vengono effettivamente mostrate.
+
+Per ogni boudning boxes YOLO produce 5 valori: $Pc,bx,by,bh,bw$, dove $Pc$ è detto \emph{confidence score} ovvero la confidenza del modello sulla possibiità che all'interno della regione sia effettivamente presente un oggetto, $bx$ e $by$ sono le coordinate del centro dell'oggetto relative alla cella della griglia. Infine $bh$ e $bw$ sono l'altezza e la larghezza della bounding box relativa all'intera immagine.
+Per eliminare bounding box duplicate sovrapposte tra loro si utilizza la tecnica \emph{non-max supression} che rimuove le bounding box con il confidence score più basso quando la IoU delle due predizioni con la stessa classificazione è superiore a una solgia (solitamente 0.3). 
+
+L'output di YOLO è quindi un tensore di grandezza $S \times S \times (B \times 5 + C)$
+\begin{figure}[h]
+\centering
+
+\includegraphics[width=\linewidth]{yoloOUTPUT.png}
+\caption{Output di YOLO in un'immagine divisa con una griglia 3x3}
+\end{figure}
+
+\subsection{Architettura}
 
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%per fare le conclusioni
@@ -671,7 +733,9 @@ Indore, India
 \bibitem{cnn_overview}Rikiya Yamashita, Mizuho Nishio, Richard Kinh Gian Do Kaori Togashi \emph{Convolutional neural networks: an overview
 and application in radiology}, Insights into Imaging volume 9, pages 611–629 (2018)
 \bibitem{AP} Jesús María Romero Riveros, Prof. Piero Fraternali \emph{A metric evaluation framework for object detection}
-%articolo completo con storia, funzionamento e architettura di YOLO.
+\bibitem{yolo1}  Santosh Divvala, Ross Girshick, Ali Farhadi \emph{You Only Look Once: Unified, Real-Time Object Detection} University of Washington, Allen Institute for AI, Facebook AI Research
+
+%articolo completo con storia, funzionamento e architettura di YOLO. Joseph Redmon∗
 \bibitem{YOLO-story} Juan R. Terven, Diana M. Cordova-Esparaza, \emph{A comprehensive review of YOLO: From YOLOv1 to YOLOv8 and beyond}
 
 \bibitem{YOLOv7_paper}Chien-Yao Wang, Alexey Bochkovskiy, Hong-Yuan Mark Liao \emph{YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object

@@ -674,6 +674,45 @@ L'output di YOLO è quindi un tensore di grandezza $S \times S \times (B \times 
 \end{figure}
 
 \subsection{Architettura}
+L'archiettettura del modello orginale YOLO è composta da 24 layer convoluzionali seguiti da due layer fully-connected che producono l'output delle coordinate delle bounding boxes e la classificazione degli oggetti. 
+Tutti i layer utilizzano la funzione di attivazione chiamata \emph{leaky rectified linear unit}, la quale lascia invariati i valori positivi e divide per 10 quelli negativi. Mentre l'ultimo layer fully connected utilizza una funzione di attivazione lineare.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{yolo1_arch.png}
+\caption{Architettura YOLOv1}
+\end{figure}
+Con il tempo e il passare delle iterazioni YOLO ha ottenuto enormi sviluppi e modifiche architetturali. Qui ci limitiamo a citare le modifiche più importanti apportate con il passare delle versioni. 
+
+A partire da YOLOv2 sono state introdotte le cosiddette \emph{anchor boxes}, ovvero delle bounding boxes di dimensioni predefinite preparate a priori per ogni cella della grglia. Queste boxes sono pensate per avere forme prototipate compatibili con le classi che si stanno cercando. L'output del modello, ovvero il numero di predizioni totali sarà pari al numero di anchor boxes per cella moltiplicato per il numero di celle.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{anchor.png}
+\caption{Anchor boxes introdotte in YOLOv2}
+\end{figure}
+A partire da YOLOv3 inizia a delinearsi una struttura che marcherà la composizione di tutte le versioni successive, ovvero la scomposizione logica del modello in tre moduli separati con compiti diversi: Backbone, Neck, Head.
+Il \emph{Backbone} è la prima parte del modello, quella di più basso livello. Questo modulo è tipicamente una rete puramente convoluzionale incaricata di estrapolare feature grafiche dall'immagine iniziale.
+Il \emph{Neck} ha lo scopo di collegare la parte finale (Head) del modello con il Backbone. Questo modulo aggrega e affina le features passategli dal backbone enfatizzando tratti sementici e spaziali di più di alto livello rispetto a quelli estrapolati dal Backbone. 
+Il modelo finale detto \emph{Head} si occupa di inferire le predizioni finali del modello sulla base delle features estratte dal Backbone e affinate dal Neck. E' composto da delle sottoreti incaricate di fare clasificazione e localizzazione degli oggetti. Inoltre sempre nella Head sono presenti moduli in grado di eliminare bounding boxes duplicate e altre operazioni post predizione.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{backbone_neck_head.png}
+\caption{Archietettura con Backbone, Neck e Head}
+\end{figure}
+A partire da YOLOv4 le aggiunte al modello sono state divise in due distinte categorie, \emph{bag-of-freebies} e \emph{bag-of-specials}.
+Le prime sono modifiche principalemente relative alle modalità di training, come per esempio la \emph{data augmentation}, ovvero la generazione di ulteriori immagini di imput facendo modifiche a quelle già utilizzate. Questa classe di modifiche ha un impatto negativo solo sul tempo di training e non su quello di inferenza. 
+Un'interessante esempio di aggiunta di tipo \emph{bag-of-freebies} in YOLOv4 è stato l'inserimento di Algoritmi Genetici per l'ottimizzazione degli iperparametri di training.
+Le aggiunte categorizzate come \emph{bag-of-specials} sono invece tipicamente modifiche strutturali che incidono sul tempo di inferenza migliorando però la precione finale.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{bagofreebies.png}
+\caption{Lista di aggiunte e modifiche su YOLOv4 divise fra Bag-of-Freebies and Bag-of-Specials}
+\end{figure}
+Con YOLOv7 sono state introdotte modifiche architetturali piuttosto sofisticate come le \emph{Extended efficient layer aggregation network (E-ELAN)}, ovvero reti che si basano su metodi capaci di fare convergere più velocemente un generico modello di Deep Learning controllando la il percorso di discesa del gradiente ritenuto migliore dalla rete. 
+
+Con YOLOv8 è stato fasso un grosso passo in avanti per quanto riguarda la facilità d'uso.
+E' infatti possibile utilizzare il modello da un'interfaccia a riga di comando (CLI) oppure istallandolo nel propio ambiente di sviluppo Python come un pacchetto PIP. 
+YOLOv8 viene rilascaito in 5 versioni differenti con diversi tradeoff tra performance e precisione.
+Valutato sul dataset di riferimento COCO 2017 YOLOv8x ha raggiunto una AP di 53.9\% con immagini di 640 pixels rispetto al 50.7\% di YOLOv5 con una velocità di 280 immagini per secondo su una GPU NVIDIA A100. 
 
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%per fare le conclusioni

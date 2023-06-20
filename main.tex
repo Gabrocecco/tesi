@@ -501,7 +501,7 @@ I componenti fondamentali dei layer convolzuonali non sono più vettori di neuro
 Questi filtri si presentano come delle matrici di dimensione minore della matrice di input, il loro comportamento è quello di \emph{scorrere} su tutta l'immagine di partenza andando a creare un'altra matrice, di dimensione minore chiamata \emph{feature map.}
 L'operazione di convololuzione si può esprimere com la sommatoria del prodotto puntuale di ogni valore del filtro con i rispettivi valori nella matrice di partenza, secondo la posizione del filtro.
 \newpage
-In formule posiamo indicare l'attivazione di ogni nodo (pixel) della feature map come: 
+In formule possiamo indicare l'attivazione di ogni nodo (pixel) della feature map come: 
 \begin{equation}
     o_{i,j} = \sigma(b + \sum _{l=0}^{n}\sum _{m=0}^{n}\omega_{l,m}a_{i+l, j+m})
 \end{equation}
@@ -642,10 +642,10 @@ Quindi si scelgie un valore soglia arbitrario, a seconda delle esigenze del prob
 Nella prossima sezione verrà analizzato il funzionamento e l'archiettura di YOLO, un noto modello allo stato dell'arte nella Object Detection, utilizzato nella sua ultima iterazione nel progetto su cui si basa questa tesi.
 \newpage
 \section{YOLO: You Look Only Once}
-Il modello YOLO (You Look Only Once) è di fatto una delle soluzioni più popolari e utilizzate nelle applicazioni di Object Detection. In tutte le sue ierazioni ha avuto numerosissimi usi nei domini applicativi più diversi, come per esempio la guida autonoma grazie alla sua velocità di inferenza fondamentale nelle applicazioni real time. E' stato inoltre utilizzato nell'argricoltura, videosorveglianza, medicina, monitoraggio del traffico e molto altro.\\
+Il modello YOLO (You Look Only Once) è di fatto una delle soluzioni più popolari e utilizzate nelle applicazioni di Object Detection. In tutte le sue versioni ha avuto numerosissimi usi nei domini applicativi più diversi, come per esempio la guida autonoma grazie alla sua velocità di inferenza fondamentale nelle applicazioni real time. E' stato inoltre utilizzato nell'argricoltura, videosorveglianza, medicina, monitoraggio del traffico e molto altro.\\
 In generale è stato sempre riconosciuto dalla comunità come uno strumento particolarmente equilibrato tra velocità di inferenza e precisione.\\
-Con l'avanzare delle iterazioni sono state fatte modifiche di design della rete, modifiche alla funzione di costo, modifiche alle anchor box e molto altro. 
-\\Nel caso applicativo del progetto svolto in questa tesi si è usato l'ultima iterazione YOLOv8, la più performante. In questo elaborato ci si è dedicati dapprima alle generalità e ai principi fondamentali su cui si basa il modello, quindi all'analisi dell'evoluzione di YOLO partendo dall'architettura della prima iterazione e successivamente analizzando le modifiche e le aggiunte fondamentali delle successive.
+Con l'avanzare delle versioni sono state fatte modifiche di design della rete, modifiche alla funzione di costo, modifiche alle anchor box e molto altro. 
+\\Nel caso applicativo del progetto svolto in questa tesi si è usato l'ultima versione YOLOv8, la più performante. In questo elaborato ci si è dedicati dapprima alle generalità e ai principi fondamentali su cui si basa il modello, quindi all'analisi dell'evoluzione di YOLO partendo dall'architettura della prima versione e successivamente analizzando le modifiche e le aggiunte fondamentali delle successive.
 \subsection{Funzionamento}
 Come indicato dal nome, la rete propone un approccio a singolo stadio per il riconosicmento delle immagini. Molti dei modelli tradizionali di Object Detection precedenti a YOLO utilizzano l'approccio a \emph{sliding window}, ovvero scannerizzano l'immagine facendo scorrere una finestra e a ogni nuova posizione utilizzano un classificatore per controllare se all'interno della finestra sia presente effettivamente un'oggetto. 
 Questa tecnica, per quanto intuitiva è profondamente inefficente in quanto per una sola immagina di input si utilizza un classificatore molte volte.
@@ -768,7 +768,143 @@ Dopo 100 epoche i risultati sono stati abbastanza soddisfacenti per le specifich
 \end{figure}
 \newpage
 Il modello individua con una buona accuratezza i difetti, sopratutto quelli circolari. Fa più difficoltà invece con quelli di forma più oblunga, probabilmente perchè questi ultimi sono presenti in minor numero nelle immagini di training. 
-Con un numero maggiore di immagini di training e il lavoro di labeling annesso sarebbe possibile affinare di molto l'addestramento della rete e ottenere risultati migliori. 
+Con un numero maggiore di immagini di training e il lavoro di labeling annesso sarebbe possibile affinare di molto l'addestramento della rete e ottenere risultati migliori. \\
+
+%------------------------------------------------------------------------------------------------------------- CAPITOLO 3 -----------------------------------------------------------------------s--------------------------
+{\let\clearpage\relax \chapter{Analisi dei campioni e sviluppo modello predittivo}}
+In questo capitolo si descriveranno le tecniche utilizzate per l'analisi topologica dei difetti individuati da YOLO e le metodologie utilizzate per mettere in correlazione tali dati con i parametri fisici dei campioni originari.
+Le informazioni raccolte saranno poi utilizzate come dati di addestramento del modello predittivo successivamente sviluppato. 
+Si descriveranno inoltre i fondamenti teorici dei regressori statistici focalizzandosi sulla tipologia utilizzata nel modello predittivo sviluppato. 
+Infine si analizzerà il processo di addestramento del modello predittivo discutendone i risultati. 
+\section{Analisi dei campioni con OpenCV e correlazione risultati}
+L'intuizione di base a questo punto del progetto è quella di indagare sull'eventuale presenza di una correlazione tra la morfologia geometrica dei difetti e le propietà fisiche dei campioni di grafene da cui questi difetti derivano. 
+In particolare come accennato precedentemente, i campioni di grafene utilizzati provengono da simulazioni al calcolatore dalle quali è stata calcolata l'energia totale del sistema. Questa importante propietà fisica fornisce un'indicazione dell'energia immagazinata nel sistema atomico. In particolare l'energia totale è la somma dell'energia dei singoli atomi di carbonio meno l'energia di formazione, ovvero l'energia che il sistema perde ddurante l'aggregazione degli atomi. Il totale è quindi inferiore all'energia dei sisngoli atomi presi singolarmente a grande distanza fra di loro. 
+\begin{equation}
+    E_{totale} = N_{atomi} * E_{carbonio} - E_{formazione} 
+\end{equation}
+Da questa relazione possiamo aspettarci livelli di energia totale più bassi per sistemi con pochi difetti e di conseguenza maggiore stabilità del sistema. Viceversa per campioni con grandi aree difettate ci aspettiamo livelli di energia più alti e in generale più instabilità.
+Questi ragionamenti sono veri in principio, ma occorre prestare attenzione al fatto che la maggior parte del contributo al valore dell'energia totale è dovuto all'energia degli atomi stessi. Quindi sarà necessario normalizzare i valori ottenuti per il numero di atomi presenti nei campioni per ottenere informazioni significative.  
+
+\begin{figure}[h]
+\begin{minipage}[t]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{stabile.png}
+
+(a) Struttura più stabile
+\end{minipage}%
+\hfill\vrule\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{meno_stabile.png}
+
+(b)  Struttura meno stabile 
+\end{minipage}
+\caption{Comparazione strutture con diversi livelli di stabilità e quindi di energia totale}
+\end{figure}
+Il valore dell'energia totale sarà il parametro target del modello predittivo discusso più avanti. Lo scopo dell'intero progetto è quindi quello di predire il valore della total energy di un campione partendo dalla sua immagine.  
+
+Per analizzare i difetti individuati si è andati ad utilizzare una nota libreria di computer vision, OpenCV. Questa libreria offre numerosi metodi per sconotornare ed estsrarre parametri numerici sulla base di caratteristiche geometriche nell'immagine. 
+Per prima cosa si è andati ad evidenziare le aree di interesse, ovvero i difetti nei campioni. In particolare le zone dove sono presenti i difetti saranno totalmente bianche mentre lo sfondo sarà nero. 
+Per fare questo si è fatto uso della funzione findContours di OpenCV, questo metodo è in grado di trovare contorni di oggetti su immagini.
+Una volta trovati i contorni è bastato selezionare quello con il perimetro maggiore per selezionare il difetto ignorando tutto il resto. 
+\begin{verbatim}
+cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)    
+\end{verbatim}
+\begin{figure}[h]
+\begin{minipage}[t]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{graphene_67_bonds_cropped_box_1.png}
+
+(a) Crop di YOLO
+\end{minipage}%
+\hfill\vrule\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{graphene_67_bonds_cropped_box_1_thresh_.png}
+
+(b)  Crop di YOLO dopo la trasformazione 
+\end{minipage}
+\caption{Enfatizzazione delle aree difettate}
+\end{figure}
+
+In questo modo stiamo evidenziando le zone di interesse eliminando tutte le altre cavità nel reticolo atomico che non devono essere  considerati come difetti.
+A questo punto ci ritroviamo con il contorno che individua il difetto nell'immagine come mostrato nella figura sottostante.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=200px,keepaspectratio]{graphene_67_bonds_cropped_box_1_thresh_countour_.png}
+\caption{Contorno del difetto trovato con OpenCV}
+\end{figure}
+Il prossimo passo è stato quello di estrapolare i tratti geometrici del difetto stesso, sempre tramite metodi di OpenCV. Ne sono stati estratti numerosi, dai più semplici come perimetro e area fino a proprietà più sofisticate (circolarità, solidità, compattezza...).
+In generale non è detto che tutte queste propietà saranno indispensabili per il modello predittivo finale, il lavoro da fare a questo punto sarà propio quello di individuare le relazioni causali fra una propietà e l'altra oltre che con il paraemtro target con lo scopo di individaure i tratti più significativi sui quali successivamente fare il training del modello.
+
+Per fare tutto ciò, i dati raccolti sono stati integrati in un dataframe Pandas. Questa libreria offre metodi molto comodi per l'analisi di dati e sopratutto offre un oggetto chiamato dataframe molto comodo per ospitare i nsotri dati appena raccolti. 
+Un dataframe Pandas si presenta che una tabella bidimensionale, simile a quelle di un foglio di calcolo, sulla quale si hanno a disposizione numere funzioni per manipolare, esplorare e visualizzare i dati. 
+
+Prima di ottenere il dataframe finale sui quali sono state fatte le analisi è stato necessario risolvere un problema che ha a che fare con la natura delle immagini prodotte da YOLO. Quest'ultimo infatti per ogni difetto trovato in una delle immagini campioni originarie produce in generale più di una immagine, una per ogni difetto trovato. L'analisi tramite OpenCV e le propietà estsratte quindi sono relative in generale a un singolo difetto proveniente da un campione che ne può congtenere diversi. Il parametro total energy invece fa riferimento all'intero campione originale e non ai singoli difetti estratti da esso. Questo crea un problema in fase di correlazione tra propietà dei singoli difetti e paraemtro total energy. 
+Per risolvere questo problema si è deciso di collassarare i parametri trovati dai singoli difetti in una sola riga del dataframe facendo la media pesata dei valori delle varie proprietà per l'area dei difetti. 
+Questa scelta è stata fatta partendo dal presupposto che difetti di area maggiore abbiano un'importanza più grande rispetto a quelli di grendezza inferiore. 
+
+Il dataframe su cui verranno fatte le analisi è nella forma seguente, una riga per ogni campione originario, una colonna per ogni propietà estrapolata più il parametro total energy di riferimento per quel specifico campione. 
+
+\begin{center}
+\begin{tabular}{ |p{1cm}||p{1.5cm}|p{2.5cm}|p{1cm}|p{3cm}|  }
+ \hline
+ \multicolumn{5}{|c|}{Dataframe Pandas} \\
+ \hline
+ id & area\_px & periemtro\_px & ... & total\_energy \\
+ \hline
+ 0 & 72 & 46 & ... & -3922\\
+ 1 & 923 & 144 & ... & -3048\\
+ 2 & 1326 & 284 & ... & -2599\\
+ 3 & ... & ... & ... & ...\\
+ 4 & ... & ... & ... & ...\\
+ 5 & ... & ... & ... & ...\\
+ 6 & ... & ... & ... & ...\\
+ \hline
+\end{tabular}    
+\end{center}
+Il primo grafico estratto dal dataframe è stata una heatmap, questo tipo di grafico è ideale per individuare in prima battuta le correlazioni più forti tra le propietà.
+Queste correlazioni sono importanti, in quanto permettono di indivudare parametri molto dipendenti tra loro, spesso con correlazione direttamente o inversamente proporzionale. 
+Di questi parametri quindi sarà sufficiente utilizzarne uno solo durante l'addestramento del modello predittivo, in quanto portano lo stesso contenuto informativo non è necessario utilizzarli entrambi. Questi tipo di ragionamenti nell'addestramento di modelli su dataset molto grandi può fare la differenza in quanto a tempo di addestramento.
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=400px,keepaspectratio]{heatmap.png}
+\caption{Heatmap generata dal dataframe}
+\end{figure}    
+\end{center}
+\newpage
+Nel lato alto a destra delle heatmap si confermano delle dipenze intuibili a priori, per esempio l'area e il perimetro correlatno quasi perfettamente. Questo è del tutto ragionevole in quanto in generale difetti con aree grandi avranno perimetri tentenzialmente grandi. 
+
+Dopo la heatmap si è andati a generale un correlogramma che similmente alla heatmap mette in correlazione tutte le possibili coppie di properietà ma mostrandone anche l'andamento. 
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=400px,keepaspectratio]{corr.png}
+\caption{Correlogramma }
+\end{figure}    
+\end{center}
+I risultati estrapolabili da questo grafico sono molteplici. Si possono osservare correlazioni di vario tipo, dirette e inverse, lineari, logaritmiche, esponeniziali e anche relazioni più confuse dove non è chiaro se ci sia effettivamente una correlazione. 
+Queste ultime pur se meno ovvie potranno dare comunque un contributo importante nell'addestramento del predittore. 
+
+Alla luce del correlogramma ci si è concentrati nello studio delle ultime due righe, ovvero
+quelle che mettono in correlazione i parametri dell’energia totale in valore assoluto e scalata per il numero di atomi con il resto delle proprietà estratte dai campioni.
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=300px,keepaspectratio]{area_corr.png}
+\caption{Zoom del correlogramma per osservare l’andamento della total energy
+all’aumentare dell’area dei difetti}
+\end{figure}    
+\end{center}
+Ciò che è davvero importante è la correlazione quasi lineare tra energia e area dei difetti (e corrispettivi parametri correlati strettamente all’area.
+Questa correlazione emerge qualitativamente sia con l’energia assoluta che con quella
+normalizzata per il numero di atomi, ciò significa che l’area dei difetti ha un chiaro effetto nell’aumentare l’energia del sistema e quindi la sua instabilità.
+
+\section{Regressori statistici}
+\section{Sviluppo modello predittivo con regressore XGBoost}
+
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%per fare le conclusioni
 % \chapter*{Conclusioni}

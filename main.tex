@@ -1,10 +1,4 @@
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%12pt: grandezza carattere
-                                        %a4paper: formato a4
-                                        %openright: apre i capitoli a destra
-                                        %twoside: serve per fare un
-                                        %   documento fronteretro
-                                        %report: stile tesi (oppure book)
 \documentclass[12pt,a4paper,openright,twoside]{report}
 \usepackage{tikz}
 \usepackage{amsmath, xparse}
@@ -25,7 +19,7 @@
 }
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per scrivere in italiano
-% \usepackage[italian]{babel}
+ \usepackage[italian, english]{babel}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per accettare i caratteri
                                         %   digitati da tastiera come è à
@@ -83,8 +77,9 @@
 \begin{titlepage}  
 \begin{center}
 {{\Large{\textsc{Alma Mater Studiorum $\cdot$ Universit\`a di
-Bologna}}}} \rule[0.1cm]{15.8cm}{0.1mm}
-\rule[0.5cm]{15.8cm}{0.6mm}
+Bologna}}}} 
+\rule[0.1cm]{15.8cm}{0.1mm}
+%\rule[0.5cm]{15.8cm}{0.6mm}
 {\small{\bf SCUOLA DI INGEGNERIA\\
 Corso di Laurea in Ingegneria Informatica }}
 \end{center}
@@ -121,7 +116,7 @@ Anno Accademico 2022/2023 }}%inserire l'anno accademico a cui si è iscritti
                                         %   ambiente tutto viene ristabilito
 %
 \thispagestyle{empty}                   %elimina il numero della pagina
-\topmargin=6.5cm                        %imposta il margina superiore a 6.5cm
+%\topmargin=6.5cm                        %imposta il margina superiore a 6.5cm
 \raggedleft                             %incolonna la scrittura a destra
 \large                                  %aumenta la grandezza del carattere
                                         %   a 14pt
@@ -137,6 +132,7 @@ Anno Accademico 2022/2023 }}%inserire l'anno accademico a cui si è iscritti
 % \pagenumbering{roman}    %serve per mettere i numeri romani
 
 \tableofcontents
+\begin{otherlanguage}{english}
 \begin{abstract}
     Il tema su cui verte questa tesi sono le attività svolte durante il tirocinio curricolare presso \emph{CNR-ISMN (Istitituto per lo Studio dei Materiali Nanostrutturati)}. \\
     L'obbiettivo del progetto svolto è stato quello di mettere in correllazione le propietà chimico/ficiche di campioni di grafene, provenienti da simulazioni al calcolatore, con
@@ -145,7 +141,7 @@ Anno Accademico 2022/2023 }}%inserire l'anno accademico a cui si è iscritti
     Grazie a questi metodi è stato possibile andare ad analizzare automaticamente i difetti di ogni campione e cercare quindi eventuali correlazioni con le propietà fisiche del campione stesso. 
     Si è andati quindi a sviluppare una rete predittiva in grando di predire propietà chimico-fisiche a partire dalla conformazione strutturale e topologica dei campioni.
 \end{abstract}
-
+\end{otherlanguage}
 \chapter*{Introduzione}                 %crea l'introduzione (un capitolo
                                         %   non numerato)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina

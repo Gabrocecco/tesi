@@ -777,13 +777,13 @@ Le informazioni raccolte saranno poi utilizzate come dati di addestramento del m
 Si descriveranno inoltre i fondamenti teorici dei regressori statistici focalizzandosi sulla tipologia utilizzata nel modello predittivo sviluppato. 
 Infine si analizzerà il processo di addestramento del modello predittivo discutendone i risultati. 
 \section{Analisi dei campioni con OpenCV e correlazione risultati}
-L'intuizione di base a questo punto del progetto è quella di indagare sull'eventuale presenza di una correlazione tra la morfologia geometrica dei difetti e le propietà fisiche dei campioni di grafene da cui questi difetti derivano. 
+L'intuizione di base a questo punto del progetto è quella di indagare sull'eventuale presenza di una correlazione tra la morfologia geometrica dei difetti e le propietà fisiche dei campioni di grafene da cui questi derivano. 
 In particolare come accennato precedentemente, i campioni di grafene utilizzati provengono da simulazioni al calcolatore dalle quali è stata calcolata l'energia totale del sistema. Questa importante propietà fisica fornisce un'indicazione dell'energia immagazinata nel sistema atomico. In particolare l'energia totale è la somma dell'energia dei singoli atomi di carbonio meno l'energia di formazione, ovvero l'energia che il sistema perde ddurante l'aggregazione degli atomi. Il totale è quindi inferiore all'energia dei sisngoli atomi presi singolarmente a grande distanza fra di loro. 
 \begin{equation}
     E_{totale} = N_{atomi} * E_{carbonio} - E_{formazione} 
 \end{equation}
 Da questa relazione possiamo aspettarci livelli di energia totale più bassi per sistemi con pochi difetti e di conseguenza maggiore stabilità del sistema. Viceversa per campioni con grandi aree difettate ci aspettiamo livelli di energia più alti e in generale più instabilità.
-Questi ragionamenti sono veri in principio, ma occorre prestare attenzione al fatto che la maggior parte del contributo al valore dell'energia totale è dovuto all'energia degli atomi stessi. Quindi sarà necessario normalizzare i valori ottenuti per il numero di atomi presenti nei campioni per ottenere informazioni significative.  
+% Questi ragionamenti sono veri in principio, ma occorre prestare attenzione al fatto che la maggior parte del contributo al valore dell'energia totale è dovuto all'energia degli atomi stessi. Quindi sarà necessario normalizzare i valori ottenuti per il numero di atomi presenti nei campioni per ottenere informazioni significative.  
 
 \begin{figure}[h]
 \begin{minipage}[t]{0.49\linewidth}
@@ -803,10 +803,10 @@ Questi ragionamenti sono veri in principio, ma occorre prestare attenzione al fa
 \end{figure}
 Il valore dell'energia totale sarà il parametro target del modello predittivo discusso più avanti. Lo scopo dell'intero progetto è quindi quello di predire il valore della total energy di un campione partendo dalla sua immagine.  
 
-Per analizzare i difetti individuati si è andati ad utilizzare una nota libreria di computer vision, OpenCV. Questa libreria offre numerosi metodi per sconotornare ed estsrarre parametri numerici sulla base di caratteristiche geometriche nell'immagine. 
+Per analizzare i difetti individuati si è andati ad utilizzare una nota libreria di computer vision, OpenCV. Questa libreria offre numerosi metodi per sconotornare ed estrapolare parametri numerici sulla base delle caratteristiche geometriche dell'immagine. 
 Per prima cosa si è andati ad evidenziare le aree di interesse, ovvero i difetti nei campioni. In particolare le zone dove sono presenti i difetti saranno totalmente bianche mentre lo sfondo sarà nero. 
-Per fare questo si è fatto uso della funzione findContours di OpenCV, questo metodo è in grado di trovare contorni di oggetti su immagini.
-Una volta trovati i contorni è bastato selezionare quello con il perimetro maggiore per selezionare il difetto ignorando tutto il resto. 
+Per fare questo si è fatto uso della funzione \emph{findContours} di OpenCV, questo metodo è in grado di individuare e tracciare contorni di oggetti su immagini.
+Una volta individuati i contorni è bastato selezionare quello con il perimetro maggiore per selezionare il difetto cercato ignorando tutto il resto. 
 \begin{verbatim}
 cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)    
 \end{verbatim}
@@ -827,7 +827,7 @@ cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 \caption{Enfatizzazione delle aree difettate}
 \end{figure}
 
-In questo modo stiamo evidenziando le zone di interesse eliminando tutte le altre cavità nel reticolo atomico che non devono essere  considerati come difetti.
+In questo modo stiamo evidenziando le zone di interesse eliminando tutte le altre cavità nel reticolo atomico che non devono essere considerate come difetti.
 A questo punto ci ritroviamo con il contorno che individua il difetto nell'immagine come mostrato nella figura sottostante.
 
 \begin{figure}[h]
@@ -835,14 +835,14 @@ A questo punto ci ritroviamo con il contorno che individua il difetto nell'immag
 \includegraphics[width=200px,keepaspectratio]{graphene_67_bonds_cropped_box_1_thresh_countour_.png}
 \caption{Contorno del difetto trovato con OpenCV}
 \end{figure}
-Il prossimo passo è stato quello di estrapolare i tratti geometrici del difetto stesso, sempre tramite metodi di OpenCV. Ne sono stati estratti numerosi, dai più semplici come perimetro e area fino a proprietà più sofisticate (circolarità, solidità, compattezza...).
-In generale non è detto che tutte queste propietà saranno indispensabili per il modello predittivo finale, il lavoro da fare a questo punto sarà propio quello di individuare le relazioni causali fra una propietà e l'altra oltre che con il paraemtro target con lo scopo di individaure i tratti più significativi sui quali successivamente fare il training del modello.
+Il prossimo passo è stato quello di estrapolare i tratti geometrici del difetto stesso, sempre tramite metodi offerti da OpenCV. Ne sono stati estratti numerosi, dai più semplici come perimetro e area fino a proprietà più sofisticate (circolarità, solidità, compattezza...).
+In generale non è detto che tutte queste propietà saranno indispensabili per il modello predittivo finale, il lavoro da fare a questo punto sarà propio quello di individuare le relazioni causali tra una propietà e l'altra oltre che con il paraemtro target (energia totale) con lo scopo di individaure i tratti più significativi sui quali successivamente fare il training del modello.
 
-Per fare tutto ciò, i dati raccolti sono stati integrati in un dataframe Pandas. Questa libreria offre metodi molto comodi per l'analisi di dati e sopratutto offre un oggetto chiamato dataframe molto comodo per ospitare i nsotri dati appena raccolti. 
-Un dataframe Pandas si presenta che una tabella bidimensionale, simile a quelle di un foglio di calcolo, sulla quale si hanno a disposizione numere funzioni per manipolare, esplorare e visualizzare i dati. 
+Per fare tutto ciò, i dati raccolti sono stati integrati in un dataframe \emph{Pandas}. Questa libreria offre metodi molto comodi per l'analisi di dati e sopratutto offre un oggetto chiamato dataframe adatto per ospitare i dati appena raccolti. 
+Un dataframe Pandas si presenta che una tabella bidimensionale, simile a quelle di un foglio di calcolo, sulla quale si hanno a disposizione numerose funzioni per manipolare, confrontare e filtrare i dati. 
 
-Prima di ottenere il dataframe finale sui quali sono state fatte le analisi è stato necessario risolvere un problema che ha a che fare con la natura delle immagini prodotte da YOLO. Quest'ultimo infatti per ogni difetto trovato in una delle immagini campioni originarie produce in generale più di una immagine, una per ogni difetto trovato. L'analisi tramite OpenCV e le propietà estsratte quindi sono relative in generale a un singolo difetto proveniente da un campione che ne può congtenere diversi. Il parametro total energy invece fa riferimento all'intero campione originale e non ai singoli difetti estratti da esso. Questo crea un problema in fase di correlazione tra propietà dei singoli difetti e paraemtro total energy. 
-Per risolvere questo problema si è deciso di collassarare i parametri trovati dai singoli difetti in una sola riga del dataframe facendo la media pesata dei valori delle varie proprietà per l'area dei difetti. 
+Prima di ottenere il dataframe finale sul quale sono state fatte le analisi è stato necessario risolvere un problema che ha a che fare con la natura delle immagini prodotte da YOLO. Quest'ultimo infatti per ogni difetto trovato in una delle immagini campione originarie produce in generale più di una immagine, una per ogni difetto trovato. L'analisi tramite OpenCV e le propietà estratte quindi sono relative in generale a un singolo difetto proveniente da un campione che ne può contenere diversi. Il parametro total energy invece fa riferimento all'intero campione originale e non ai singoli difetti estratti da esso. Questo crea un problema in fase di correlazione tra propietà dei singoli difetti e il  parametro total energy. 
+Per risolvere questo problema si è deciso di collassare i parametri estrapoalti dai singoli difetti in una sola riga del dataframe facendo la media pesata dei valori delle varie proprietà per l'area dei difetti. 
 Questa scelta è stata fatta partendo dal presupposto che difetti di area maggiore abbiano un'importanza più grande rispetto a quelli di grendezza inferiore. 
 
 Il dataframe su cui verranno fatte le analisi è nella forma seguente, una riga per ogni campione originario, una colonna per ogni propietà estrapolata più il parametro total energy di riferimento per quel specifico campione. 
@@ -866,7 +866,7 @@ Il dataframe su cui verranno fatte le analisi è nella forma seguente, una riga 
 \end{center}
 Il primo grafico estratto dal dataframe è stata una heatmap, questo tipo di grafico è ideale per individuare in prima battuta le correlazioni più forti tra le propietà.
 Queste correlazioni sono importanti, in quanto permettono di indivudare parametri molto dipendenti tra loro, spesso con correlazione direttamente o inversamente proporzionale. 
-Di questi parametri quindi sarà sufficiente utilizzarne uno solo durante l'addestramento del modello predittivo, in quanto portano lo stesso contenuto informativo non è necessario utilizzarli entrambi. Questi tipo di ragionamenti nell'addestramento di modelli su dataset molto grandi può fare la differenza in quanto a tempo di addestramento.
+Di questi parametri quindi sarà sufficiente utilizzarne uno solo durante l'addestramento del modello predittivo, in quanto portano lo stesso contenuto informativo e quindi non è necessario utilizzarli entrambi. Questi tipi di ragionamenti nell'addestramento di modelli su dataset molto grandi può fare la differenza in quanto a tempo di addestramento.
 \begin{center}
 \begin{figure}[h]
 \centering
@@ -875,9 +875,9 @@ Di questi parametri quindi sarà sufficiente utilizzarne uno solo durante l'adde
 \end{figure}    
 \end{center}
 \newpage
-Nel lato alto a destra delle heatmap si confermano delle dipenze intuibili a priori, per esempio l'area e il perimetro correlatno quasi perfettamente. Questo è del tutto ragionevole in quanto in generale difetti con aree grandi avranno perimetri tentenzialmente grandi. 
+Nel lato alto a destra delle heatmap si confermano delle dipenze intuibili a priori, per esempio l'area e il perimetro correlano quasi perfettamente. Questo è del tutto ragionevole in quanto in generale difetti con aree grandi avranno perimetri tentenzialmente grandi. 
 
-Dopo la heatmap si è andati a generale un correlogramma che similmente alla heatmap mette in correlazione tutte le possibili coppie di properietà ma mostrandone anche l'andamento. 
+Dopo la heatmap si è andati a generare un correlogramma che similmente alla heatmap mette in correlazione tutte le possibili coppie di properietà mostrandone questa volta anche l'andamento. 
 \begin{center}
 \begin{figure}[h]
 \centering
@@ -885,25 +885,288 @@ Dopo la heatmap si è andati a generale un correlogramma che similmente alla hea
 \caption{Correlogramma }
 \end{figure}    
 \end{center}
-I risultati estrapolabili da questo grafico sono molteplici. Si possono osservare correlazioni di vario tipo, dirette e inverse, lineari, logaritmiche, esponeniziali e anche relazioni più confuse dove non è chiaro se ci sia effettivamente una correlazione. 
-Queste ultime pur se meno ovvie potranno dare comunque un contributo importante nell'addestramento del predittore. 
+I risultati estrapolabili da questo grafico sono molteplici. Si possono osservare correlazioni di vario tipo, dirette e inverse, lineari, logaritmiche, esponeniziali e anche andamenti più caotici dove non è chiaro se ci sia effettivamente una correlazione. 
+Queste ultime pur se meno ovvie e interpretabili potranno dare comunque un contributo importante nell'addestramento del predittore. 
 
 Alla luce del correlogramma ci si è concentrati nello studio delle ultime due righe, ovvero
 quelle che mettono in correlazione i parametri dell’energia totale in valore assoluto e scalata per il numero di atomi con il resto delle proprietà estratte dai campioni.
 \begin{center}
 \begin{figure}[h]
 \centering
-\includegraphics[width=300px,keepaspectratio]{area_corr.png}
+\includegraphics[width=200px,keepaspectratio]{energy_vs_area.png}
 \caption{Zoom del correlogramma per osservare l’andamento della total energy
 all’aumentare dell’area dei difetti}
 \end{figure}    
 \end{center}
-Ciò che è davvero importante è la correlazione quasi lineare tra energia e area dei difetti (e corrispettivi parametri correlati strettamente all’area.
+Ciò che è davvero importante è la correlazione quasi lineare tra energia e area dei difetti (e corrispettivi parametri correlati strettamente all’area).
 Questa correlazione emerge qualitativamente sia con l’energia assoluta che con quella
 normalizzata per il numero di atomi, ciò significa che l’area dei difetti ha un chiaro effetto nell’aumentare l’energia del sistema e quindi la sua instabilità.
+Alla luce di queste considerazioni sarà possibile successivamente selezionare con criterio le propietà su cui effettuare il training del modello predittivo. 
+Nella sezione successiva si introdurrà la teoria dei regressori statistici, focalizzandosi sugli alberi decisionali, utilizzati per il modello. 
+\section{Regressione statistici}
+Con regressione statistica si intendono tutti i metodi e i modelli matematici atti ad analizzare dati raccolti (variabili indipendenti) con lo scopo di ottenere predizioni su parametri cercati (variabili dipendenti). 
+Lo scopo è quindi quello di trovare una relazione funzionale tra variabili indipendenti (osservazioni) e variabili dipendenti.
+Queste funzioni possono essere semplici rette nel caso della \emph{Regressione lineare} o più in generale curve di vario tipo, più adatte a modellare fenomeni più complessi.
+Queste predizioni possono derivare da dati di partenza di diverso tipo, come per esempio serie temporali, o come nel nostro caso propietà numeriche derivanti da analisi geoemtriche di immagini. L'operazione nella quale si ottiene una predizione su una variabile dipendente a partire dai dati raccolti di una o più variabili indipendenti prende il nome di inferenza statistica.
+In questa sezione analizzaermo brevemente  il tipo più semplice di regessione statistica, ovvero quella lineare per poi introdurre modelli di natura diversa come gli alberi decisionali. 
+\subsection{Regressione lineare}
+Il caso più semplice di regressione è quella lineare singola. Lineare perchè la relazione funzionale che si andrà a cercare è una retta, singola perchè la variabile indipendente su cui si sono svolte le osservazioni è una sola. In particolare da una serie di osservazioni numeriche di una variabile indipendente si vuole tracciare una retta che descriva al meglio l'andamento dei dati osservati. Questa retta è proprio la funzione da campionare per ottenere le predizioni richieste. 
+La funzione cercata si presenta come una semplice retta del tipo: 
+\begin{equation}
+    y = \beta_{0} + \beta_{1}x
+\end{equation}
+Dove, 
+\begin{itemize}
+    \item y: è il valore stimato (predizione)
+    \item $\beta_{0}$ è l'intercetta della retta di regressione, ovvero il valore di y nell'origine. 
+    \item $\beta_{1}$ è il coefficente angolare della retta
+    \item x: è la variabile indipendente 
+\end{itemize}
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=300px,keepaspectratio]{Normdist_regression.png}
+\caption{Retta di regressione (in blu) e osservazioni (in rosso). }
+\end{figure}    
+\end{center}
+I due paramtri $\beta_{0}$, $\beta_{1}$ sono quelli che il modello matematico dovrà ottimizzare con lo scopo di ottenere la migliore relazione possibile. 
+Per fare ciò esistono vari metodi, il più famoso e utilizzato prende il nome di \emph{Metodo dei Minimi Quadrati (RSS, Residual Sum of Squares)}. Questo metodo permette di trovare i parametri che minimizzino il più possibile la somma dei quadrati delle distanze tra i dati osservati (valori di $x$) e quelli della curva (in questo caso la retta $\beta_{0} + \beta_{1}x$).
+Più precisamente si volgiono trovare i parametri $\beta_{0}$, $\beta_{1}$ tali che si minimizzi la funzione: 
+\begin{equation}
+    \min{RSS} = \min{\sum_{i}(y_{i} - \hat{y_{i}})^2} = \min{\sum_{i}(y_{i}-(\beta_{0} + \beta_{1}x_{i}))^2}
+\end{equation}
+Dove, 
+\begin{itemize}
+    \item $y_{i}$ sono i valori reali (valori attesi)
+    \item $\hat{y_{i}}$ sono i valori stimati
+    \item $\sum_{i}(y_{i} - \hat{y_{i}})$ è quindi l'errore sulla $i$-eesima stima, (residuo)
+\end{itemize}
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=300px,keepaspectratio]{residual.png}
+\caption{I residui sono la distanza tra la curva di regressione e le osservazioni effettive. }
+\end{figure}    
+\end{center}
+Se calcoliamo la media aritmetica di x e y e la definiamo come:
+    \begin{equation}
+        \Bar{x} = \frac{1}{n} \sum_{i}x_{i} \;\; \Bar{y} = \frac{1}{n} \sum_{i}y_{i}
+    \end{equation}
+Possiamo scrivere i parametri cercati come: 
+\begin{equation}
+    \beta_{0} = \Bar{y} - \beta_{1}\Bar{x}
+\end{equation}
+\begin{equation}
+    \beta_{1} = \frac{\sum_{i}(x_{i}-\Bar{x})(y_{i}-\Bar{y})}{\sum_{i}(x_{i}-\Bar{x})^2}
+\end{equation}
 
-\section{Regressori statistici}
+Per valutare un modello regressivo si utilizza un parametro chiamato $R^2$ che da un'indicazione su come la curva approssima l'andamento reale delle osservazioni. 
+\begin{equation}
+    R^2 = \frac{TSS - RSS}{TSS} = 1- \frac{RSS}{TSS}
+\end{equation}
+Dove, RSS è la somma del quadrato dei residui
+\begin{equation}
+    RSS = \sum_{i}(y_{i} - \hat{y_{i}})^2
+\end{equation}
+e TSS è la somma totale dei quadrati della differenza tra le predizioni e la loro media.
+\begin{equation}
+        TSS = \sum_{i}(y_{i} - \Bar{y_{i}})^2 \; \;
+    \Bar{y} = \frac{1}{n} \sum_{i}y_{i}
+\end{equation}
+Il parametro $R^2$ varia tra 0 e 1 ed è sintomo di una buona performace del modello se è prossimo a 1. 
+
+Questo metodo è estendibile a problemi con più variabili indipendenti e più in generale a regessioni polinomiali, in cui la relazione può assumere un andamento non lineare.
+
+\subsection{Alberi decisionali}
+Nel mondo del machine learning supervisionato esiste un altro approccio diverso da quelli analizzati in precedenza, ovvero gli alberi decisonali. 
+Similmente a ciò che abbiamo appena discusso con i regressori lineari, gli alberi decisionali mirano a dare delle predizione partendo da un insieme di osservazioni raccolte. Queste predizioni possono essere relative a valori target discreti (classificazione) oppure continui (regressione). Data la natura dell'applicazione di questo elaborato ci concentreremo sul secondo tipo. 
+Gli alberi sono strutture gerarchiche formate da nodi, da ognuno dei quali partono due nodi figli fino ad arrivare alle cosiddette \emph{foglie}, ovvero nodi che non hanno figli. Ogni nodo in realtà è una funzione binaria di una variabile dal cui risulato dipende il percorso da prendere. 
+Il modello consiste quindi in una serie di domande sulle variabili osservate con le quali si discende l'albero dall'alto verso il basso fino a giungere una foglia che rappresenta la predizione stessa del modello. 
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=300px,keepaspectratio]{DecisionTree_Classification_Graphic.png}
+\caption{Semplice esempio di albero decisionale per classificazione binaria con due variabili indipendenti $x_{1}$, $x_{2}$  }
+\end{figure}    
+\end{center}
+I dati vengono forniti nel seguente modo, 
+\begin{equation}
+    (\bold{x}, Y) = (x_{1}, x_{2}, ... , x_{k}, Y) 
+\end{equation}
+Dove $x_{1}, x_{2}, ... , x_{k}$ sono i valori delle variabili indipendeti per l'osserrvazione dove il parametro target vale $Y$.
+
+Gli alberi decisonali vantano una grande intelligibilità diversamente da altri metodologie di apprendimento automatico, in quanto è possibile indagare sul funzionamento del modello e dell'esito della singola predizione. E' facile infatti andare a ritroso per capire e giustificare la predizione del modello, analizzando il percorso fatto nella discesa della struttura ad albero. 
+Un altro punto a favore nell'uso degli alberi decisonali è la capacità di performare una selezione delle fetaure. Durante le epoche di addestramento infatti alcune feature (i loro nodi) possono essere rimosse o spostate verso il basso in quanto reputate scorrelate dal parametro target cercato. 
+E' importante ricordare che gli alberi sono strutture strettamente \emph{gerarchiche}, ovvero le feature analizzate nei nodi più in alto sono reputate più importanti rispetto a quelle analizzate più in basso e hanno un incidenza maggiore.
+Per quanto riguarda i difetti di questo approccio, il principale problema è la tendenza ad andare in overfitting, per evitare questo si usa una tecnica chiamata \emph{Pruning}, che consiste nella rimozione di parti della satruttura ad albero considerate non critiche, semplificando e ottimizzando il modello senza rinunciare alla precisione delle predizioni. 
+\section{Ensamble learning}
+In questa sezione estendiamo le fondamenta degli alberi decisionali appena discusse a una gamma di metodi che prende il nome di \emph{Ensable learning}.
+L'idea di base è quella di utilizzare più di un albero decisonale per ottenere la predizione finale. Ci si aspetta che addestrando più alberi su sottoinsiemi casuali del dataset e delle feature di partenza si possano ottenere performance più elevate rispetto a quelle del singolo albero. Inoltre, addestrando gli alberi su sottoinsiemi casuali del dataset di partenza si va a mitigare il problema di overfitting discusso in precedenza.
+Analizzeremo i due approcci principali, Bagging e Boosting.
+\subsection{Bagging e Random Forest}
+L'idea base del \emph{Boostrap aggregating} o \emph{Bagging} è quella di creare a partire dal dataset di partenza più dataset della stessa dimensione, scegliendo casualemente elementi dal dataset principale ammettendo ripetizioni e a partire da questi nuovi dataset addestrare strutture ad albero in parallelo. 
+
+Formalmente se abbiamo un training set $X = x_{1}, ... , x_{n}$ con le rispettive risposte $Y = y_{1}, ... , y_{n}$ andiamo a creare un numero $B$ di nuovi insiemi pescando casualemte $n$ elementi dal dataset iniziale con ripetizione.
+
+Quindi per $b = 1, ..., B$
+\begin{enumerate}
+    \item Estraiamo casualmente da $(X,Y)$ $n$ coppie $(x,y)$ con ripetizione, formando un nuovo dataset della stessa grandezza chiamato $(X_{b}, Y_{b})$. 
+    \item Addestraiamo un albero di classificazione o regressione chiamto $f_{b}$ sui dati $(X_{b}, Y_{b})$.
+\end{enumerate}
+
+A questo punto ci si ritrova con un numero $B$ di alberi addestrati su dataset non identici, dai quali si ottiene la predizione finale per un certo valore di input $x'$ facendo la media delle predizioni dei singoli alberi (nel caso della regressione).
+\begin{equation}
+    f(x') = \frac{1}{B}\sum_{b=1}^{B} f_{b}(x')
+\end{equation}
+Questa metodologia prende il nome di Bagging e può essere estesa nei modelli chiamati \emph{Random Forest} aggiungendo un'ulteriore casualità nell'apprendimento. In particolare si utilizza un algoritmo di apprendimento che per ogni sottoalbero seleziona un sottoinsieme delle feature di partenza, in questo modo i singoli alberi si \emph{specializzano} nelle feature di loro competenza.
+In generale gli algoritmi \emph{Random Forest} superano in prestazioni gli alberi decisionali singoli, avendo meno overfitting ma perdono notevolmente di intelligibilità in quanto è molto più difficile andare a ritroso e interpretare una predizione. 
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=300px,keepaspectratio]{random forest.png}
+\caption{Random Forest}
+\end{figure}    
+\end{center}
+\subsection{Gradient Tree Boosting }
+Analizziamo ora un modello più sofisticato e molto usato nelle applicazioni e che ha dimostrato di sorpassare le performance dei modelli \emph{Random Forest}.
+Il \emph{Gradient Tree Boosting} è una metologia che similmente al meotodo \emph{Random Forest} addestra molteplici predittori (alberi decisonali) per ottenere una predizione complessiva più accurata. Differentemente dal caso appena analizzato gli alberi non vengono addestrati in parallelo (conteporaneamente) ma in serie. Da ogni albero ne viene prodotto uno nuovo che va a migliorare quello precedente in modo iterativo. Visto la natura molto tecnica dell'argomento non entreremo nei dettagli dell'algoritmo di discesa del gradiente utilizzato per costrutire gli alberi a partire da quelli precedenti ma ci limiteremo a una visione ad alto livello del metodo. 
+
+L'obbiettivo è quello di ottenere un predittore (albero) $F$ in grado di predire valori nella forma di $\hat{y} = F(x)$ minimizzando l'errore quadratico medio (MSE) tra valori predetti e valori reali, $\frac{1}{n}\sum_{i} (\hat{y_{i}} - y_{i})^2$, dove: 
+\begin{itemize}
+    \item $\hat{y_{i}}$ sono i valori predetti 
+    \item $y_{i}$ sono i valori reali 
+    \item $n$ è il numero di osservazioni del dataset 
+\end{itemize}
+Utilizzando un algoritmo di Gradient Boosting (che non approfondiremo) avremo per ognuna delle M iterazioni
+un nuovo albero $F_{m+1}$ creato a partire da quello precedente $F_{m+1}$ andando ad ottimizzare la funzione di costo MSE: 
+\begin{equation}
+    F_{m+1}(x_{i}) = F_{m}(x_{i}) + h_{m}(x_{i}) = y_{i}
+\end{equation}
+Dove $h_{m}(x_{i})$ (estimatore) è l'aggiunta apportata dall'algoritmo durante lo step.
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=350px,keepaspectratio]{gradient tree boosting.png}
+\caption{Gradient Tree Boosting   }
+\end{figure}    
+\end{center}
+In generale quindi la predizione finale verrà scelta dando un peso diverso a ogni classificatore, favorendo quelli con precisione migliore in fase di training. 
+
+
+Nella prossima sezione si discutera l'applicazione di una implementazione di questo meotodo sul problema applicativo affrontato durante questo eleborato, ovvero la costruzione di un modello in grado di predirre il parametro totale energy a partire da una serie di features geomtriche. 
+
+
 \section{Sviluppo modello predittivo con regressore XGBoost}
+Alla luce di tutto ciò che è stato discusso fino ad ora possiamo discutere l'applicazione di una implementazione dell'algoritmo di Gradient Boosting al problema iniziale di questo elaborato, ovvero addestrare un predittore in grado di predire il paramentro total energy partendo dalle feature geomtriche estratte dai campioni. 
+
+In particolare è stata scelta l'implementazione XGBoost offerta dalla libreria Python open source \emph{scikit-learn}, che offre numerosissime funzioni e algoritmi di machine learning.
+
+In particolare è stata scelta la funzione: 
+\begin{verbatim}
+    sklearn.ensemble.GradientBoostingRegressor
+\end{verbatim}
+
+Le feature scelte per il training come discusso in precedenza sono state selezionate con l'intenzione di scegliere solo propietà scorrelate tra di loro, in quanto sarebbe ridondante effettuare il training su fetaure che correllano fortemente tra di loro e che quindi non portano contenuto informativo aggiuntivo. 
+In particolare sono state scelte: 
+\begin{verbatim}
+    X = (area_px, num_pixels, circularity, solidity,
+    compactness, feret_diameter, eccentricity)
+\end{verbatim}
+A questo punto si è preso l’array dei valori delle energie corrispondenti che il modello userà come parametro target. La funzione di costo da minimizzare si baserà su questo parametro. 
+\begin{verbatim}
+    y = (total_energy)
+\end{verbatim}
+Per ogni tupla X di feature associamo il valore corrispondente dell'energia di y.
+
+Il dataset è stato diviso al 90/10 su train e test.
+\begin{verbatim}
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.1, random_state=42
+    )  
+\end{verbatim}
+Gli iperparametri scelti sono stati i seguenti:
+\begin{verbatim}
+    params = {
+        "n_estimators": 500,
+        "max_depth": 20,
+        "min_samples_split": 5,
+        "learning_rate": 0.01,
+        "loss": "squared_error",
+    }
+\end{verbatim}
+\begin{itemize}
+    \item 	\texttt{n\_estimators} è il numero di iterazioni e quindi di alberi utilizzati, è stata aumentata da 100 a 500 rispetto ai parametri default 
+    \item \texttt{max\_depth} è la profondità dei singoli alberi, è stata aumentata da 3 a 20 rispetto ai parametri default 
+    \item \texttt{min\_samples\_split} e \texttt{learning\_rate} sono stati lasciati a default
+    \item Come funzione di costo è stato scelto lo scarto quadratico medio.
+\end{itemize}
+
+A questo punto viene chiamato il metodo \texttt{fit} per addestrare il modello, specificando il dataset di train: 
+\begin{verbatim}
+    reg = ensemble.GradientBoostingRegressor(**params)
+    reg.fit(X_train, y_train)    
+\end{verbatim}
+Utilizzando 2000 campioni con 7 features, l’addestramento è molto breve, nell’ordine dei pochi secondi. 
+
+Per verificare le performance del modello si valuta l'errore quadratico medio sul dataset di test: 
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=300px,keepaspectratio]{deviance.png}
+\caption{Errore quadratico medio durante le epoche di addestramento   }
+\end{figure}    
+\end{center}
+\begin{verbatim}
+    mse = mean_squared_error(y_test, reg.predict(X_test))
+    print(...)
+    The mean squared error (MSE) on test set: 5262.5476
+\end{verbatim}
+
+La devianza è circa 5000, ovvero l’errore medio sulla predizione dell’energia del campione si attesta sulle decine. Considerando che il range di valori dell’energia è di circa 2000 unità il modello si dimostra piuttosto preciso. 
+Il modello come spesso accade ha precisione maggiore nel dataset di train (blu) rispetto a quello di test (rosso), in quanto esiste sempre un certo livello di overfitting, la differenza però in questo caso non è drammatica. 
+
+Dal grafico inoltre vediamo un calo dell'apprendimento dopo le 300 iterazioni. Si potrebbe quindi limitare le iterazioni dell’addestramento a quel valore.
+
+
+E’ stato poi analizzato un istogramma chiamato (MDI) che suggerisce quali tra le feature hanno avuto un'importanza maggiore durante l'addestramento.
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=250px,keepaspectratio]{mdi.png}
+\caption{Grafico MDI per visualizzare l'importanza delle features}
+\end{figure}    
+\end{center}
+Come intuibile a priori l’area dei difetti si dimostra la feature più significativa tra quelle presenti. Vedendo un’importanza tale si è fatto l'esperimento di ripetere l’addestramento utilizzando solo questa come singola feature. I risultati però sono stati scarsi, è quindi chiaro che anche le altre feature, prese insieme apportano un contributo fondamentale all’addestramento e quindi alla performance del modello. 
+\newpage
+Si è quindi osservata la curva di fit che evidenzia un’elevata precisione nella predizione di valori di energia bassi (difetti piccoli) e viceversa predizioni meno accurate su valori di energia alti (difetti grandi).
+
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=300px,keepaspectratio]{fit.png}
+\caption{Curva di fit}
+\end{figure}    
+\end{center} 
+
+Si è andati quindi a fare delle predizioni a campione per verificare l'errore medio: 
+\begin{verbatim}
+Target total_energy: 
+[    -2284.8     -2910.9     -2570.9     -3649.1     ...     -3536.9]
+Predicted total_energy: 
+[      -2283     -2910.7     -2542.8     -3644.4     ...    -3536.3]
+Error: 
+[    -1.7482    -0.21449     -28.075     -4.7009     ...    -0.63399]
+\end{verbatim}
+
+Si conferma un errore medio nell’ordine delle decine. 
+\newpage
+Infine si è andati a calcolare l'indice $R^2$, che si attesta su 0.97, molto prossimo a 1.  
+\begin{verbatim}
+    reg.score(X_test, y_test)
+    0.9711437904543666
+\end{verbatim}
+Da questo valore possiamo concludere costatando che il modello è molto preciso nella predizione del valore cercato.
+
 
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%per fare le conclusioni
@@ -973,6 +1236,28 @@ detectors}, Institute of Information Science, Academia Sinica, Taiwan
 
 \bibitem{elan}Chien-Yao Wang, Hong-Yuan Mark Liao, I-Hau Yeh \emph{Designing Network Design Strategies Through Gradient Path Analysis}
 Institute of Information Science, Academia Sinica, Taiwan Elan Microelectronics Corporation, Taiwan
+
+\bibitem{regression} Tania Cerquitelli, Elena Baralis
+\emph{Regression Analysis: Fundamentals}
+Politecnico di Torino
+
+\bibitem{ensamble} Lee, H.-L.; Kim, J.-S.; Hong,
+C.-H.; Cho, D.-K. Ensemble Learning
+Approach for the Prediction of
+Quantitative Rock Damage Using
+Various Acoustic Emission
+
+\bibitem{random forest} Adele Cutler, David Richard Cutler, John R Stevens,
+Ensemble Machine Learning: Methods and Applications (pp.157-176)
+
+\bibitem{Gradient Boosting} Cheng Li,
+A Gentle Introduction to Gradient Boosting,
+College of Computer and Information Science
+Northeastern University
+
+\bibitem{XGBoost}Tianqi Chen, Carlos Guestrin, 
+XGBoost: A Scalable Tree Boosting System, 
+University of Washington
 
 \end{thebibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra

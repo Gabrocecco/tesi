@@ -916,7 +916,7 @@ Questa correlazione emerge qualitativamente sia con l’energia assoluta che con
 normalizzata per il numero di atomi, ciò significa che l’area dei difetti ha un chiaro effetto nell’aumentare l’energia del sistema e quindi la sua instabilità.
 Alla luce di queste considerazioni sarà possibile successivamente selezionare con criterio le propietà su cui effettuare il training del modello predittivo. 
 Nella sezione successiva si introdurrà la teoria dei regressori statistici, focalizzandosi sugli alberi decisionali, utilizzati per il modello. 
-\section{Regressione statistici}
+\section{Regressione Statistica}
 Con regressione statistica si intendono tutti i metodi e i modelli matematici atti ad analizzare dati raccolti (variabili indipendenti) con lo scopo di ottenere predizioni su parametri cercati (variabili dipendenti). 
 Lo scopo è quindi quello di trovare una relazione funzionale tra variabili indipendenti (osservazioni) e variabili dipendenti.
 Queste funzioni possono essere semplici rette nel caso della \emph{Regressione lineare} o più in generale curve di vario tipo, più adatte a modellare fenomeni più complessi.
@@ -1012,7 +1012,7 @@ Gli alberi decisonali vantano una grande intelligibilità diversamente da altri 
 Un altro punto a favore nell'uso degli alberi decisonali è la capacità di performare una selezione delle fetaure. Durante le epoche di addestramento infatti alcune feature (i loro nodi) possono essere rimosse o spostate verso il basso in quanto reputate scorrelate dal parametro target cercato. 
 E' importante ricordare che gli alberi sono strutture strettamente \emph{gerarchiche}, ovvero le feature analizzate nei nodi più in alto sono reputate più importanti rispetto a quelle analizzate più in basso e hanno un incidenza maggiore.
 Per quanto riguarda i difetti di questo approccio, il principale problema è la tendenza ad andare in overfitting, per evitare questo si usa una tecnica chiamata \emph{Pruning}, che consiste nella rimozione di parti della satruttura ad albero considerate non critiche, semplificando e ottimizzando il modello senza rinunciare alla precisione delle predizioni. 
-\section{Ensamble learning}
+\section{Ensemble learning}
 In questa sezione estendiamo le fondamenta degli alberi decisionali appena discusse a una gamma di metodi che prende il nome di \emph{Ensable learning}.
 L'idea di base è quella di utilizzare più di un albero decisonale per ottenere la predizione finale. Ci si aspetta che addestrando più alberi su sottoinsiemi casuali del dataset e delle feature di partenza si possano ottenere performance più elevate rispetto a quelle del singolo albero. Inoltre, addestrando gli alberi su sottoinsiemi casuali del dataset di partenza si va a mitigare il problema di overfitting discusso in precedenza.
 Analizzeremo i due approcci principali, Bagging e Boosting.
@@ -1286,7 +1286,7 @@ Institute of Information Science, Academia Sinica, Taiwan Elan Microelectronics 
 \emph{Regression Analysis: Fundamentals}
 Politecnico di Torino
 
-\bibitem{ensamble} Lee, H.-L.; Kim, J.-S.; Hong,
+\bibitem{ensemble} Lee, H.-L.; Kim, J.-S.; Hong,
 C.-H.; Cho, D.-K. Ensemble Learning
 Approach for the Prediction of
 Quantitative Rock Damage Using

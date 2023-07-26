@@ -17,6 +17,14 @@
   \smash{\includegraphics[height=\dimexpr\zposy{top-\thepage}sp-\zposy{bottom-\thepage}sp\relax,#1]{#2}}%
   \par
 }
+
+\usepackage{afterpage}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per scrivere in italiano
  \usepackage[british, italian]{babel}
@@ -78,7 +86,7 @@
 \begin{center}
 {{\Large{\textsc{Alma Mater Studiorum $\cdot$ Universit\`a di
 Bologna}}}} 
-\rule[0.1cm]{15.8cm}{0.1mm}
+\rule[0.1cm]{14cm}{0.1mm}
 %\rule[0.5cm]{15.8cm}{0.6mm}
 {\small{\bf SCUOLA DI INGEGNERIA\\
 Corso di Laurea in Ingegneria Informatica }}
@@ -120,11 +128,15 @@ Anno Accademico 2022/2023 }}%inserire l'anno accademico a cui si è iscritti
 \raggedleft                             %incolonna la scrittura a destra
 \large                                  %aumenta la grandezza del carattere
                                         %   a 14pt
-%\em                                     %emfatizza (corsivo) il carattere
-%Questa \`e la \textsc{Dedica}:\\
-%ognuno pu\`o scrivere quello che vuole, \\
-%anche nulla \ldots                      %\ldots lascia tre puntini
+
+\afterpage{\blankpage}
+\newpage
+\em                                     %emfatizza (corsivo) il carattere
+Questa \`e la \textsc{Dedica}:\\
+ognuno pu\`o scrivere quello che vuole, \\
+anche nulla \ldots                      %\ldots lascia tre puntini
 \newpage                                %va in una pagina nuova
+\afterpage{\blankpage}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage{\pagestyle{empty}\cleardoublepage}%non numera l'ultima pagina sinistra
@@ -132,9 +144,11 @@ Anno Accademico 2022/2023 }}%inserire l'anno accademico a cui si è iscritti
 % \pagenumbering{roman}    %serve per mettere i numeri romani
 
 \tableofcontents
-
+%\listoffigures                          %crea l'elenco delle figure
 \begin{otherlanguage}{british}
 \begin{abstract}
+  \addcontentsline{toc}{chapter}{Abstract}
+
     Il tema su cui verte questa tesi sono le attività svolte durante il tirocinio curricolare presso \emph{CNR-ISMN (Istitituto per lo Studio dei Materiali Nanostrutturati)}. \\
     L'obbiettivo del progetto svolto è stato quello di mettere in correllazione le propietà chimico/ficiche di campioni di grafene, provenienti da simulazioni al calcolatore, con
     i \emph{difetti} e \emph{imperfezioni} presenti nella loro struttura atomica.\\
@@ -154,24 +168,25 @@ Anno Accademico 2022/2023 }}%inserire l'anno accademico a cui si è iscritti
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Introduzione
                                         %   nell'indice
 % \addcontentsline{toc}{chapter}{Introduzione}
-L'Intelligenza Artificile e in particolare i modelli di Machine Learning basati sulle reti neurali nei tempi recenti si sono dimostrate tecnologie pervasive in quasi tutti gli ambiti di ricerca dimostrandosi estremamente flessibili e applicabili ai domini più eternogenei e disparati. \\
+\addcontentsline{toc}{chapter}{Introduzione}
+L'Intelligenza Artificile e in particolare i modelli di Machine Learning basati sulle reti neurali nei tempi recenti si sono dimostrate tecnologie pervasive in quasi tutti gli ambiti di ricerca, dimostrandosi estremamente flessibili e applicabili ai domini più eternogenei e disparati. \\
 
 Non fa eccezione la ricerca sui materiali innovativi come quella sul grafene, un materiale composto da un singolo strato di atomi di carbonio posizionati in conformazione esagonale dando forma ai caratteristici reticoli.
 Le propietà e caratteristiche eccezionali di questo materiale derivano da molte delle sue unicità, quali per esempio il suo sottilissimo spessore lungo solo un atomo e di conseguenza il suo peso estremamente contenuto. \\
 Queste propietà \emph{bidimensionali} conferiscono al materiale resistenza, flessibilità e leggerezza senza concorrenza tra gli altri materiali tradizionali. \\
 Le possibili applicazioni di un simile materiale sono anchesse estramamente multi-dominio e spaziano dai supercondensatori, semiconduttori, nonchè per usi strutturali e tanto altro. 
 Per la natura stessa del materiale, la produzione su scala industriale risulta tutt'altro che banale e i costi elevati. \\
-Spesso durante la produzione non si riesce ad ottenere un campione di grafene totalmente privo di impurità. E' inoltre comune trovare danni strutturali sul reticolo atomico con conseguente presenza di cavità sullo stesso. \\
+Spesso durante la produzione non si riesce ad ottenere un campione di grafene totalmente privo di impurità. E' inoltre comune trovare danni strutturali sul reticolo atomico con conseguente presenza di cavità e imperfezioni sullo stesso. \\
 
-L'idea del progetto quindi si è basata sull'analisi di campioni di grafene difettato derivanti da simulazioni. Grazie alla conoscenza a priori delle propietà fisiche di ogni campione, originariamente calcolate dalle simulazioni stesse è stato possibile mettere in correlazione la topologia e i tratti geomtrici dei suddetti difetti con le propietà del materiale stesso.\\
+L'idea del progetto quindi si è basata sull'analisi di campioni di grafene difettato derivanti da simulazioni al calcolatore. Grazie alla conoscenza a priori delle propietà fisiche di ogni campione, originariamente calcolate dalle simulazioni stesse è stato possibile mettere in correlazione la topologia e i tratti geometrici dei suddetti difetti con le propietà del materiale stesso.\\
 In primo luogo, prima di andare ad analizzare le geometrie dei vari difetti è risultato utile individuarli automaticamente. 
-Questo è stato fatto addestrando la rete neurale YOLOv8, potente modello di Object Detection noto per la sua velocità di inferenza e per le elevate performace otenibili dopo un training relativaemnte breve e con campioni limitati.\\
-Una volta individuate ed estratte dallo sfondo le regioni di interesse si è proceduto con l'analisi geomtrica e topologica dei difetti con la libreria di Computer Vision OpenCV.
+Questo è stato fatto addestrando la rete neurale YOLOv8, potente modello di Object Detection noto per la sua velocità di inferenza e per le elevate performace ottenibili dopo un training relativaemnte breve e con campioni limitati.\\
+Una volta individuate ed estratte dallo sfondo le regioni di interesse si è proceduto con l'analisi geometrica e topologica dei difetti con la libreria di Computer Vision OpenCV.
 Questa libreria multipiattaforma inizialmente sviluppata da Intel e divenuta successivamente open-source offre numerose funzioni e metodi per la manipolazione e analisi di immagini, nel caso di questo progetto ci si è interfacciati ad essa tramite Python. \\
 E' stato quindi possibile estrapolare tratti geometrici e topologici dai difetti in questione calcolandone dai tratti più semplici come area e perimetro fino a quelli più sofisticati quali eccenticità, circolarità e molto altro.\\
-I dati sono stati integrati in un dataframe \emph{Pandas}, grazie ad esso sono state fatte analisi sulle correlazioni fra i parametri stessi. Trovare parametri molto correlati fra loro è importante per evitare di selezionare valori ridondanti nell'addestramento della rete predittiva.\\
-
-(Addestramento rete predittiva -- work in progress)
+I dati sono stati integrati in un dataframe \emph{Pandas}, grazie ad esso sono state fatte analisi sulle correlazioni fra i parametri stessi. Trovare parametri molto correlati fra loro è importante per evitare di selezionare valori ridondanti nell'addestramento del modello predittivo.\\
+Dopo avere scelto le features più significative si è andati quindi ad addestrare un regressore ad alberi decisionali con lo scopo di predire il valore numerico dell'energia totale di un campione a partire dalle propietà geometriche selezionate. Il predittore si è dimostrato adatto al problema richiesto, con una precisione delle predizioni soddifacente.
+Infine si è andati ad esplorare la possibilità di generalizzare l'intero progetto all'analisi di immagini reali derivanti dalla microscopia, impostando eventuali estesioni future con conseguenti possibili ricadute industriali dello strumento. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 \clearpage{\pagestyle{empty}\cleardoublepage}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
@@ -180,7 +195,7 @@ I dati sono stati integrati in un dataframe \emph{Pandas}, grazie ad esso sono s
 INDICE}}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 % \clearpage{\pagestyle{empty}\cleardoublepage}
-% \listoffigures                          %crea l'elenco delle figure
+
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % \listoftables                           %crea l'elenco delle tabelle
@@ -1164,7 +1179,39 @@ Infine si è andati a calcolare l'indice $R^2$, che si attesta su 0.97, molto pr
     0.9711437904543666
 \end{verbatim}
 Da questo valore possiamo concludere costatando che il modello è molto preciso nella predizione del valore cercato.
+\subsection{Sviluppi futuri ed estensione ad immagini reali}
+Questo progetto si è dimostrato adatto alla predizione della total energy su immagini derivanti da campioni simulati di nanografene. Questo lavoro può essere visto come un esperimento di fattibilità preliminare che pone le basi per una eventuale estensione a immagini reali. 
+Infatti, se fosse possibile applicare le metodologie usate in questo elaborato su generiche immagini di microscopia di nanografene, tenendo conto degli opportuni valori di scala sarebbe possibile ottenere in linea teorica un prodotto interessante a livello industriale e applicabile sul campo, 
 
+Come prevedibile questa generalizzazione non è banale e presenta numerose difficoltà in varie parti del progetto. 
+La problematica più evidente si pone nel primo modulo del progetto, ovvero nel riconoscimento dei difetti tramite YOLO. Il suddetto modello infatti è stato addestrato su un dataset di grafene simulato e non su generiche immagini di microscopia. In particolare le immagini su cui è stato svolto l'addestramento sono molto omogenee, a bassa risulozione, tutte della stessa dimensione e scala. Inoltre sono state private al massimo del rumore grazie al lavoro di postprocessing applicato su di esse. Le imamgini di microsopia invece, possono essere fortemente eterogenee tra di loro, con molto più rumore, contenuto informativo più alto e scale diverse. In generale quindi sono molto differenti da quelle su cui YOLO è stato addestrato.
+
+Il problema potrebbe essere risolto andando a ripetere l'addestramento per ogni dataset di microscopia che si vuole analizzare, con tutto il lavoro di labeling manuale che ne consegue. Questa soluzione è sicuramente poco attraente perchè rinuncia alla generalità dello strumento e alla sua appetibilità applicazione in scenari industriali,
+
+Un'altro approccio, per superare questo problema potrebbe essere quello di cercare di trasformare le immagini di microscopia in copie il più possibili simili a quelle su cui è stato fatto il training di YOLO. 
+Nella coppia di immagini sottostante viene mostrato uno di questi tentativi atto a ridurre il rumore e trasformare un'immagine reale in una versione il più possibile simile a quelle consociute da YOLO. Si è sempre utilizzato OpenCV per manipolare le immagini.  
+
+\begin{figure}[h]
+\begin{minipage}[t]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{graphene_real_1.png}
+
+(a) Immagine reale al miscoscopio di grafene 
+\end{minipage}%
+\hfill\vrule\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{graphene_real_1_red.png}
+
+(b) Immagine processata 
+\end{minipage}
+\caption{Postprocessing di un'immagine reale di campione di grefene}
+\end{figure}
+
+Questa metodologia pur avendo dato risultati misti si dimostra promettente e lascia spazio per ulteriore lavoro ed estensioni future. 
+
+\chapter*{Conclusioni}    
+  \addcontentsline{toc}{chapter}{Conclusioni}
 
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%per fare le conclusioni

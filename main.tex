@@ -6,6 +6,8 @@
 \usepackage{zref-savepos,graphicx}
 \usepackage{lipsum}
 \usepackage{listings}
+\usepackage{hyperref}
+
 
 
 % \filltopageendgraphics[<options>]{<file>}
@@ -158,11 +160,11 @@ Isaac Asimov
   \addcontentsline{toc}{chapter}{Abstract}
 
     Il tema su cui verte questa tesi sono le attività svolte durante il tirocinio curricolare presso \emph{CNR-ISMN (Istitituto per lo Studio dei Materiali Nanostrutturati)}. \\
-    L'obbiettivo del progetto svolto è stato quello di mettere in correllazione le propietà chimico/ficiche di campioni di grafene, provenienti da simulazioni al calcolatore, con
+    L'obbiettivo del progetto svolto è stato quello di mettere in correllazione le proprietà chimico-fisiche di campioni di grafene, provenienti da simulazioni al calcolatore, con
     i \emph{difetti} e \emph{imperfezioni} presenti nella loro struttura atomica.\\
     I sudetti \emph{difetti} infatti si presentano come dei \emph{vuoti} all'interno della struttura atomica, queste \emph{cavità} quindi sono state individuate e analizzate automaticamente utilizzando vari strumenti, fra cui la rete neurale di Object Detection \emph{YOLOv8} e la libreria di Computer Vision \emph{OpenCV}.
-    Grazie a questi metodi è stato possibile andare ad analizzare automaticamente i difetti di ogni campione e cercare quindi eventuali correlazioni con le propietà fisiche del campione stesso. 
-    Si è andati quindi a sviluppare una modello predittivo basato su alberi decisonali (Gradient Boosting) in grado di predire propietà chimico-fisiche a partire dalla conformazione strutturale e topologica dei campioni.
+    Grazie a questi metodi è stato possibile andare ad analizzare automaticamente i difetti di ogni campione e cercare quindi eventuali correlazioni con le proprietà fisiche del campione stesso. 
+    Si è andati quindi a sviluppare un modello predittivo basato su alberi decisonali (Gradient Boosting) in grado di predire proprietà chimico-fisiche a partire dalla conformazione strutturale e topologica dei campioni.
 \end{abstract}
 \end{otherlanguage}
 
@@ -180,20 +182,20 @@ Isaac Asimov
 L'Intelligenza Artificile e in particolare i modelli di Machine Learning basati sulle reti neurali nei tempi recenti si sono dimostrate tecnologie pervasive in quasi tutti gli ambiti di ricerca, dimostrandosi estremamente flessibili e applicabili ai domini più eternogenei e disparati. \\
 
 Non fa eccezione la ricerca sui materiali innovativi come quella sul grafene, un materiale composto da un singolo strato di atomi di carbonio posizionati in conformazione esagonale dando forma ai caratteristici reticoli.
-Le propietà e caratteristiche eccezionali di questo materiale derivano da molte delle sue unicità, quali per esempio il suo sottilissimo spessore lungo solo un atomo e di conseguenza il suo peso estremamente contenuto. \\
-Queste propietà \emph{bidimensionali} conferiscono al materiale resistenza, flessibilità e leggerezza senza concorrenza tra gli altri materiali tradizionali. \\
+Le proprietà e caratteristiche eccezionali di questo materiale derivano da molte delle sue unicità, quali per esempio il suo sottilissimo spessore lungo solo un atomo e di conseguenza il suo peso estremamente contenuto. \\
+Queste proprietà \emph{bidimensionali} conferiscono al materiale resistenza, flessibilità e leggerezza senza concorrenza tra gli altri materiali tradizionali. \\
 Le possibili applicazioni di un simile materiale sono anchesse estramamente multi-dominio e spaziano dai supercondensatori, semiconduttori, nonchè per usi strutturali e tanto altro. 
 Per la natura stessa del materiale, la produzione su scala industriale risulta tutt'altro che banale e i costi elevati. \\
 Spesso durante la produzione non si riesce ad ottenere un campione di grafene totalmente privo di impurità. E' inoltre comune trovare danni strutturali sul reticolo atomico con conseguente presenza di cavità e imperfezioni sullo stesso. \\
 
-L'idea del progetto quindi si è basata sull'analisi di campioni di grafene difettato derivanti da simulazioni al calcolatore. Grazie alla conoscenza a priori delle propietà fisiche di ogni campione, originariamente calcolate dalle simulazioni stesse è stato possibile mettere in correlazione la topologia e i tratti geometrici dei suddetti difetti con le propietà del materiale stesso.\\
+L'idea del progetto quindi si è basata sull'analisi di campioni di grafene difettato derivanti da simulazioni al calcolatore. Grazie alla conoscenza a priori delle proprietà fisiche di ogni campione, originariamente calcolate dalle simulazioni stesse è stato possibile mettere in correlazione la topologia e i tratti geometrici dei suddetti difetti con le proprietà del materiale stesso.\\
 In primo luogo, prima di andare ad analizzare le geometrie dei vari difetti è risultato utile individuarli automaticamente. 
 Questo è stato fatto addestrando la rete neurale YOLOv8, potente modello di Object Detection noto per la sua velocità di inferenza e per le elevate performace ottenibili dopo un training relativaemnte breve e con campioni limitati.\\
 Una volta individuate ed estratte dallo sfondo le regioni di interesse si è proceduto con l'analisi geometrica e topologica dei difetti con la libreria di Computer Vision OpenCV.
 Questa libreria multipiattaforma inizialmente sviluppata da Intel e divenuta successivamente open-source offre numerose funzioni e metodi per la manipolazione e analisi di immagini, nel caso di questo progetto ci si è interfacciati ad essa tramite Python. \\
-E' stato quindi possibile estrapolare tratti geometrici e topologici dai difetti in questione calcolandone dai tratti più semplici come area e perimetro fino a quelli più sofisticati quali eccenticità, circolarità e molto altro.\\
+E' stato quindi possibile estrapolare tratti geometrici e topologici dai difetti in questione calcolandoli  partire dai tratti più semplici come area e perimetro fino a quelli più sofisticati quali eccenticità, circolarità e molto altro.\\
 I dati sono stati integrati in un dataframe \emph{Pandas}, grazie ad esso sono state fatte analisi sulle correlazioni fra i parametri stessi. Trovare parametri molto correlati fra loro è importante per evitare di selezionare valori ridondanti nell'addestramento del modello predittivo.\\
-Dopo avere scelto le features più significative si è andati quindi ad addestrare un regressore ad alberi decisionali con lo scopo di predire il valore numerico dell'energia totale di un campione a partire dalle propietà geometriche selezionate. Il predittore si è dimostrato adatto al problema richiesto, con una precisione delle predizioni soddifacente.
+Dopo avere scelto le features più significative si è andati quindi ad addestrare un regressore ad alberi decisionali con lo scopo di predire il valore numerico dell'energia totale di un campione a partire dalle proprietà geometriche selezionate. Il predittore si è dimostrato adatto al problema richiesto, con una precisione delle predizioni soddifacente.
 Infine si è andati ad esplorare la possibilità di generalizzare l'intero progetto all'analisi di immagini reali derivanti dalla microscopia, impostando eventuali estesioni future con conseguenti possibili ricadute industriali dello strumento. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 \clearpage{\pagestyle{empty}\cleardoublepage}
@@ -217,10 +219,10 @@ INDICE}}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 \pagenumbering{arabic}                  %mette i numeri arabi
 La disciplina di ricerca sull'Intelligenza artificale pone le sue radici già a metà del XX secolo. L'obbiettivo generale di allora era quello di sviluppare macchine capaci di eseguire mansioni tipicamente attribute e svolte da umani. 
-Con il passare dei decenni l'obbiettivo è rimasto lo stesso ma si sono esplorate numerose vie e tecniche differenti anche molto diverse tra loro, fra cui la sottocatgoria denominata come \emph{Machine Learning}. Quest'ultima è l'insieme delle tecniche e dei metodi statistici con i quali si va migliorare un algoritmo che ha come obbiettivo quello di identificare pattern nei dati. 
-Questi metodi si sono riveati particolarmente utili in quei campi dove è notoriamente difficile se non impossibile sviluppare soluzioni tramite algoritmi tradizionali, per esempio il riconoscimento vocale e di immagini.\\
+Con il passare dei decenni l'obbiettivo è rimasto lo stesso ma si sono esplorate numerose vie e tecniche differenti anche molto diverse tra loro, fra cui la sottocategoria denominata come \emph{Machine Learning}. Quest'ultima è l'insieme delle tecniche e dei metodi statistici con i quali si va migliorare un algoritmo che ha come obbiettivo quello di identificare pattern nei dati. 
+Questi metodi si sono rivelati particolarmente utili in quei campi dove è notoriamente difficile se non impossibile sviluppare soluzioni tramite algoritmi tradizionali, per esempio il riconoscimento vocale e di immagini.\\
 Negli ultimi decenni con il rapido avanzamento della velocità di calcolo a disposizione queste tecnologie hanno ricevuto una notevole accellerazione nello sviluppo e nei risultati raggiunti. 
-In particolare ha preso sempre più popolarità l'approcio denomicanto come Deep Learning, ovvero quei metodi basati su reti neurali artificiali su più \emph{strati}. Ognuno di questi strati estrapola gerarchie di inforamzioni di un certo livello definite a loro volta su quelle di livello inferiore calcolate dagli strati precedenti.
+In particolare ha preso sempre più popolarità l'approccio denomicanto come Deep Learning, ovvero quei metodi basati su reti neurali artificiali su più \emph{strati}. Ognuno di questi strati estrapola gerarchie di informazioni di un certo livello definite a loro volta su quelle di livello inferiore calcolate dagli strati precedenti.
 \section{Reti neurali}
 Una rete neurale consiste in un insieme di \emph{neuroni} (detti anche \emph{nodi}) collegati fra loro, che concorrono per risolvere un problema.
 Ogni nodo può essere pensato come una semplice funzione di tante variabili di ingresso quanti sono i nodi collegati ad esso. \\
@@ -304,7 +306,7 @@ Nelle reti più moderne è sempre più utilizzata la RELU, ovvero la funzione re
 \begin{equation}
      f(x)=\max(0,x)
 \end{equation}
-Quest'ultima si è dimostrata come la più efficace nelle reti di apprendimento profondo. Fra i suoi vantaggi abbiamo l'attivaazione scarsa, infatti essa si attiva solo nella metà dei campioni di una rete inizializzata casualmente inoltre si hanno meno problemi in fase di discesa del gradiente nella fase di adestramento rispetto alla funzione Sigmoide dei quali parleremo più avanti nel capitolo.
+Quest'ultima si è dimostrata come la più efficace nelle reti di apprendimento profondo. Fra i suoi vantaggi abbiamo l'attivaazione scarsa, infatti essa si attiva solo nella metà dei campioni di una rete inizializzata casualmente inoltre si hanno meno problemi in fase di discesa del gradiente nella fase di addestramento rispetto alla funzione Sigmoide della quale parleremo più avanti nel capitolo.
 \begin{figure}[h]
 \begin{minipage}[t]{0.49\linewidth}
 \centering
@@ -327,8 +329,8 @@ Esistono poi funzioni di attivazione più sofisticate, come la Softmax.
 Quest'ultima è spesso utile nelle reti classificatrici multiclasse. In questi casi i nodi del layer di output rappesentano le probabilità di classificazione per ciascuna classe. In questi casi è cruciale che la sommatoria dei valori di attivazione dei nodi di output sia uguale a 1.
 \newpage
 Nel caso generale abbiamo almeno un layer di nodi di input, uno di output e acluni layer intermedi detti \emph{hidden-layer}.
-In una rete \emph{fully-connected} tutti i nodi nell n-esimo layer sono connessi a tutti i nodi dell'n-esimo layer. \\
-Le feature dei vari pattern estrapolati dalla rete vengono calcolati dai nodi dei layer interni i quali estrapolano propietà sempre più astratte e di alto livello quanto più è avanzata la posizione del layer in cui risiedono. \\
+In una rete \emph{fully-connected} tutti i nodi nell n-esimo layer sono connessi a tutti i nodi dell'n-1-esimo layer. \\
+Le feature dei vari pattern estrapolati dalla rete vengono calcolati dai nodi dei layer interni i quali estrapolano proprietà sempre più astratte e di alto livello quanto più è avanzata la posizione del layer in cui risiedono. \\
 Il vettore dei valori di attivazione di un \emph{hidden-layer} può essere espresso come il prodotto tra la matrice dei pesi del layer in questione e il vettore di attivazione del layer precedente più il vettore dei bias, tutto dentro la funzione di attivazione scelta per questo layer.
 
 \begin{figure}[h]
@@ -376,8 +378,8 @@ In notazione compatta abbiamo:
     \end{equation}
 
 In generale non tutti le reti sono \emph{fully-connected}, spesso si opta per una soluzione ibrida dove si utilizzano strati con architetture diverse per risolvere un problema. 
-Un esempio di un'altra archiettura di rete sono le reti ricorsive (RNN), queste hanno dei collegamenti in retroazione capaci di mantenere uno \emph{stato} e quindi avere \emph{memoria}. Mantenere una memoria è cruciale quando gli imput passati in precedenza nella rete in relazione con quelli attuali hanno un significato semantico importante, come per esempio nell'analisi di un video o per un riconoscimento vocale partendo da un file audio.
-Un'altro tipo di rete molto importante e centrale in questo lavoro di tesi sono le reti convoluzionali CNN. Esse si basano su filtri convoluzionali che collegano gli \emph{hidden-layer}.\\ Queste reti riescono a estrapolare pattern grafici a partire da un'immagine fornita come imput, per esempio utilizzando il valore numerico associato ad ogni pixel in un'immagine in scala di grigi.\\
+Un esempio di un'altra archiettura di rete sono le reti ricorsive (RNN), queste hanno dei collegamenti in retroazione capaci di mantenere uno \emph{stato} e quindi avere \emph{memoria}. Mantenere una memoria è cruciale quando gli input passati in precedenza nella rete in relazione con quelli attuali hanno un significato semantico importante, come per esempio nell'analisi di un video o per un riconoscimento vocale partendo da un file audio.
+Un'altro tipo di rete molto importante e centrale in questo lavoro di tesi sono le reti convoluzionali CNN. Esse si basano su filtri convoluzionali che collegano gli \emph{hidden-layer}.\\ Queste reti riescono a estrapolare pattern grafici a partire da un'immagine fornita come input, per esempio utilizzando il valore numerico associato ad ogni pixel in un'immagine in scala di grigi.\\
 Questo tipo di reti sono state usate nell'ambito di questo progetto per identificare automaticamente le aree di interesse dove sono presenti i difetti del grafene. Di queste reti e in particolare di YOLOv8 ne parleremo nel dettaglio nel prossimo capitolo.
 
 \newpage
@@ -385,13 +387,13 @@ Questo tipo di reti sono state usate nell'ambito di questo progetto per identifi
 \subsection{Funzione di costo}
 Uno dei parametri più importanti nonchè alla base degli algoritmi di apprendimento è la cosidetta \emph{funzione di costo}.
 Ne esistono di vari tipi ma intuitivamente essa è una funzione reale che prende come variabili i parametri del sistema $C(\omega,b)$ e fornisce un'indicazione su quanto bene la nostra rete stia performando sui campioni che gli vengono dati.\\
-Questa valutazione è possibile confrontando i valori $y(x)$ che la rete produce per gli imput $x$, conoscendo il vettore $a(x)$ dei risultati attesi per gli imput in questione.
-Una delle più utilizzate è lo \emph{scarto quadratico medio}, essa fa la media aritmetica del quadrato dell'errore di output rispetto a ogni imput.
+Questa valutazione è possibile confrontando i valori $y(x)$ che la rete produce per gli input $x$, conoscendo il vettore $a(x)$ dei risultati attesi per gli input in questione.
+Una delle più utilizzate è lo \emph{scarto quadratico medio}, essa fa la media aritmetica del quadrato dell'errore di output rispetto a ogni input.
 \begin{equation}
     C(\omega,b) = \frac{1}{n} \sum_{n=1}^{n} (y(x_{i}) - a_{i}))^2
 \end{equation}
 Al variare dei numerosi parametri $(W,b)$ la performance della rete varia e così anche la funzione di costo. In particolare più il valore si avvicina a zero e più la rete sta performando bene. \\
-Risulata quindi chiaro che minimizzare la funzione di costo $C(\omega,b)$ è il fulcro del problema dell'addestramento delle reti neurali.
+Risulta quindi chiaro che minimizzare la funzione di costo $C(\omega,b)$ è il fulcro del problema dell'addestramento delle reti neurali.
 \subsection{Discesa del gradiente}
 Siamo quindi di fronte a un problema di ottimizzazione di una funzione reale in tante variabili quanti sono i parametri della rete, dove si cerca quindi un minimo della funzione stessa.
 Intuitivamente l'inverso del gradiente ci da un'indicazione \emph{spaziale} su dove dobbiamo \emph{muoverci} per avvicinarci il più velocemente possibile al più vicino minimo locale, quindi per quale vettore di valori dobbiamo sommare i nostri parametri $(\omega,b)$ per migliorarli. \\
@@ -456,13 +458,13 @@ Questo database contiene 60.000 immagini 28x28 pixel in scala di grigi per la fa
 \end{figure}
 La valutazione di ogni modello di reti neurali non deve essere effettuata sugli stessi dati di addestramento, ma su altri che il modello non ha mai visto prima. Ciò che si vuole valutare infatti è la capacità acquisita dal sistema nel riconoscimento di pattern generali estrapolabili da campioni generici. Se utilizzassimo gli stessi dati usati nell'adestramento per valutare la rete, rischieremmo di incorrere nella possibilità che la rete sia performate nell'analisi dei dati di training ma incapace di generalizzare su dati generici mai visti prima.   \\
 \newpage
-L'imput layer è composto da tanti nodi quanti sono i pixel dell'immagine, ognuno di questi prende il valore numerico in scala di grigi del pixel in questione.
-L'imput layer quindi, si deve pensare come la matrice di pixel dell'immagine iniziale. Nel caso avessimo un'immagine a colori, per esempio in formato RGB, al posto di un imput layer sotto forme di matrice, ne avremo 3, una per ogni colore (rosso, verde, blu), lavoreremo quindi con tensori.\\
+L'input layer è composto da tanti nodi quanti sono i pixel dell'immagine, ognuno di questi prende il valore numerico in scala di grigi del pixel in questione.
+L'input layer quindi, si deve pensare come la matrice di pixel dell'immagine iniziale. Nel caso avessimo un'immagine a colori, per esempio in formato RGB, al posto di un input layer sotto forme di matrice, ne avremo 3, una per ogni colore (rosso, verde, blu), lavoreremo quindi con tensori.\\
 \newpage
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{pixel-values.png}
-\caption{Imput layer di una CNN per analisi immagine}
+\caption{input layer di una CNN per analisi immagine}
 \end{figure}
 Questo problema, come in tutti i casi in cui si cercano oggetti e/o pattern all'interno di immagini, si risolve impiegando strati convoluzionali. \\
 Questi strati di neuroni sono composti da \emph{filtri} che \emph{scorrendo} sui valori di attivazione dei layer prededenti computano operazioni di convoluzione estrapolando tratti \emph{grafici} dalle immagini.\\
@@ -475,18 +477,18 @@ In generale ci aspettiamo che layer convoluzionali di strati più avanzati estra
 \includegraphics[width=\linewidth]{digit_arch.png}
 \caption{Modello di CNN per riconoscimento di cifre scritte a mano}
 \end{figure}
-Come mostrato in figura, spesso fra un layer convoluzionale e il successivo sono presenti dei layer di altra natura, come quelli di \emph{pooling}. Ne esistono di vari tipi ma anchessi si comportano come dei filtri che scorrono sulle immagini prodotte dai filtri convoluzionali precedenti. Il loro scopo è quello di diminuire le dimensione delle immagini prodotte mantenedo parte dell'informazone grafica, magari enfatizzando delle strutture geometriche piuttosto che altre.
+Come mostrato in figura, spesso fra un layer convoluzionale e il successivo sono presenti dei layer di altra natura, come quelli di \emph{pooling}. Ne esistono di vari tipi ma anchessi si comportano come dei filtri che scorrono sulle immagini prodotte dai filtri convoluzionali precedenti. Il loro scopo è quello di diminuire le dimensioni delle immagini prodotte mantenedo parte dell'informazone grafica, magari enfatizzando delle strutture geometriche piuttosto che altre.
 
 Gli ultimi layer invece tornano ad essere \emph{fully-connected} e vengono chiamati \emph{DL, Dense Layers.}
-In particolare l'ultimo layer si occupa della classificazione della cifra data come input. Come spiegato in precedenza in questi casi si utilizzano funzioni di attivazione con un comportamento similare alla Softmax. La sommatoria dell'attivaizone dei 10 nodi dell'output layer deve essere infatti pari a 1, dato che ciascunio dei valori di attivazione rappresenta la probabilità che l'immagine di imput corrisponda alla cifra simboleggaita dal suddetto nodo.\\
+In particolare l'ultimo layer si occupa della classificazione della cifra data come input. Come spiegato in precedenza in questi casi si utilizzano funzioni di attivazione con un comportamento similare alla Softmax. La sommatoria dell'attivaizone dei 10 nodi dell'output layer deve essere infatti pari a 1, dato che ciascunio dei valori di attivazione rappresenta la probabilità che l'immagine di input corrisponda alla cifra simboleggiata dal suddetto nodo.\\
 \newpage
-In conclusione possiamo dire che l'applicazione di una CNN a questo tipo di problema si rivela la scelta migliore, in generale risulta la scelta più performante in tutti i tipi di probelmi dove l'imput è composto da un'immagine.\\
+In conclusione possiamo dire che l'applicazione di una CNN a questo tipo di problema si rivela la scelta migliore, in generale risulta la scelta più performante in tutti i tipi di probelmi dove l'input è composto da un'immagine.\\
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{cnn_perf.png}
 \caption{Modello di CNN per riconoscimento di cifre scritte a mano}
 \end{figure}
-In questo caso di studio già dopo una poche decine di epoche la precisione della classificazione si avvicina al 100\%.
+In questo caso di studio già dopo poche decine di epoche la precisione della classificazione si avvicina al 100\%.
 Proseguire oltre non è necessario e anzi può risultare controproducente in quanto si potrebbe andare incontro a problemi di overfitting.
 Con overfitting si intende ls situazione in cui il modello si adatta troppo ai dati di training perdendo generalità e capacità di astrarre su dataset mai visti prima. \\
 
@@ -494,13 +496,13 @@ Con overfitting si intende ls situazione in cui il modello si adatta troppo ai d
 {\let\clearpage\relax \chapter{Object Detection, YOLO e applicazioni su campioni di nano grafene}}
 
 In questo capitolo andremo a introdurre la classe di problemi di visione artificiale denominata come Object Detection. Ovvero le soluzioni e i metodi che puntano a individuare, classificare o comunque riconoscere oggetti e/o pattern all'interno di un'immagine o un video. \\
-Questa clase di problemi, come accennato nel capitolo precedete si è rivelata molto adatta all'impiego delle CNN (Convolutional Neural Networks), che grazie alla loro capacità di riconiscemnto ed estrapolazione di fetaures grafiche dalle immagini riescono a ottenere ottime performance su questa classe di problemi.\\
+Questa classe di problemi, come accennato nel capitolo precedete si è rivelata molto adatta all'impiego delle CNN (Convolutional Neural Networks), che grazie alla loro capacità di riconoscimento ed estrapolazione di fetaures grafiche dalle immagini riescono a ottenere ottime performance su questa classe di problemi.\\
 Dopo un'introduzione all'architttura delle CNN, ci focalizzeremo sullo studio di \emph{YOLO (You Only Look Once)}, una CNN allo stato dell'arte per quanto riguarda l'Object Detection, particolarmente nota per il basso tempo di inferenza e per questo particolarmente utile nelle applicazioni in tempo reale.\\
 Analizzeremo inoltre l'applicazione di questo modello al caso di studio del progetto su cui si basa questa tesi, ovvero sul riconoscimento automatico di difetti su campioni di nano grafene, riportando metodologia e risultati.
 \section{Reti neurali convoluzionali}
 La struttura delle CNN è composta da vari tipi di layer di natura diversa, come i layer convoluzionali, i pooling layer e i fully-connected layers. 
 Ogni tipologia di layer svolge ruoli e opera in modo diverso rispetto agli altri al fine di raggiungere l'obbiettivo preposto.
-\\L'architettura generale può essere espressa come come nella figura sottostante.\\
+\\L'architettura generale può essere espressa come nella figura sottostante.\\
 
 \begin{figure}[h]
 \centering
@@ -513,14 +515,14 @@ Nonostante questa semplificazione è importante sapere che il tutto può essere 
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{greyscaletorgb.png}
-\caption{Passaggio da matrice di imput in scala di grigi a tensore per immagine RGB}
+\caption{Passaggio da matrice di input in scala di grigi a tensore per immagine RGB}
 \end{figure}
 
 In questa sezione andremo ad analizzare un tipo di layer alla volta, iniziando dai layer convoluzionali.
 \subsection{Layer convoluzionali}
 I componenti fondamentali dei layer convolzuonali non sono più vettori di neuroni ma fetaure map (matrici o tensori) computate da dei \emph{filtri} tramite operazioni di convoluzione discreta.
 Questi filtri si presentano come delle matrici di dimensione minore della matrice di input, il loro comportamento è quello di \emph{scorrere} su tutta l'immagine di partenza andando a creare un'altra matrice, di dimensione minore chiamata \emph{feature map.}
-L'operazione di convololuzione si può esprimere com la sommatoria del prodotto puntuale di ogni valore del filtro con i rispettivi valori nella matrice di partenza, secondo la posizione del filtro.
+L'operazione di convololuzione si può esprimere come la sommatoria del prodotto puntuale di ogni valore del filtro con i rispettivi valori nella matrice di partenza, secondo la posizione del filtro.
 \newpage
 In formule possiamo indicare l'attivazione di ogni nodo (pixel) della feature map come: 
 \begin{equation}
@@ -544,10 +546,10 @@ dove $o_{i,j}$ è l'attivazione dell'elemento della matrice di output, $\sigma$ 
 \end{minipage}
 \caption{Prime due iterazioni di convoluzione per la creazione di una feature map, con un filtro 3x3, no padding e stride 1}
 \end{figure}
-La feature map prodotta risulta più piccola dell'immagine di partenza, questo può essere un problema se si applicano numerose convoluzioni in sequenza andano quindi a ridurre sempre di più la dimensione delle immagini prodotte. Per evitare questo si può applicare la tecnica chiamata \emph{padding}, ovvero l'aggiunta a  posteriori di uno strato esterno alla matrice dell'immagine con valori nulli (\emph{zero padding}. Allo scorrere del filtro quindi si otterrà un'immagine della stessa dimensione di partenza.\\
+La feature map prodotta risulta più piccola dell'immagine di partenza, questo può essere un problema se si applicano numerose convoluzioni in sequenza andano quindi a ridurre sempre di più la dimensione delle immagini prodotte. Per evitare questo si può applicare la tecnica chiamata \emph{padding}, ovvero l'aggiunta a  posteriori di uno strato esterno alla matrice dell'immagine con valori nulli (\emph{zero padding}). Allo scorrere del filtro quindi si otterrà un'immagine della stessa dimensione di partenza.\\
 Lo \emph{stride} invece è la dimensione dello \emph{step} del filtro durante lo scorrimento, solitamente è pari a 1, se lo si aumentasse si otterebbero anche in questo caso feature map più piccole dell'originale.
 
-Questi filtri nei primi layer sono in grado di estrarre tratti di basso livello come i bordi e contorni degli oggetti. In generale sono molto adatti per enfatizzazione contorni di oggetti sull'immagine di partenza in modo da rendere più facile le operazioni dei layer successivi.
+Questi filtri nei primi layer sono in grado di estrarre tratti di basso livello come i bordi e contorni degli oggetti. In generale sono molto adatti per enfatizzare contorni di oggetti sull'immagine di partenza in modo da rendere più facili le operazioni dei layer successivi.
 Nell'immagine successiva si mostrano varie feature map derivate da diversi filtri diversi. E' chiaro come l'operazione di convoluzione applicata da specifici filtri sia in grado di mettere in risalto contorni diversi rispetto ad altri.
 \begin{figure}[h]
 \centering
@@ -556,7 +558,7 @@ Nell'immagine successiva si mostrano varie feature map derivate da diversi filtr
 \end{figure}
 Il risulatato dell'operazione lineare di convoluzione viene quindi passato per una funzione di attivazione non lineare come la ReLU, discussa nel capitolo precedente.\\
 
-I parametri fondamentali di apprendimento delle CNN sono propio i pesi (quindi gli elementi di matrice) dei filtri convoluzionali, la rete quindi apprenderà i valori ottimali per ciascun filtro allo scopo di estrapolare i pattern richeisti dal problema.
+I parametri fondamentali di apprendimento delle CNN sono proprio i pesi (quindi gli elementi di matrice) dei filtri convoluzionali, la rete quindi apprenderà i valori ottimali per ciascun filtro allo scopo di estrapolare i pattern richiesti dal problema.
 \\
 Invece, la dimensione e il numero dei filtri, il padding e lo stride sono \emph{iperparametri}, ovvero sono valori decisi a priori da colui che sta addestrando la rete, prima del processo di training stesso. 
 \newpage
@@ -583,7 +585,7 @@ Grazie a questo processo è possibile ridurre notevolemente i parametri di appre
 \subsection{Fully-connected layer }
 Gli ultimi layer della rete sono fully-connected, del tutto simili a quelli introdotti nel capitolo 1. \\
 Le feature map prodotte dall'ultimo layer convoluzionale/pooling vengono \emph{appiattite}, ovvero inserite in un semplice array unidimensionale (un vettore) e connessi a uno o più layer fully-connected. In questo layer per ogni connessione fra un neurone e l'altro c'è un peso, che la rete andrà ad apprendere durante l'addestramento, inoltre l'attivazione del singolo neurone viene passata tipicamente attraverso la ReLU. Le feature grafiche estratte dai layer precedenti sono finalmente mappate tramite i layer fully-connected al layer di output che rappresenta le probabilità di classificazione dell'immagine.
-\\Il layer di output viene anchesso passato per una funzione di attivazione, tipicamente diversa da quelle utilizzate dei dense-layer precedenti. Nel caso della classificazione multipla si usa la Softmax, nel caso della classificazione binaria la sigmoide.
+\\Il layer di output viene anchesso passato per una funzione di attivazione, tipicamente diversa da quelle utilizzate nei dense-layer precedenti. Nel caso della classificazione multipla si usa la Softmax, nel caso della classificazione binaria la sigmoide.
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{CNN_fully_connected.png}
@@ -598,7 +600,7 @@ Viene usata quindi una funzione di costo diversa da quella trattata nel primo ca
     C\left(p\|q\right)=-\sum _{i}^{M}p_{i}\log _{2}q_{i}
 \end{equation}
 All'interno del contesto di una predizione per un'immagine in input, $M$ rappresenta il numero di classi globali, $p_{i}$ rappresenta il valore della classe $i$ nella distribuzione dei valori attesi, e $q_{i}$ rappresenta il valore della classe $i$ nella distribuzione prodotta dalla rete (predizione).\\
-La formuala nel caso pratico dei problemi di clasificazione si semplifica in quanto i valori di $p_{i}$ sono sempre nulli per tutte le classi meno che per la classe effettivamente indicata nella fase di labeling per quell'immagine dove invece è pari a 1. \\ Quindi possiamo riscrivere la formula come: 
+La formula nel caso pratico dei problemi di clasificazione si semplifica in quanto i valori di $p_{i}$ sono sempre nulli per tutte le classi meno che per la classe effettivamente indicata nella fase di labeling per quell'immagine dove invece è pari a 1. \\ Quindi possiamo riscrivere la formula come: 
 \begin{equation}
     C\left(p\|q\right)=-\sum _{i}^{M}\log _{2}q_{i}
 \end{equation}
@@ -622,12 +624,12 @@ I problemi di Object Detection consistono nel volere individuare da un'immagine 
 \end{figure}
 
 Da un'immagine fornita come input a un modello di Object Detection, verrà prodotto un file di testo, dove in ogni riga, sarà riportata una predizione di un'oggetto presente nell'immagine.
-Per ciascuno degli oggetti individuati verrà riportato il numero identificativo della classe dell'oggetto (nel caso esista una sola classe il numero sarà sempre 0), la posizione dell'oggetto in formato xywh (posizione spaziale del centro e larghezza e altezza della box) oppure xyxy (coordinate rispettivamente dell'angolo superiore sinistro e inferiore destro della bounding box) e infine il valore di confidenza del modello per l'oggetto in questione. Questo ultimo parametro è particolarmente importante perchè permette a colui che utilizza o addestra la rete di ingorare predizioni al di sotto di un certo coeefficente di confidenza.\\ E' evidente come la scelta del coefficente di confidenza minimo sia molto delicata in quanto un valore alto riduce il numero di falsi positivi ma aumenta i falsi negativi e viceversa.\\
+Per ciascuno degli oggetti individuati verrà riportato il numero identificativo della classe dell'oggetto (nel caso esista una sola classe il numero sarà sempre 0), la posizione dell'oggetto in formato xywh (posizione spaziale del centro e larghezza e altezza della box) oppure xyxy (coordinate rispettivamente dell'angolo superiore sinistro e inferiore destro della bounding box) e infine il valore di confidenza del modello per l'oggetto in questione. Questo ultimo parametro è particolarmente importante perchè permette a colui che utilizza o addestra la rete di ignorare predizioni al di sotto di un certo coefficiente di confidenza.\\ E' evidente come la scelta del coefficiente di confidenza minimo sia molto delicata in quanto un valore alto riduce il numero di falsi positivi ma aumenta i falsi negativi e viceversa.\\
 Formalizzando i concetti appena citati, nella prossima sezione definiremo i parametri fondamentali per la valutazione di un modello di Object Detection.
 \subsection{Parametri di valutazione di un modello di Object Detection}
 Le due metriche fondamentali per analizzare la perfomance di un modello sono la \emph{Precision} e la \emph{Recall}.
-Rispettivamente, la \emph{Precision} fornisce un'indicazione sulla effettiva veredicità sulle predizioni fatte dal modello, la \emph{Recall} invece, ci da un'indicazione sul rapporto tra gli oggetti effetivamente individuati dalla rete e tutti quelli presenti nelle immagini.\\
-Queste due importanti metriche, mostrano la loro correlazione nella curva \emph{Precision Recall curve}.
+Rispettivamente, la \emph{Precision} fornisce un'indicazione sulla effettiva veredicità sulle predizioni fatte dal modello, la \emph{Recall} invece, ci da un'indicazione sul rapporto tra gli oggetti effettivamente individuati dalla rete e tutti quelli presenti nelle immagini.\\
+Queste due importanti metriche, mostrano la loro correlazione nella \emph{Precision Recall curve}.
 Formalizzando in formule abbiamo: 
 \begin{align*}
 Precision& = \frac{TP}{TP + FP}          &  Recall = \frac{TP}{TP + FN} \\
@@ -639,12 +641,12 @@ Da questa curva, integrando è possibile ricavare un parametro molto informativo
     AP = \int_{0}^{1} p(r)dr
 \end{equation}
 Ovvero l'integrale sotto la curva Precision-Recall $p(r)$. Questo è il parametro principale per valutare la qualità di un modello nel riconoscimento di una specifica classe, poichè valuta conteporanemante sia la Precision che la Recall. \\
-Se il modello ammette più classi, si calcola l'AP per ogni classe separatemnte e si fa la media del risultato, ottenendo la $mAP$.
+Se il modello ammette più classi, si calcola l'AP per ogni classe separatemente e si fa la media del risultato, ottenendo la $mAP$.
 \begin{equation}
     mAP = \frac{1}{n}\sum_{i=1}^{n}AP_{i}
 \end{equation}
 Dove $n$ è il numero di classi e $AP_{i}$ è l'integrale dalla curva Precision-Recall dell'$i$-esima classe.
-Per avere un modello coerente bisuogna definire una metodologia per discriminare i True Positive dai False Positive in base alla posizione della bounding box disegnata dal modello rispetto a quella di label. \\
+Per avere un modello coerente bisogna definire una metodologia per discriminare i True Positive dai False Positive in base alla posizione della bounding box disegnata dal modello rispetto a quella di label. \\
 \begin{figure}[h]
 \centering
 \includegraphics[width=300px,keepaspectratio]{precisionRecall2.png}
@@ -652,8 +654,8 @@ Per avere un modello coerente bisuogna definire una metodologia per discriminare
 \end{figure}
 \newpage
 Per fare ciò si introduce il concetto di Interesection over Union (IoU). Ovvero, per ogni predizione del modello si calcola il rapporto tra l'intersezione delle due bounding boxes e la loro unione. \\
-Quindi si scelgie un valore soglia arbitrario, a seconda delle esigenze del problema, al di sotto del quale la predizione del modello viene giudicata come non abbastanza precisa e quindi sbagliata. 
-\\ Solo le predizioni del modello che soddifano il valore di soglia minimo della IoU vengono categorizzate come corrette e quindi concorrono positivamente al numero dei True Positive e quindi alla curva Precision.
+Quindi si sceglie un valore soglia arbitrario, a seconda delle esigenze del problema, al di sotto del quale la predizione del modello viene giudicata come non abbastanza precisa e quindi sbagliata. 
+\\ Solo le predizioni del modello che soddisfano il valore di soglia minimo della IoU vengono categorizzate come corrette e quindi concorrono positivamente al numero dei True Positive e quindi alla curva Precision.
 \begin{figure}[h]
 \centering
 % \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{IoU.png}
@@ -668,11 +670,11 @@ In generale è stato sempre riconosciuto dalla comunità come uno strumento part
 Con l'avanzare delle versioni sono state fatte modifiche di design della rete, modifiche alla funzione di costo, modifiche alle anchor box e molto altro. 
 \\Nel caso applicativo del progetto svolto in questa tesi si è usato l'ultima versione YOLOv8, la più performante. In questo elaborato ci si è dedicati dapprima alle generalità e ai principi fondamentali su cui si basa il modello, quindi all'analisi dell'evoluzione di YOLO partendo dall'architettura della prima versione e successivamente analizzando le modifiche e le aggiunte fondamentali delle successive.
 \subsection{Funzionamento}
-Come indicato dal nome, la rete propone un approccio a singolo stadio per il riconosicmento delle immagini. Molti dei modelli tradizionali di Object Detection precedenti a YOLO utilizzano l'approccio a \emph{sliding window}, ovvero scannerizzano l'immagine facendo scorrere una finestra e a ogni nuova posizione utilizzano un classificatore per controllare se all'interno della finestra sia presente effettivamente un'oggetto. 
-Questa tecnica, per quanto intuitiva è profondamente inefficente in quanto per una sola immagina di input si utilizza un classificatore molte volte.
+Come indicato dal nome, la rete propone un approccio a singolo stadio per il riconoscimento delle immagini. Molti dei modelli tradizionali di Object Detection precedenti a YOLO utilizzano l'approccio a \emph{sliding window}, ovvero scannerizzano l'immagine facendo scorrere una finestra e a ogni nuova posizione utilizzano un classificatore per controllare se all'interno della finestra sia presente effettivamente un'oggetto. 
+Questa tecnica, per quanto intuitiva è profondamente inefficiente in quanto per una sola immagine di input si utilizza un classificatore molte volte.
 In generale comunque esistono una moltitudine di tecniche anche più avanzate che utilizzano comunque più stadi, dove per esempio il primo identifica le zone di interesse dell'immagine e successivamente un secondo stadio classifica il contenuto all'interno di tali zone. 
-YOLO al contrario produce l'output con una sola regressione producendo in un solo passaggio sia le cordinate degli oggetti che le propabilità delle classi delle figure trovate tutto nello stesso output.
-Diferrente dall'approccio sliding window è per quello di \emph{Fast R-CNN}[R-CNN] che produce due output separati generati rispettivamente da un classificatore per la probabilità della classe e un regressore per la posizione della bounding box. In particolare R-CNN generara una serie di potenziali bounding boxes nell'immagine (region proposals), quindi inferisce un classificatore su ognuna di esse e infine utilizza una serie di tecniche a posteriori per eliminare bounding boxes doppie e ricalcolare le metriche delle singole predizioni in base alla posizione delle altre. Ognuno di questi metodi deve essere addestrato separatamente e una singola inferenza attarversa varie interezioni.
+YOLO al contrario produce l'output con una sola regressione producendo in un solo passaggio sia le coordinate degli oggetti che le propabilità delle classi delle figure trovate tutto nello stesso output.
+Diferrente dall'approccio sliding window è quello di \emph{Fast R-CNN}[R-CNN] che produce due output separati generati rispettivamente da un classificatore per la probabilità della classe e un regressore per la posizione della bounding box. In particolare R-CNN generara una serie di potenziali bounding boxes nell'immagine (region proposals), quindi inferisce un classificatore su ognuna di esse e infine utilizza una serie di tecniche a posteriori per eliminare bounding boxes doppie e ricalcolare le metriche delle singole predizioni in base alla posizione delle altre. Ognuno di questi metodi deve essere addestrato separatamente e una singola inferenza attarversa varie iterezioni.
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{RCNN.png}
@@ -711,15 +713,15 @@ A partire da YOLOv2 sono state introdotte le cosiddette \emph{anchor boxes}, ovv
 \end{figure}
 A partire da YOLOv3 inizia a delinearsi una struttura che marcherà la composizione di tutte le versioni successive, ovvero la scomposizione logica del modello in tre moduli separati con compiti diversi: Backbone, Neck, Head.
 Il \emph{Backbone} è la prima parte del modello, quella di più basso livello. Questo modulo è tipicamente una rete puramente convoluzionale incaricata di estrapolare feature grafiche dall'immagine iniziale.
-Il \emph{Neck} ha lo scopo di collegare la parte finale (Head) del modello con il Backbone. Questo modulo aggrega e affina le features passategli dal backbone enfatizzando tratti sementici e spaziali di più alto livello rispetto a quelli estrapolati dal Backbone. 
-Il modulo finale detto \emph{Head} si occupa di inferire le predizioni finali del modello sulla base delle features estratte dal Backbone e affinate dal Neck. E' composto da delle sottoreti incaricate di fare clasificazione e localizzazione degli oggetti. Inoltre sempre nell'Head sono presenti componenti in grado di eliminare bounding boxes duplicate e altre operazioni post predizione.
+Il \emph{Neck} ha lo scopo di collegare la parte finale (Head) del modello con il Backbone. Questo modulo aggrega e affina le features passategli dal backbone enfatizzando tratti semantici e spaziali di più alto livello rispetto a quelli estrapolati dal Backbone. 
+Il modulo finale detto \emph{Head} si occupa di inferire le predizioni finali del modello sulla base delle features estratte dal Backbone e affinate dal Neck. E' composto da delle sottoreti incaricate di fare classificazione e localizzazione degli oggetti. Inoltre sempre nell'Head sono presenti componenti in grado di eliminare bounding boxes duplicate e altre operazioni post predizione.
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{backbone_neck_head.png}
 \caption{Archietettura con Backbone, Neck e Head}
 \end{figure}
 A partire da YOLOv4 le aggiunte al modello sono state divise in due distinte categorie, \emph{bag-of-freebies} e \emph{bag-of-specials}.
-Le prime sono modifiche principalemente relative alle modalità di training, come per esempio la \emph{data augmentation}, ovvero la generazione di ulteriori immagini di imput facendo modifiche a quelle già utilizzate. Questa classe di modifiche ha un impatto negativo solo sul tempo di training e non su quello di inferenza. 
+Le prime sono modifiche principalemente relative alle modalità di training, come per esempio la \emph{data augmentation}, ovvero la generazione di ulteriori immagini di input facendo modifiche a quelle già utilizzate. Questa classe di modifiche ha un impatto negativo solo sul tempo di training e non su quello di inferenza. 
 Un'interessante esempio di aggiunta di tipo \emph{bag-of-freebies} in YOLOv4 è stato l'inserimento di Algoritmi Genetici per l'ottimizzazione degli iperparametri di training.
 Le aggiunte categorizzate come \emph{bag-of-specials} sono invece tipicamente modifiche strutturali che incidono sul tempo di inferenza migliorando però la precione finale.
 \begin{figure}[h]
@@ -735,18 +737,18 @@ Con YOLOv7 sono state introdotte modifiche architetturali piuttosto sofisticate 
 \end{figure}
 \newpage
 Con YOLOv8 è stato fasso un grosso passo in avanti per quanto riguarda la facilità d'uso.
-E' infatti possibile utilizzare il modello da un'interfaccia a riga di comando (CLI) oppure istallandolo nel propio ambiente di sviluppo Python come un pacchetto PIP. 
-YOLOv8 viene rilascaito in 5 versioni differenti con diversi tradeoff tra performance e precisione.
+E' infatti possibile utilizzare il modello da un'interfaccia a riga di comando (CLI) oppure istallandolo nel proprio ambiente di sviluppo Python come un pacchetto PIP. 
+YOLOv8 viene rilasciato in 5 versioni differenti con diversi tradeoff tra performance e precisione.
 Valutato sul dataset di riferimento COCO 2017 YOLOv8x ha raggiunto una AP di 53.9\% con immagini di 640 pixels rispetto al 50.7\% di YOLOv5 con una velocità di 280 immagini per secondo su una GPU NVIDIA A100. 
 
 \newpage
 \section{Applicazione di YOLOv8 a campioni di nanografene}
-Durante il tirocinio curricolare presso CNR-ISMN si è andati a sviluppare un modello predittivo basato su metodi di Computer vision per inferire propietà fisiche di campioni di nanografene simulati al calcolatore. 
+Durante il tirocinio curricolare presso CNR-ISMN si è andati a sviluppare un modello predittivo basato su metodi di Computer vision per inferire proprietà fisiche di campioni di nanografene simulati al calcolatore. 
 Il primo modulo del progetto prevedeva di fare Object Detection sui campioni per individuare automaticamente i difetti all'interno della struttura atomica, ovvero le zone vuote, prive di atomi. 
 Per fare questo si è scelto YOLO, per la sua facilità di utilizzo e di training, oltre alle sue elevate performance. In particolare è stato scelto YOLOv8, in quanto facilmente integrabile in un progetto Python essendo installabile tramite PIP. 
 
-Pima di iniziare a lavorare sul training del modello è stato necessario procurarsi le immagini dei campioni, il dataset di grafene difettato a disposizione infatti non era sotto forma di immagini ma in formato \texttt{.xyz}. I file \texttt{.xyz} sono semplici file di testo pensati per rappresentare in modo preciso strutture di atomi nello spazio, la prima riga rappresenta il nome del campione, nella seconda riga è presente un semplice intero che rappresenta il numero di atomi presenti nel campione stesso, infine ciascuna dele righe successive descrivono la posizione di un atomo, indicando prima il tipo di atomo con una lettera (es. C = carbonio, H = idrogeno ecc...) e successivamente divisi da spazi le coordinati spaziali cartesiane del suddetto atomo, da questo deriva il nome del formato \texttt{.xyz}. Il dataset fornice anche un ulteriore file, dove è presente la lista per ogni campione del suo parametro fisico \texttt{total energy}, ovvero l'energia totale della struttura atomica del campione. Questa propietà è stata calcolata a priori durante la simulazone dei campioni al calcolatore e sarà proprio il parametro \emph{target} del predittore sviluppato nel progetto di cui parleremo nei prossimi capitoli. \newpage
-Un'esempio di un campione di grafene difettato in formato \texttt{.xyz} utilizzato:
+Pima di iniziare a lavorare sul training del modello è stato necessario procurarsi le immagini dei campioni, il dataset di grafene difettato a disposizione infatti non era sotto forma di immagini ma in formato \texttt{.xyz}. I file \texttt{.xyz} sono semplici file di testo pensati per rappresentare in modo preciso strutture di atomi nello spazio, la prima riga rappresenta il nome del campione, nella seconda riga è presente un semplice intero che rappresenta il numero di atomi presenti nel campione stesso, infine ciascuna delle righe successive descrivono la posizione di un atomo, indicando prima il tipo di atomo con una lettera (es. C = carbonio, H = idrogeno ecc...) e successivamente divisi da spazi le coordinati spaziali cartesiane del suddetto atomo, da questo deriva il nome del formato \texttt{.xyz}. Il dataset fornice anche un ulteriore file, dove è presente la lista per ogni campione del suo parametro fisico \texttt{total energy}, ovvero l'energia totale della struttura atomica del campione. Questa proprietà è stata calcolata a priori durante la simulazone dei campioni al calcolatore e sarà proprio il parametro \emph{target} del predittore sviluppato nel progetto di cui parleremo nei prossimi capitoli. \newpage
+% Un'esempio di un campione di grafene difettato in formato \texttt{.xyz} utilizzato:
 
 % \begin{lstlisting}
 % 303
@@ -798,8 +800,8 @@ Le informazioni raccolte saranno poi utilizzate come dati di addestramento del m
 Si descriveranno inoltre i fondamenti teorici dei regressori statistici focalizzandosi sulla tipologia utilizzata nel modello predittivo sviluppato. 
 Infine si analizzerà il processo di addestramento del modello predittivo discutendone i risultati. 
 \section{Analisi dei campioni con OpenCV e correlazione risultati}
-L'intuizione di base a questo punto del progetto è quella di indagare sull'eventuale presenza di una correlazione tra la morfologia geometrica dei difetti e le propietà fisiche dei campioni di grafene da cui questi derivano. 
-In particolare come accennato precedentemente, i campioni di grafene utilizzati provengono da simulazioni al calcolatore dalle quali è stata calcolata l'energia totale del sistema. Questa importante propietà fisica fornisce un'indicazione dell'energia immagazinata nel sistema atomico. In particolare l'energia totale è la somma dell'energia dei singoli atomi di carbonio meno l'energia di formazione, ovvero l'energia che il sistema perde ddurante l'aggregazione degli atomi. Il totale è quindi inferiore all'energia dei sisngoli atomi presi singolarmente a grande distanza fra di loro. 
+L'intuizione di base a questo punto del progetto è quella di indagare sull'eventuale presenza di una correlazione tra la morfologia geometrica dei difetti e le proprietà fisiche dei campioni di grafene da cui questi derivano. 
+In particolare come accennato precedentemente, i campioni di grafene utilizzati provengono da simulazioni al calcolatore dalle quali è stata calcolata l'energia totale del sistema. Questa importante proprietà fisica fornisce un'indicazione dell'energia immagazinata nel sistema atomico. In particolare l'energia totale è la somma dell'energia dei singoli atomi di carbonio meno l'energia di formazione, ovvero l'energia che il sistema perde durante l'aggregazione degli atomi. Il totale è quindi inferiore all'energia dei singoli atomi presi singolarmente a grande distanza fra di loro. 
 \begin{equation}
     E_{totale} = N_{atomi} * E_{carbonio} - E_{formazione} 
 \end{equation}
@@ -824,7 +826,7 @@ Da questa relazione possiamo aspettarci livelli di energia totale più bassi per
 \end{figure}
 Il valore dell'energia totale sarà il parametro target del modello predittivo discusso più avanti. Lo scopo dell'intero progetto è quindi quello di predire il valore della total energy di un campione partendo dalla sua immagine.  
 
-Per analizzare i difetti individuati si è andati ad utilizzare una nota libreria di computer vision, OpenCV. Questa libreria offre numerosi metodi per sconotornare ed estrapolare parametri numerici sulla base delle caratteristiche geometriche dell'immagine. 
+Per analizzare i difetti individuati si è andati ad utilizzare una nota libreria di computer vision, OpenCV. Questa libreria offre numerosi metodi per scontornare ed estrapolare parametri numerici sulla base delle caratteristiche geometriche dell'immagine. 
 Per prima cosa si è andati ad evidenziare le aree di interesse, ovvero i difetti nei campioni. In particolare le zone dove sono presenti i difetti saranno totalmente bianche mentre lo sfondo sarà nero. 
 Per fare questo si è fatto uso della funzione \emph{findContours} di OpenCV, questo metodo è in grado di individuare e tracciare contorni di oggetti su immagini.
 Una volta individuati i contorni è bastato selezionare quello con il perimetro maggiore per selezionare il difetto cercato ignorando tutto il resto. 
@@ -857,16 +859,16 @@ A questo punto ci ritroviamo con il contorno che individua il difetto nell'immag
 \caption{Contorno del difetto trovato con OpenCV}
 \end{figure}
 Il prossimo passo è stato quello di estrapolare i tratti geometrici del difetto stesso, sempre tramite metodi offerti da OpenCV. Ne sono stati estratti numerosi, dai più semplici come perimetro e area fino a proprietà più sofisticate (circolarità, solidità, compattezza...).
-In generale non è detto che tutte queste propietà saranno indispensabili per il modello predittivo finale, il lavoro da fare a questo punto sarà propio quello di individuare le relazioni causali tra una propietà e l'altra oltre che con il paraemtro target (energia totale) con lo scopo di individaure i tratti più significativi sui quali successivamente fare il training del modello.
+In generale non è detto che tutte queste proprietà saranno indispensabili per il modello predittivo finale, il lavoro da fare a questo punto sarà proprio quello di individuare le relazioni causali tra una proprietà e l'altra oltre che con il parametro target (energia totale) con lo scopo di individuare i tratti più significativi sui quali successivamente fare il training del modello.
 
 Per fare tutto ciò, i dati raccolti sono stati integrati in un dataframe \emph{Pandas}. Questa libreria offre metodi molto comodi per l'analisi di dati e sopratutto offre un oggetto chiamato dataframe adatto per ospitare i dati appena raccolti. 
-Un dataframe Pandas si presenta che una tabella bidimensionale, simile a quelle di un foglio di calcolo, sulla quale si hanno a disposizione numerose funzioni per manipolare, confrontare e filtrare i dati. 
+Un dataframe Pandas si presenta come una tabella bidimensionale, simile a quelle di un foglio di calcolo, sulla quale si hanno a disposizione numerose funzioni per manipolare, confrontare e filtrare i dati. 
 
-Prima di ottenere il dataframe finale sul quale sono state fatte le analisi è stato necessario risolvere un problema che ha a che fare con la natura delle immagini prodotte da YOLO. Quest'ultimo infatti per ogni difetto trovato in una delle immagini campione originarie produce in generale più di una immagine, una per ogni difetto trovato. L'analisi tramite OpenCV e le propietà estratte quindi sono relative in generale a un singolo difetto proveniente da un campione che ne può contenere diversi. Il parametro total energy invece fa riferimento all'intero campione originale e non ai singoli difetti estratti da esso. Questo crea un problema in fase di correlazione tra propietà dei singoli difetti e il  parametro total energy. 
-Per risolvere questo problema si è deciso di collassare i parametri estrapoalti dai singoli difetti in una sola riga del dataframe facendo la media pesata dei valori delle varie proprietà per l'area dei difetti. 
+Prima di ottenere il dataframe finale sul quale sono state fatte le analisi è stato necessario risolvere un problema che ha a che fare con la natura delle immagini prodotte da YOLO. Quest'ultimo infatti per ogni difetto trovato in una delle immagini campione originarie produce in generale più di una immagine, una per ogni difetto trovato. L'analisi tramite OpenCV e le proprietà estratte quindi sono relative in generale a un singolo difetto proveniente da un campione che ne può contenere diversi. Il parametro total energy invece fa riferimento all'intero campione originale e non ai singoli difetti estratti da esso. Questo crea un problema in fase di correlazione tra proprietà dei singoli difetti e il  parametro total energy. 
+Per risolvere questo problema si è deciso di collassare i parametri estrapolati dai singoli difetti in una sola riga del dataframe facendo la media pesata dei valori delle varie proprietà per l'area dei difetti. 
 Questa scelta è stata fatta partendo dal presupposto che difetti di area maggiore abbiano un'importanza più grande rispetto a quelli di grendezza inferiore. 
 
-Il dataframe su cui verranno fatte le analisi è nella forma seguente, una riga per ogni campione originario, una colonna per ogni propietà estrapolata più il parametro total energy di riferimento per quel specifico campione. 
+Il dataframe su cui verranno fatte le analisi è nella forma seguente, una riga per ogni campione originario, una colonna per ogni proprietà estrapolata più il parametro total energy di riferimento per quel specifico campione. 
 
 \begin{center}
 \begin{tabular}{ |p{1cm}||p{1.5cm}|p{2.5cm}|p{1cm}|p{3cm}|  }
@@ -885,8 +887,8 @@ Il dataframe su cui verranno fatte le analisi è nella forma seguente, una riga 
  \hline
 \end{tabular}    
 \end{center}
-Il primo grafico estratto dal dataframe è stata una heatmap, questo tipo di grafico è ideale per individuare in prima battuta le correlazioni più forti tra le propietà.
-Queste correlazioni sono importanti, in quanto permettono di indivudare parametri molto dipendenti tra loro, spesso con correlazione direttamente o inversamente proporzionale. 
+Il primo grafico estratto dal dataframe è stata una heatmap, questo tipo di grafico è ideale per individuare in prima battuta le correlazioni più forti tra le proprietà.
+Queste correlazioni sono importanti, in quanto permettono di individuare parametri molto dipendenti tra loro, spesso con correlazione direttamente o inversamente proporzionale. 
 Di questi parametri quindi sarà sufficiente utilizzarne uno solo durante l'addestramento del modello predittivo, in quanto portano lo stesso contenuto informativo e quindi non è necessario utilizzarli entrambi. Questi tipi di ragionamenti nell'addestramento di modelli su dataset molto grandi può fare la differenza in quanto a tempo di addestramento.
 \begin{center}
 \begin{figure}[h]
@@ -922,14 +924,14 @@ all’aumentare dell’area dei difetti}
 Ciò che è davvero importante è la correlazione quasi lineare tra energia e area dei difetti (e corrispettivi parametri correlati strettamente all’area).
 Questa correlazione emerge qualitativamente sia con l’energia assoluta che con quella
 normalizzata per il numero di atomi, ciò significa che l’area dei difetti ha un chiaro effetto nell’aumentare l’energia del sistema e quindi la sua instabilità.
-Alla luce di queste considerazioni sarà possibile successivamente selezionare con criterio le propietà su cui effettuare il training del modello predittivo. 
+Alla luce di queste considerazioni sarà possibile successivamente selezionare con criterio le proprietà su cui effettuare il training del modello predittivo. 
 Nella sezione successiva si introdurrà la teoria dei regressori statistici, focalizzandosi sugli alberi decisionali, utilizzati per il modello. 
 \section{Regressione Statistica}
 Con regressione statistica si intendono tutti i metodi e i modelli matematici atti ad analizzare dati raccolti (variabili indipendenti) con lo scopo di ottenere predizioni su parametri cercati (variabili dipendenti). 
 Lo scopo è quindi quello di trovare una relazione funzionale tra variabili indipendenti (osservazioni) e variabili dipendenti.
 Queste funzioni possono essere semplici rette nel caso della \emph{Regressione lineare} o più in generale curve di vario tipo, più adatte a modellare fenomeni più complessi.
-Queste predizioni possono derivare da dati di partenza di diverso tipo, come per esempio serie temporali, o come nel nostro caso propietà numeriche derivanti da analisi geoemtriche di immagini. L'operazione nella quale si ottiene una predizione su una variabile dipendente a partire dai dati raccolti di una o più variabili indipendenti prende il nome di inferenza statistica.
-In questa sezione analizzaermo brevemente  il tipo più semplice di regessione statistica, ovvero quella lineare per poi introdurre modelli di natura diversa come gli alberi decisionali. 
+Queste predizioni possono derivare da dati di partenza di diverso tipo, come per esempio serie temporali, o come nel nostro caso proprietà numeriche derivanti da analisi geoemtriche di immagini. L'operazione nella quale si ottiene una predizione su una variabile dipendente a partire dai dati raccolti di una o più variabili indipendenti prende il nome di inferenza statistica.
+In questa sezione analizzeremo brevemente  il tipo più semplice di regressione statistica, ovvero quella lineare per poi introdurre modelli di natura diversa come gli alberi decisionali. 
 \subsection{Regressione lineare}
 Il caso più semplice di regressione è quella lineare singola. Lineare perchè la relazione funzionale che si andrà a cercare è una retta, singola perchè la variabile indipendente su cui si sono svolte le osservazioni è una sola. In particolare da una serie di osservazioni numeriche di una variabile indipendente si vuole tracciare una retta che descriva al meglio l'andamento dei dati osservati. Questa retta è proprio la funzione da campionare per ottenere le predizioni richieste. 
 La funzione cercata si presenta come una semplice retta del tipo: 
@@ -952,7 +954,7 @@ Dove,
 \end{center}
 I due paramtri $\beta_{0}$, $\beta_{1}$ sono quelli che il modello matematico dovrà ottimizzare con lo scopo di ottenere la migliore relazione possibile. 
 Per fare ciò esistono vari metodi, il più famoso e utilizzato prende il nome di \emph{Metodo dei Minimi Quadrati (RSS, Residual Sum of Squares)}. Questo metodo permette di trovare i parametri che minimizzino il più possibile la somma dei quadrati delle distanze tra i dati osservati (valori di $x$) e quelli della curva (in questo caso la retta $\beta_{0} + \beta_{1}x$).
-Più precisamente si volgiono trovare i parametri $\beta_{0}$, $\beta_{1}$ tali che si minimizzi la funzione: 
+Più precisamente si vogliono trovare i parametri $\beta_{0}$, $\beta_{1}$ tali che si minimizzi la funzione: 
 \begin{equation}
     \min{RSS} = \min{\sum_{i}(y_{i} - \hat{y_{i}})^2} = \min{\sum_{i}(y_{i}-(\beta_{0} + \beta_{1}x_{i}))^2}
 \end{equation}
@@ -1021,7 +1023,7 @@ Un altro punto a favore nell'uso degli alberi decisonali è la capacità di perf
 E' importante ricordare che gli alberi sono strutture strettamente \emph{gerarchiche}, ovvero le feature analizzate nei nodi più in alto sono reputate più importanti rispetto a quelle analizzate più in basso e hanno un incidenza maggiore.
 Per quanto riguarda i difetti di questo approccio, il principale problema è la tendenza ad andare in overfitting, per evitare questo si usa una tecnica chiamata \emph{Pruning}, che consiste nella rimozione di parti della satruttura ad albero considerate non critiche, semplificando e ottimizzando il modello senza rinunciare alla precisione delle predizioni. 
 \section{Ensemble learning}
-In questa sezione estendiamo le fondamenta degli alberi decisionali appena discusse a una gamma di metodi che prende il nome di \emph{Ensable learning}.
+In questa sezione estendiamo le fondamenta degli alberi decisionali appena discusse a una gamma di metodi che prende il nome di \emph{Ensemble  learning}.
 L'idea di base è quella di utilizzare più di un albero decisonale per ottenere la predizione finale. Ci si aspetta che addestrando più alberi su sottoinsiemi casuali del dataset e delle feature di partenza si possano ottenere performance più elevate rispetto a quelle del singolo albero. Inoltre, addestrando gli alberi su sottoinsiemi casuali del dataset di partenza si va a mitigare il problema di overfitting discusso in precedenza.
 Analizzeremo i due approcci principali, Bagging e Boosting.
 \subsection{Bagging e Random Forest}
@@ -1039,7 +1041,7 @@ A questo punto ci si ritrova con un numero $B$ di alberi addestrati su dataset n
 \begin{equation}
     f(x') = \frac{1}{B}\sum_{b=1}^{B} f_{b}(x')
 \end{equation}
-Questa metodologia prende il nome di Bagging e può essere estesa nei modelli chiamati \emph{Random Forest} aggiungendo un'ulteriore casualità nell'apprendimento. In particolare si utilizza un algoritmo di apprendimento che per ogni sottoalbero seleziona un sottoinsieme delle feature di partenza, in questo modo i singoli alberi si \emph{specializzano} nelle feature di loro competenza.
+Questa metodologia prende il nome di Bagging e può essere estesa nei modelli chiamati \emph{Random Forest} \cite{random forest} aggiungendo un'ulteriore casualità nell'apprendimento. In particolare si utilizza un algoritmo di apprendimento che per ogni sottoalbero seleziona un sottoinsieme delle feature di partenza, in questo modo i singoli alberi si \emph{specializzano} nelle feature di loro competenza.
 In generale gli algoritmi \emph{Random Forest} superano in prestazioni gli alberi decisionali singoli, avendo meno overfitting ma perdono notevolmente di intelligibilità in quanto è molto più difficile andare a ritroso e interpretare una predizione. 
 \begin{center}
 \begin{figure}[h]
@@ -1074,7 +1076,7 @@ Dove $h_{m}(x_{i})$ (estimatore) è l'aggiunta apportata dall'algoritmo durante 
 In generale quindi la predizione finale verrà scelta dando un peso diverso a ogni classificatore, favorendo quelli con precisione migliore in fase di training. 
 
 
-Nella prossima sezione si discutera l'applicazione di una implementazione di questo meotodo sul problema applicativo affrontato durante questo eleborato, ovvero la costruzione di un modello in grado di predirre il parametro totale energy a partire da una serie di features geomtriche. 
+Nella prossima sezione si discuterà l'applicazione di una implementazione di questo meotodo sul problema applicativo affrontato durante questo eleborato, ovvero la costruzione di un modello in grado di predire il parametro total energy a partire da una serie di features geomtriche. 
 
 
 \section{Sviluppo modello predittivo con regressore XGBoost}
@@ -1087,7 +1089,7 @@ In particolare è stata scelta la funzione:
     sklearn.ensemble.GradientBoostingRegressor
 \end{verbatim}
 
-Le feature scelte per il training come discusso in precedenza sono state selezionate con l'intenzione di scegliere solo propietà scorrelate tra di loro, in quanto sarebbe ridondante effettuare il training su fetaure che correllano fortemente tra di loro e che quindi non portano contenuto informativo aggiuntivo. 
+Le feature scelte per il training come discusso in precedenza sono state selezionate con l'intenzione di scegliere solo proprietà scorrelate tra di loro, in quanto sarebbe ridondante effettuare il training su fetaure che correllano fortemente tra di loro e che quindi non portano contenuto informativo aggiuntivo. 
 In particolare sono state scelte: 
 \begin{verbatim}
     X = (area_px, num_pixels, circularity, solidity,
@@ -1192,9 +1194,9 @@ Questo progetto si è dimostrato adatto alla predizione della total energy su im
 Infatti, se fosse possibile applicare le metodologie usate in questo elaborato su generiche immagini di microscopia di nanografene, tenendo conto degli opportuni valori di scala sarebbe possibile ottenere in linea teorica un prodotto interessante a livello industriale e applicabile sul campo, 
 
 Come prevedibile questa generalizzazione non è banale e presenta numerose difficoltà in varie parti del progetto. 
-La problematica più evidente si pone nel primo modulo del progetto, ovvero nel riconoscimento dei difetti tramite YOLO. Il suddetto modello infatti è stato addestrato su un dataset di grafene simulato e non su generiche immagini di microscopia. In particolare le immagini su cui è stato svolto l'addestramento sono molto omogenee, a bassa risulozione, tutte della stessa dimensione e scala. Inoltre sono state private al massimo del rumore grazie al lavoro di postprocessing applicato su di esse. Le imamgini di microsopia invece, possono essere fortemente eterogenee tra di loro, con molto più rumore, contenuto informativo più alto e scale diverse. In generale quindi sono molto differenti da quelle su cui YOLO è stato addestrato.
+La problematica più evidente si pone nel primo modulo del progetto, ovvero nel riconoscimento dei difetti tramite YOLO. Il suddetto modello infatti è stato addestrato su un dataset di grafene simulato e non su generiche immagini di microscopia. In particolare le immagini su cui è stato svolto l'addestramento sono molto omogenee, a bassa risulozione, tutte della stessa dimensione e scala. Inoltre sono state private al massimo del rumore grazie al lavoro di postprocessing applicato su di esse. Le immagini di microscopia invece, possono essere fortemente eterogenee tra di loro, con molto più rumore, contenuto informativo più alto e scale diverse. In generale quindi sono molto differenti da quelle su cui YOLO è stato addestrato.
 
-Il problema potrebbe essere risolto andando a ripetere l'addestramento per ogni dataset di microscopia che si vuole analizzare, con tutto il lavoro di labeling manuale che ne consegue. Questa soluzione è sicuramente poco attraente perchè rinuncia alla generalità dello strumento e alla sua appetibilità applicazione in scenari industriali,
+Il problema potrebbe essere risolto andando a ripetere l'addestramento per ogni dataset di microscopia che si vuole analizzare, con tutto il lavoro di labeling manuale che ne consegue. Questa soluzione è sicuramente poco attraente perchè rinuncia alla generalità dello strumento e alla sua appetibilità per applicazioni in scenari industriali.
 
 Un'altro approccio, per superare questo problema potrebbe essere quello di cercare di trasformare le immagini di microscopia in copie il più possibili simili a quelle su cui è stato fatto il training di YOLO. 
 Nella coppia di immagini sottostante viene mostrato uno di questi tentativi atto a ridurre il rumore e trasformare un'immagine reale in una versione il più possibile simile a quelle consociute da YOLO. Si è sempre utilizzato OpenCV per manipolare le immagini.  
@@ -1218,8 +1220,35 @@ Nella coppia di immagini sottostante viene mostrato uno di questi tentativi atto
 
 Questa metodologia pur avendo dato risultati misti si dimostra promettente e lascia spazio per ulteriore lavoro ed estensioni future. 
 
-\chapter*{Conclusioni}    
-  \addcontentsline{toc}{chapter}{Conclusioni}
+
+\begingroup
+\let\clearpage\relax
+\chapter*{Conclusioni}
+\addcontentsline{toc}{chapter}{Conclusioni}
+
+Il progetto su cui si basa questa tesi nasce come esperimento di fattibilità relativo alla possibilità di utilizzare metodi di computer vision e object detection su immagini di materiali nanostrutturati. 
+I classici modelli di computer vision solitamente sono impiegati in domini applicativi diversi, a scale molto più grandi. Ci si è domandati quindi se tali metodi pottessero essere traslati alla nanoscala. 
+Per motivi di semplicità il prototipo è stato addestrato su dati simulati, questo porta a numerose semplificazioni spiegate in precedenza. 
+L'esito positivo delle predizioni sui campioni, apre perlomeno la possibilità di poter generalizzare lo strumento su campioni reali, lavorando sui vari moduli del progetto.
+L'architettura del progetto infatti, fin dall'inizio è stata pensata come modulare. In particolare è stata contruita su tre moduli indipendenti che lavorano insieme su tre domini funzionali diversi. Il primo modulo si occupa di Object Detection tramite YOLO sulle immagini dei campioni. Il secondo modulo si occupa di estrapolare feature grafiche a partire dai difetti estratti da YOLO nel modulo precedente ed analizzarli tramite OpenCV. Il terzo e ultimo modulo si occupa dell'analisi dei dati e della correlazione delle propietà estratte dal modulo precedente, inoltre incorpora il predittore ad alberi decisionali per inferire il valore della total energy cercata. 
+
+L'archiettura a moduli, non solo facilita di molto lo sviluppo dello strumento ma permette l'estensione e miglioramento di ogni singolo modulo senza preoccuparsi di modificare gli altri, che sono indipendenti tra di loro.
+
+L'immagine seguente che riassume l'architettura del progetto è stata presentata durante la conferenza di materiali bidimensionali \emph{chem2Dmat} svoltasi nel Maggio 2023 presso il CNR durante la presentazione del progetto GrapheNet \cite{Forni} presentato da Tommaso Forni facente parte del gruppo di ricerca \emph{DAIMON} dove ho svolto l'attività di tirocinio.
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=450px,keepaspectratio]{Slide gabriele-1.png}
+\caption{Sintesi dell'architettura del progetto}
+\end{figure}    
+\end{center}
+
+\newpage
+% \newpage % Puoi aggiungere una nuova pagina prima dei ringraziamenti
+
+% \endgroup
+% \chapter*{Conclusioni}    
+%   \addcontentsline{toc}{chapter}{Conclusioni}
 
 % \clearpage{\pagestyle{empty}\cleardoublepage}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%per fare le conclusioni
@@ -1255,18 +1284,30 @@ Questa metodologia pur avendo dato risultati misti si dimostra promettente e las
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 % \rhead[\fancyplain{}{\bfseries \thechapter \:Seconda Appendice}]
 % {\fancyplain{}{\bfseries\thepage}}
-\begin{thebibliography}{90}             %crea l'ambiente bibliografia
+\begingroup
+\pagestyle{plain} % Cambia lo stile di pagina a plain temporaneamente
+\chapter*{Ringraziamenti}
+\addcontentsline{toc}{chapter}{Ringraziamenti}
+Ringrazio il mio relatore Paolo Bellavista per la grande disponibilità, i consigli per la stesura della tesi ma soprattutto per l'interesse dimostrato per il lavoro svolto.
+Ringrazio il mio supervisore di tirocinio Francesco Mercuri presso CNR-ISMN e a tutti i colleghi del gruppo di ricerca che mi hanno accolto, stimolato e aiutato tantissimo durante il mio lavoro. Grazie a queste persone l'esperienza è stata incredibilmente significativa sia dal punto di vista professionale che umano.
+Ringrazio la mia famiglia e gli amici che mi hanno supportato durante questi anni di studio.
+\endgroup
+
+\newpage
+\begin{thebibliography}{}             %crea l'ambiente bibliografia
 \rhead[\fancyplain{}{\bfseries \leftmark}]{\fancyplain{}{\bfseries
 \thepage}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Bibliografia
                                         %   nell'indice
 \addcontentsline{toc}{chapter}{Bibliografia}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%provare anche questo comando:
 %%%%%%%%%%%\addcontentsline{toc}{chapter}{\numberline{}{Bibliografia}}
 %-----------------------primo capitolo ------------------------
 % textbook generale, molto completo sulle NN 
 \bibitem{NN_book} R. Rojas, \emph{Neural Networks}, Springer-Verlag, Berlin, 1996
-\bibitem{GD} Bottou, Léon; Bousquet, Olivier (2007). \emph{The Tradeoffs of Large Scale Learning}
+\bibitem{K1} Bottou, Léon; Bousquet, Olivier (2007). \emph{The Tradeoffs of Large Scale Learning}
 %articolo sulla backpropagation
 \bibitem{backprop} Annette Lopez Davila, Professor Chi-Kwong Li, \emph{Neural Networks: The Professor Chi-Kwong Li Algorithm} Math 400, College of William and Mary
 %articolo sull'esempio del capitolo 1
@@ -1283,7 +1324,6 @@ and application in radiology}, Insights into Imaging volume 9, pages 611–629 (
 
 %articolo completo con storia, funzionamento e architettura di YOLO. Joseph Redmon∗
 \bibitem{YOLO-story} Juan R. Terven, Diana M. Cordova-Esparaza, \emph{A comprehensive review of YOLO: From YOLOv1 to YOLOv8 and beyond}
-
 \bibitem{YOLOv7_paper}Chien-Yao Wang, Alexey Bochkovskiy, Hong-Yuan Mark Liao \emph{YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object
 detectors}, Institute of Information Science, Academia Sinica, Taiwan
 
@@ -1295,28 +1335,45 @@ Institute of Information Science, Academia Sinica, Taiwan Elan Microelectronics 
 Politecnico di Torino
 
 \bibitem{ensemble} Lee, H.-L.; Kim, J.-S.; Hong,
-C.-H.; Cho, D.-K. Ensemble Learning
+C.-H.; Cho, D.-K. \emph{Ensemble Learning
 Approach for the Prediction of
 Quantitative Rock Damage Using
-Various Acoustic Emission
+Various Acoustic Emission}
 
 \bibitem{random forest} Adele Cutler, David Richard Cutler, John R Stevens,
-Ensemble Machine Learning: Methods and Applications (pp.157-176)
+\emph{Ensemble Machine Learning: Methods and Applications} (pp.157-176)
 
 \bibitem{Gradient Boosting} Cheng Li,
-A Gentle Introduction to Gradient Boosting,
+\emph{A Gentle Introduction to Gradient Boosting},
 College of Computer and Information Science
 Northeastern University
 
-\bibitem{XGBoost}Tianqi Chen, Carlos Guestrin, 
-XGBoost: A Scalable Tree Boosting System, 
+\bibitem{XGBoost} Tianqi Chen, Carlos Guestrin, 
+\emph{XGBoost: A Scalable Tree Boosting System}, 
 University of Washington
 
+\bibitem{Forni} Tommaso Forni, Matteo Baldoni, Francesco Mercuri, \emph{GrapheNet: A Novel Deep Learning Model for Predicting Physical and
+Electronic Properties of 2D Materials Using Images}
 \end{thebibliography}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
-% \clearpage{\pagestyle{empty}\cleardoublepage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+
+
 % \chapter*{Ringraziamenti}
-% \thispagestyle{empty}
-% Qui possiamo ringraziare il mondo intero!!!!!!!!!!\\
-% Ovviamente solo se uno vuole, non \`e obbligatorio.
+% \addcontentsline{toc}{chapter}{Ringraziamenti}
+% Ringrazio il mio relatore Paolo Bellavista per la grande disponibilità, i consigli per la stesura della tesi ma soprattutto per l'interesse dimostrato per il lavoro svolto.
+% Ringrazio il mio supervisore di tirocinio Francesco Mercuri presso CNR-ISMN e a tutti i colleghi del gruppo di ricerca che mi hanno accolto, stimolato e aiutato tantissimo durante il mio lavoro. Grazie a queste persone l'esperienza è stata incredibilmente significativa sia dal punto di vista professionale che umano.
+% Grazie ai parenti e amici che mi hanno supportato durante questi anni di studio.
+
+
+
+% \begingroup
+% \pagestyle{plain} % Cambia lo stile di pagina a plain temporaneamente
+% \chapter*{Ringraziamenti}
+% \addcontentsline{toc}{chapter}{Ringraziamenti}
+% Ringrazio il mio relatore Paolo Bellavista per la grande disponibilità, i consigli per la stesura della tesi ma soprattutto per l'interesse dimostrato per il lavoro svolto.
+% Ringrazio il mio supervisore di tirocinio Francesco Mercuri presso CNR-ISMN e a tutti i colleghi del gruppo di ricerca che mi hanno accolto, stimolato e aiutato tantissimo durante il mio lavoro. Grazie a queste persone l'esperienza è stata incredibilmente significativa sia dal punto di vista professionale che umano.
+% Grazie ai parenti e amici che mi hanno supportato durante questi anni di studio.
+\endgroup
 \end{document}
+
+

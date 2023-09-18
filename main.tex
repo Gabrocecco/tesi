@@ -798,7 +798,17 @@ Con un numero maggiore di immagini di training e il lavoro di labeling annesso s
 In questo capitolo si descriveranno le tecniche utilizzate per l'analisi topologica dei difetti individuati da YOLO e le metodologie utilizzate per mettere in correlazione tali dati con i parametri fisici dei campioni originari.
 Le informazioni raccolte saranno poi utilizzate come dati di addestramento del modello predittivo successivamente sviluppato. 
 Si descriveranno inoltre i fondamenti teorici dei regressori statistici focalizzandosi sulla tipologia utilizzata nel modello predittivo sviluppato. 
-Infine si analizzerà il processo di addestramento del modello predittivo discutendone i risultati. 
+Infine si analizzerà il processo di addestramento del modello predittivo discutendone i risultati.
+
+L'immagine seguente che riassume l'architettura del progetto è stata presentata durante la conferenza di materiali bidimensionali \emph{chem2Dmat} svoltasi nel Maggio 2023 presso il CNR durante la presentazione del progetto GrapheNet \cite{Forni} presentato da Tommaso Forni facente parte del gruppo di ricerca \emph{DAIMON} dove ho svolto l'attività di tirocinio.
+\begin{center}
+\begin{figure}[h]
+\centering
+\includegraphics[width=450px,keepaspectratio]{Slide gabriele-1.png}
+\caption{Sintesi dell'architettura del progetto}
+\end{figure}    
+\end{center}
+
 \section{Analisi dei campioni con OpenCV e correlazione risultati}
 L'intuizione di base a questo punto del progetto è quella di indagare sull'eventuale presenza di una correlazione tra la morfologia geometrica dei difetti e le proprietà fisiche dei campioni di grafene da cui questi derivano. 
 In particolare come accennato precedentemente, i campioni di grafene utilizzati provengono da simulazioni al calcolatore dalle quali è stata calcolata l'energia totale del sistema. Questa importante proprietà fisica fornisce un'indicazione dell'energia immagazinata nel sistema atomico. In particolare l'energia totale è la somma dell'energia dei singoli atomi di carbonio meno l'energia di formazione, ovvero l'energia che il sistema perde durante l'aggregazione degli atomi. Il totale è quindi inferiore all'energia dei singoli atomi presi singolarmente a grande distanza fra di loro. 
@@ -899,7 +909,7 @@ Di questi parametri quindi sarà sufficiente utilizzarne uno solo durante l'adde
 \end{center}
 \newpage
 Nel lato alto a destra delle heatmap si confermano delle dipenze intuibili a priori, per esempio l'area e il perimetro correlano quasi perfettamente. Questo è del tutto ragionevole in quanto in generale difetti con aree grandi avranno perimetri tentenzialmente grandi. 
-
+\newpage
 Dopo la heatmap si è andati a generare un correlogramma che similmente alla heatmap mette in correlazione tutte le possibili coppie di properietà mostrandone questa volta anche l'andamento. 
 \begin{center}
 \begin{figure}[h]
@@ -1234,14 +1244,9 @@ L'architettura del progetto infatti, fin dall'inizio è stata pensata come modul
 
 L'archiettura a moduli, non solo facilita di molto lo sviluppo dello strumento ma permette l'estensione e miglioramento di ogni singolo modulo senza preoccuparsi di modificare gli altri, che sono indipendenti tra di loro.
 
-L'immagine seguente che riassume l'architettura del progetto è stata presentata durante la conferenza di materiali bidimensionali \emph{chem2Dmat} svoltasi nel Maggio 2023 presso il CNR durante la presentazione del progetto GrapheNet \cite{Forni} presentato da Tommaso Forni facente parte del gruppo di ricerca \emph{DAIMON} dove ho svolto l'attività di tirocinio.
-\begin{center}
-\begin{figure}[h]
-\centering
-\includegraphics[width=450px,keepaspectratio]{Slide gabriele-1.png}
-\caption{Sintesi dell'architettura del progetto}
-\end{figure}    
-\end{center}
+In conclusione, lavorando sul modulo di Object Detecion sarebbe possibile generalizzare il prototipo su immagini reali, quindi il modello potrebbe essere utilizzato per analizzare reali immagini derivanti da microscopia per ottenere informazioni e properietà fisiche della struttura analizzata. 
+La prospettiva quindi sarebbe quella di fornire uno strumento in grado di fornire informazioni in anticipo analizzando immagini derivanti da campiopni simulati prima dell'effettiva sintesi e costruzione industriale, così da mandare in effettiva produziuone solo i prodotti con propietà e caratteristiche soddisfacenti. 
+Allo stesso modo lo strumento potrebbe essere utilizzato anche dopo la produzione per analizzare materiali e strutture già esistenti, partendo semplicemente dalle loro immagini e la loro scala.
 
 \newpage
 % \newpage % Puoi aggiungere una nuova pagina prima dei ringraziamenti
